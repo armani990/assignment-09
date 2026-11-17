@@ -1,6 +1,7 @@
-
 import { Bricolage_Grotesque, DM_Sans } from "next/font/google";
 import "./globals.css";
+import { AuthProvider } from "@/components/auth-provider";
+import Navbar from "@/components/navbar";
 
 const bricolageGrotesque = Bricolage_Grotesque({
   variable: "--font-bricolage",
@@ -23,7 +24,12 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${bricolageGrotesque.variable} ${dmSans.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <AuthProvider>
+          <Navbar />
+          {children}
+        </AuthProvider>
+      </body>
     </html>
   );
 }

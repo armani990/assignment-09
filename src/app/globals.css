@@ -9,6 +9,10 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-brand: #ea3d1b;
+  --color-brand-strong: #cf3413;
+  --color-nav: #1d1b1a;
+  --color-nav-muted: #d8d4d1;
   --font-sans: var(--font-dm-sans);
   --font-heading: var(--font-bricolage);
 }
