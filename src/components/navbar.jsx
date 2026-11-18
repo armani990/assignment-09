@@ -1,9 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import { useAuth } from "./auth-provider";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useSession, signOut } from "@/lib/auth-client";
+import { UserRound, LogOut, ChevronDown } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -26,7 +38,9 @@ function PizzaMark() {
 
 function initialsOf(name = "") {
   const parts = name.trim().split(/\s+/).filter(Boolean);
+
   if (parts.length === 0) return "PH";
+
   return (parts[0][0] + (parts[1]?.[0] ?? "")).toUpperCase();
 }
 
@@ -38,59 +52,52 @@ function linkClass(active) {
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { user, logout } = useAuth();
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);
-  const [lastPathname, setLastPathname] = useState(pathname);
-  const profileRef = useRef(null);
+  const router = useRouter();
 
-  // Close any open panel after navigating.
-  if (lastPathname !== pathname) {
-    setLastPathname(pathname);
-    setMobileOpen(false);
-    setProfileOpen(false);
-  }
+  const { data: session, isPending } = useSession();
+  const user = session?.user;
+
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    if (!profileOpen) return;
-
-    function handlePointerDown(event) {
-      if (!profileRef.current?.contains(event.target)) setProfileOpen(false);
-    }
-    function handleKeyDown(event) {
-      if (event.key === "Escape") setProfileOpen(false);
-    }
-
-    document.addEventListener("pointerdown", handlePointerDown);
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("pointerdown", handlePointerDown);
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [profileOpen]);
-
-  function handleLogout() {
-    logout();
-    setProfileOpen(false);
     setMobileOpen(false);
+  }, [pathname]);
+
+  async function handleLogout() {
+    try {
+      await signOut();
+      setMobileOpen(false);
+      router.replace("/");
+      router.refresh();
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   }
 
   return (
     <header className="sticky top-0 z-50 bg-nav">
       <div className="relative mx-auto flex h-[70px] max-w-[1400px] items-center justify-between px-5 sm:px-8 lg:px-12">
-        <Link href="/" className="flex items-center gap-2.5" aria-label="PizzaHub home">
+        {/* Logo */}
+        <Link
+          href="/"
+          className="flex items-center gap-2.5"
+          aria-label="PizzaHub home"
+        >
           <span className="flex size-8 items-center justify-center rounded-[10px] bg-brand">
             <PizzaMark />
           </span>
+
           <span className="font-heading flex items-baseline gap-1.5 text-[22px] leading-none font-bold tracking-tight">
             <span className="text-white">Pizza</span>
             <span className="text-brand">Hub</span>
           </span>
         </Link>
 
+        {/* Desktop Navigation */}
         <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-9 md:flex">
           {navLinks.map((link) => {
             const active = pathname === link.href;
+
             return (
               <Link
                 key={link.href}
@@ -104,69 +111,70 @@ export default function Navbar() {
           })}
         </nav>
 
+        {/* Desktop Auth */}
         <div className="hidden items-center gap-6 md:flex">
-          {user ? (
-            <div className="relative" ref={profileRef}>
-              <button
-                type="button"
-                aria-haspopup="menu"
-                aria-expanded={profileOpen}
+          {isPending ? null : user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                className="flex items-center gap-2 rounded-full outline-none transition-opacity hover:opacity-90"
                 aria-label="Open profile menu"
-                onClick={() => setProfileOpen((open) => !open)}
-                className="flex items-center gap-2 rounded-full p-0.5 transition-opacity hover:opacity-90"
               >
-                <span className="font-heading flex size-9 items-center justify-center rounded-full bg-brand text-sm font-bold text-white">
-                  {initialsOf(user.name)}
-                </span>
-                <svg
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                  className={`size-4 text-nav-muted transition-transform ${
-                    profileOpen ? "rotate-180" : ""
-                  }`}
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="m6 9 6 6 6-6" />
-                </svg>
-              </button>
+                <Avatar className="size-9 border border-white/10">
+                  <AvatarImage
+                    src={user.image || ""}
+                    alt={user.name || "User"}
+                  />
 
-              {profileOpen && (
-                <div
-                  role="menu"
-                  className="absolute top-full right-0 mt-2 w-52 overflow-hidden rounded-2xl bg-[#262322] p-1.5 shadow-xl ring-1 ring-white/10"
+                  <AvatarFallback className="bg-brand font-heading text-sm font-bold text-white">
+                    {initialsOf(user.name)}
+                  </AvatarFallback>
+                </Avatar>
+
+                <ChevronDown className="size-4 text-nav-muted" />
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent
+                align="end"
+                className="w-56 border-white/10 bg-[#262322] text-white"
+              >
+                <DropdownMenuGroup>
+                  <DropdownMenuLabel className="font-normal">
+                    <p className="truncate text-sm font-semibold">
+                      {user.name}
+                    </p>
+
+                    <p className="truncate text-xs text-white/50">
+                      {user.email}
+                    </p>
+                  </DropdownMenuLabel>
+                </DropdownMenuGroup>
+
+                <DropdownMenuSeparator className="bg-white/10" />
+
+                <DropdownMenuItem
+                  onClick={() => router.push("/profile")}
+                  className="cursor-pointer text-nav-muted focus:bg-white/5 focus:text-white"
                 >
-                  <div className="px-3 py-2">
-                    <p className="truncate text-sm font-semibold text-white">{user.name}</p>
-                    <p className="truncate text-xs text-white/50">{user.email}</p>
-                  </div>
-                  <div className="my-1 h-px bg-white/10" />
-                  <Link
-                    role="menuitem"
-                    href="/profile"
-                    className="block rounded-lg px-3 py-2 text-sm text-nav-muted transition-colors hover:bg-white/5 hover:text-white"
-                  >
-                    Profile
-                  </Link>
-                  <button
-                    role="menuitem"
-                    type="button"
-                    onClick={handleLogout}
-                    className="block w-full rounded-lg px-3 py-2 text-left text-sm text-nav-muted transition-colors hover:bg-white/5 hover:text-white"
-                  >
-                    Logout
-                  </button>
-                </div>
-              )}
-            </div>
+                  <UserRound className="mr-2 size-4" />
+                  Profile
+                </DropdownMenuItem>
+                <DropdownMenuSeparator className="bg-white/10" />
+
+                <DropdownMenuItem
+                  onClick={handleLogout}
+                  className="cursor-pointer text-nav-muted focus:bg-white/5 focus:text-white"
+                >
+                  <LogOut className="mr-2 size-4" />
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : (
             <>
               <Link href="/signin" className={linkClass(false)}>
                 Sign In
               </Link>
+
               <Link
                 href="/signup"
                 className="rounded-full bg-brand px-6 py-2.5 text-[15px] font-semibold text-white transition-colors hover:bg-brand-strong"
@@ -177,6 +185,7 @@ export default function Navbar() {
           )}
         </div>
 
+        {/* Mobile Menu Button */}
         <button
           type="button"
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
@@ -193,16 +202,22 @@ export default function Navbar() {
             strokeWidth="2"
             strokeLinecap="round"
           >
-            {mobileOpen ? <path d="M6 6l12 12M18 6 6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
+            {mobileOpen ? (
+              <path d="M6 6l12 12M18 6 6 18" />
+            ) : (
+              <path d="M4 7h16M4 12h16M4 17h16" />
+            )}
           </svg>
         </button>
       </div>
 
+      {/* Mobile Menu */}
       {mobileOpen && (
         <div className="border-t border-white/10 bg-nav px-5 pt-2 pb-6 md:hidden">
           <nav className="flex flex-col">
             {navLinks.map((link) => {
               const active = pathname === link.href;
+
               return (
                 <Link
                   key={link.href}
@@ -219,22 +234,43 @@ export default function Navbar() {
           </nav>
 
           <div className="mt-3 border-t border-white/10 pt-4">
-            {user ? (
+            {isPending ? null : user ? (
               <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-3 pb-2">
-                  <span className="font-heading flex size-9 items-center justify-center rounded-full bg-brand text-sm font-bold text-white">
-                    {initialsOf(user.name)}
-                  </span>
-                  <span className="truncate text-sm font-semibold text-white">{user.name}</span>
+                  <Avatar className="size-9 border border-white/10">
+                    <AvatarImage
+                      src={user.image || ""}
+                      alt={user.name || "User"}
+                    />
+                    <AvatarFallback className="bg-brand font-heading text-sm font-bold text-white">
+                      {initialsOf(user.name)}
+                    </AvatarFallback>
+                  </Avatar>
+
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-semibold text-white">
+                      {user.name}
+                    </p>
+                    <p className="truncate text-xs text-white/50">
+                      {user.email}
+                    </p>
+                  </div>
                 </div>
-                <Link href="/profile" className="py-2 text-base text-nav-muted hover:text-white">
+
+                <Link
+                  href="/profile"
+                  className="flex items-center gap-2 py-2 text-base text-nav-muted hover:text-white"
+                >
+                  <UserRound className="size-4" />
                   Profile
                 </Link>
+
                 <button
                   type="button"
                   onClick={handleLogout}
-                  className="py-2 text-left text-base text-nav-muted hover:text-white"
+                  className="flex items-center gap-2 py-2 text-left text-base text-nav-muted hover:text-white"
                 >
+                  <LogOut className="size-4" />
                   Logout
                 </button>
               </div>
@@ -246,6 +282,7 @@ export default function Navbar() {
                 >
                   Sign In
                 </Link>
+
                 <Link
                   href="/signup"
                   className="rounded-full bg-brand px-5 py-2.5 text-center text-[15px] font-semibold text-white transition-colors hover:bg-brand-strong"
