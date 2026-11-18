@@ -164,7 +164,7 @@ export default function Navbar() {
             </div>
           ) : (
             <>
-              <Link href="/login" className={linkClass(false)}>
+              <Link href="/signin" className={linkClass(false)}>
                 Sign In
               </Link>
               <Link
@@ -241,7 +241,7 @@ export default function Navbar() {
             ) : (
               <div className="flex flex-col gap-3">
                 <Link
-                  href="/login"
+                  href="/signin"
                   className="rounded-full border border-white/20 px-5 py-2.5 text-center text-[15px] font-semibold text-white transition-colors hover:bg-white/5"
                 >
                   Sign In

@@ -16,10 +16,10 @@ export function AuthProvider({ children }) {
   const value = useMemo(
     () => ({
       user,
-      login(nextUser = DEMO_USER) {
+      signIn(nextUser = DEMO_USER) {
         writeUser(nextUser);
       },
-      logout() {
+      signOut() {
         writeUser(null);
       },
     }),

@@ -199,7 +199,7 @@ export default function SignupForm() {
           <p className="mt-6 text-sm text-black/60 dark:text-white/60">
             Already have an account?{" "}
             <Link
-              href="/login"
+              href="/signin"
               className="font-semibold text-brand hover:underline"
             >
               Sign in

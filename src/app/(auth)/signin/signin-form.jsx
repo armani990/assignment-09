@@ -37,7 +37,7 @@ function Input({ id, label, type, value, onChange, iconRight, onIconClick }) {
   );
 }
 
-export default function LoginForm() {
+export default function SignInForm() {
   const [form, setForm] = useState({
     email: "",
     password: "",
