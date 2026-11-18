@@ -1,0 +1,13 @@
+HTTP/1.1 200 OK
+Vary: Accept
+Cache-Control: public, max-age=0, must-revalidate
+ETag: 4ekEbecAbEHm2YDzwqXwIs0WqNWCJIllNluBwhYBBfc
+Content-Type: image/jpeg
+Content-Disposition: attachment; filename="banner-pizza.jpeg"
+Content-Security-Policy: script-src 'none'; frame-src 'none'; sandbox;
+X-Nextjs-Cache: MISS
+Content-Length: 89972
+Date: Tue, 17 Nov 2026 21:10:42 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
