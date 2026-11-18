@@ -1,7 +1,9 @@
+
 "use client";
 
 import Link from "next/link";
 import { useState } from "react";
+import { authClient } from "@/lib/auth-client";
 
 const ROLES = [
   { value: "customer", label: "Customer" },
@@ -24,6 +26,7 @@ function Input({ id, label, type, value, onChange, iconRight, onIconClick }) {
           type={type}
           value={value}
           onChange={onChange}
+          required
           className="w-full rounded-lg border border-black/15 px-4 py-3 pr-10 text-sm outline-none transition-all focus:border-brand focus:ring-2 focus:ring-brand dark:border-white/20 dark:bg-black/5 dark:text-white"
         />
 
@@ -53,6 +56,64 @@ export default function SignupForm() {
   const [role, setRole] = useState("customer");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    if (form.password !== form.confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    if (form.password.length < 8) {
+      setError("Password must be at least 8 characters.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const { error } = await authClient.signUp.email({
+        name: form.name,
+        email: form.email,
+        password: form.password,
+        role,
+        callbackURL: "/",
+      });
+
+      if (error) {
+        setError(error.message || "Signup failed.");
+        setLoading(false);
+      }
+    } catch {
+      setError("Something went wrong. Please try again.");
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSignup = async () => {
+    setError("");
+    setLoading(true);
+
+    try {
+      const { error } = await authClient.signIn.social({
+        provider: "google",
+        callbackURL: "/",
+        errorCallbackURL: "/signup",
+      });
+
+      if (error) {
+        setError(error.message || "Google signup failed.");
+        setLoading(false);
+      }
+    } catch {
+      setError("Google signup failed. Please try again.");
+      setLoading(false);
+    }
+  };
 
   return (
     <main className="flex flex-1 items-center justify-center px-5 py-20">
@@ -79,7 +140,7 @@ export default function SignupForm() {
           Join PizzaHub and get your first slice delivered.
         </p>
 
-        <form className="space-y-5">
+        <form onSubmit={handleSignup} className="space-y-5">
           <Input
             id="name"
             label="Full Name"
@@ -161,11 +222,16 @@ export default function SignupForm() {
             </p>
           </div>
 
+          {error && (
+            <p className="text-left text-sm text-red-500">{error}</p>
+          )}
+
           <button
-            type="button"
-            className="w-full rounded-full bg-brand px-6 py-3 text-[15px] font-semibold text-white transition-colors hover:bg-brand-strong"
+            type="submit"
+            disabled={loading}
+            className="w-full rounded-full bg-brand px-6 py-3 text-[15px] font-semibold text-white transition-colors hover:bg-brand-strong disabled:cursor-not-allowed disabled:opacity-60"
           >
-            Create Account
+            {loading ? "Creating Account..." : "Create Account"}
           </button>
 
           <div className="relative my-6">
@@ -180,7 +246,9 @@ export default function SignupForm() {
 
           <button
             type="button"
-            className="flex w-full items-center justify-center gap-2 rounded-full border border-black/15 px-6 py-3 text-[15px] font-semibold text-black/70 transition-colors hover:bg-black/5 dark:border-white/20 dark:text-white dark:hover:bg-white/5"
+            onClick={handleGoogleSignup}
+            disabled={loading}
+            className="flex w-full items-center justify-center gap-2 rounded-full border border-black/15 px-6 py-3 text-[15px] font-semibold text-black/70 transition-colors hover:bg-black/5 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/20 dark:text-white dark:hover:bg-white/5"
           >
             <svg
               viewBox="0 0 24 24"
@@ -193,6 +261,7 @@ export default function SignupForm() {
               <path d="M5.84 14.09c-.19-.63-.3-1.31-.3-2.05s.11-1.42.3-2.05V7.07H2.19C1.09 8.77.29 11.26.29 14.09s.8 5.32 1.9 7v1.96c1.16-2.1 2.76-3.52 4.68-3.52s3.52 1.42 4.68 3.52v-1.96c-1.16-1.68-2.76-2.91-4.68-2.91" />
               <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64v2.06H12V7.07c-1.16-1.08-2.62-1.69-4.21-1.69S3.58 5.99 3.58 7.07v1.96c0 1.08.44 2.05 1.2 2.77h2.65c-.52-.96-.83-2.05-.83-3.21 0-1.16.31-2.25.83-3.21H5.04c.79-.69 1.76-1.09 2.83-1.09 1.16 0 2.12.4 2.83 1.09H12z" />
             </svg>
+
             Google
           </button>
 
