@@ -1,10 +1,26 @@
-
 import { betterAuth } from "better-auth";
 import { MongoClient } from "mongodb";
 import { mongodbAdapter } from "@better-auth/mongo-adapter";
 
 const client = new MongoClient(process.env.BETTER_AUTH_DB_URI);
 const db = client.db("pizzahub");
+
+const ALLOWED_ROLES = ["customer", "vendor"];
+
+
+function readCookie(ctx, name) {
+  const header =
+    ctx?.request?.headers?.get?.("cookie") ||
+    ctx?.headers?.get?.("cookie") ||
+    "";
+
+  const match = header
+    .split(";")
+    .map((c) => c.trim())
+    .find((c) => c.startsWith(`${name}=`));
+
+  return match ? decodeURIComponent(match.split("=")[1]) : null;
+}
 
 export const auth = betterAuth({
   database: mongodbAdapter(db, {
@@ -29,6 +45,36 @@ export const auth = betterAuth({
         required: false,
         defaultValue: "customer",
         input: true,
+      },
+    },
+  },
+
+  databaseHooks: {
+    user: {
+      create: {
+        before: async (user, ctx) => {
+          const isOAuthCallback = ctx?.path?.startsWith("/callback");
+
+          let role = user.role;
+
+          if (isOAuthCallback) {
+            const cookieRole = readCookie(ctx, "signup_role");
+            if (ALLOWED_ROLES.includes(cookieRole)) {
+              role = cookieRole;
+            }
+          }
+
+          if (!ALLOWED_ROLES.includes(role)) {
+            role = "customer";
+          }
+
+          return {
+            data: {
+              ...user,
+              role,
+            },
+          };
+        },
       },
     },
   },

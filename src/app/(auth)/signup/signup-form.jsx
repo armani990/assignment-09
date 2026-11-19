@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -113,6 +112,9 @@ export default function SignupForm() {
     setLoading(true);
 
     try {
+      // Google এ যাওয়ার আগে selected role cookie তে রাখছি (১০ মিনিট)
+      document.cookie = `signup_role=${role}; path=/; max-age=600; SameSite=Lax`;
+
       const { error } = await authClient.signIn.social({
         provider: "google",
         callbackURL: "/",
@@ -165,9 +167,7 @@ export default function SignupForm() {
             label="Full Name"
             type="text"
             value={form.name}
-            onChange={(e) =>
-              setForm({ ...form, name: e.target.value })
-            }
+            onChange={(e) => setForm({ ...form, name: e.target.value })}
           />
 
           <Input
@@ -175,9 +175,7 @@ export default function SignupForm() {
             label="Email Address"
             type="email"
             value={form.email}
-            onChange={(e) =>
-              setForm({ ...form, email: e.target.value })
-            }
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
           />
 
           <Input
@@ -185,9 +183,7 @@ export default function SignupForm() {
             label="Password"
             type={passwordVisible ? "text" : "password"}
             value={form.password}
-            onChange={(e) =>
-              setForm({ ...form, password: e.target.value })
-            }
+            onChange={(e) => setForm({ ...form, password: e.target.value })}
             iconRight={passwordVisible ? "Hide" : "Show"}
             onIconClick={() => setPasswordVisible(!passwordVisible)}
           />
@@ -241,9 +237,7 @@ export default function SignupForm() {
             </p>
           </div>
 
-          {error && (
-            <p className="text-left text-sm text-red-500">{error}</p>
-          )}
+          {error && <p className="text-left text-sm text-red-500">{error}</p>}
 
           <button
             type="submit"
