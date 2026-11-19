@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import { useSession, signOut } from "@/lib/auth-client";
 import { UserRound, LogOut, ChevronDown } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -67,10 +68,12 @@ export default function Navbar() {
     try {
       await signOut();
       setMobileOpen(false);
+      toast.success("Logged out successfully.");
       router.replace("/");
       router.refresh();
     } catch (error) {
       console.error("Logout failed:", error);
+      toast.error("Logout failed. Please try again.");
     }
   }
 

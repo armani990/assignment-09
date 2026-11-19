@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, ImagePlus, Loader2, Upload, X } from "lucide-react";
 import Link from "next/link";
+import { toast } from "react-hot-toast";
 import { authClient } from "@/lib/auth-client";
 
 export default function AddMenuItemPage() {
@@ -137,13 +138,14 @@ export default function AddMenuItemPage() {
         throw new Error(result.message || "Failed to add menu item.");
       }
 
-      alert("Menu item submitted successfully!");
+      toast.success("Menu item submitted successfully!");
 
       router.push("/dashboard/vendor");
       router.refresh();
     } catch (error) {
       console.error("Add Menu Item Error:", error);
       setError(error.message || "Something went wrong.");
+      toast.error(error.message || "Something went wrong.");
     } finally {
       setLoading(false);
     }

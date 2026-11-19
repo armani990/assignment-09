@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 import { authClient, useSession } from "@/lib/auth-client";
 
 const ROLES = [
@@ -97,13 +98,16 @@ export default function SignupForm() {
       if (error) {
         setError(error.message || "Signup failed.");
         setLoading(false);
+        toast.error(error.message || "Signup failed.");
         return;
       }
 
+      toast.success("Account created successfully.");
       router.replace("/");
     } catch {
       setError("Something went wrong. Please try again.");
       setLoading(false);
+      toast.error("Something went wrong. Please try again.");
     }
   };
 
@@ -124,10 +128,12 @@ export default function SignupForm() {
       if (error) {
         setError(error.message || "Google signup failed.");
         setLoading(false);
+        toast.error(error.message || "Google signup failed.");
       }
     } catch {
       setError("Google signup failed. Please try again.");
       setLoading(false);
+      toast.error("Google signup failed. Please try again.");
     }
   };
 

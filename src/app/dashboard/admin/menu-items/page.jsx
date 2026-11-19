@@ -12,6 +12,7 @@ import {
   LoaderCircle,
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
+import { toast } from "react-hot-toast";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -121,10 +122,12 @@ export default function AdminMenuItemsPage() {
         );
       }
 
+      toast.success(result.message || `Menu item ${status} successfully.`);
       setMessage(result.message || `Menu item ${status} successfully.`);
       await loadMenuItems();
     } catch (err) {
       setError(err.message || "Something went wrong.");
+      toast.error(err.message || "Something went wrong.");
     } finally {
       setBusyId(null);
     }

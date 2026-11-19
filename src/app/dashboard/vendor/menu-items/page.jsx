@@ -15,6 +15,7 @@ import {
   Save,
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
+import { toast } from "react-hot-toast";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 const IMGBB_API_KEY = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
@@ -199,6 +200,9 @@ export default function VendorMenuItemsPage() {
         );
       }
 
+      toast.success(
+        "Menu item updated successfully. It is now waiting for admin approval."
+      );
       closeEditForm();
       setMessage(
         "Menu item updated successfully. It is now waiting for admin approval."
@@ -207,6 +211,7 @@ export default function VendorMenuItemsPage() {
       await loadMenuItems();
     } catch (err) {
       setError(err.message || "Something went wrong.");
+      toast.error(err.message || "Something went wrong.");
     } finally {
       setSaving(false);
     }
@@ -239,11 +244,13 @@ export default function VendorMenuItemsPage() {
       }
 
       setConfirmDeleteId(null);
+      toast.success("Menu item deleted successfully.");
       setMessage("Menu item deleted successfully.");
 
       await loadMenuItems();
     } catch (err) {
       setError(err.message || "Something went wrong.");
+      toast.error(err.message || "Something went wrong.");
     } finally {
       setDeletingId(null);
     }

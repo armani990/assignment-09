@@ -4,6 +4,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 import { authClient, useSession } from "@/lib/auth-client";
 
 function Input({ id, label, type, value, onChange, iconRight, onIconClick }) {
@@ -76,13 +77,16 @@ export default function SignInForm() {
       if (error) {
         setError(error.message || "Sign in failed.");
         setLoading(false);
+        toast.error(error.message || "Sign in failed.");
         return;
       }
 
+      toast.success("Signed in successfully.");
       router.replace("/");
     } catch {
       setError("Something went wrong. Please try again.");
       setLoading(false);
+      toast.error("Something went wrong. Please try again.");
     }
   };
 
@@ -100,10 +104,12 @@ export default function SignInForm() {
       if (error) {
         setError(error.message || "Google sign in failed.");
         setLoading(false);
+        toast.error(error.message || "Google sign in failed.");
       }
     } catch {
       setError("Google sign in failed. Please try again.");
       setLoading(false);
+      toast.error("Google sign in failed. Please try again.");
     }
   };
 
