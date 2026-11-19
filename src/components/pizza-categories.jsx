@@ -1,0 +1,91 @@
+
+import Link from "next/link";
+
+const CATEGORIES = [
+  {
+    name: "Classic",
+    description: "Timeless pizza favorites",
+    emoji: "🍕",
+  },
+  {
+    name: "Vegetarian",
+    description: "Fresh and healthy flavors",
+    emoji: "🥗",
+  },
+  {
+    name: "Meat Lovers",
+    description: "Loaded with delicious meats",
+    emoji: "🍖",
+  },
+  {
+    name: "Gourmet",
+    description: "Premium handcrafted pizzas",
+    emoji: "🍕",
+  },
+  {
+    name: "Sweet & Savory",
+    description: "A unique flavor experience",
+    emoji: "🍍",
+  },
+  {
+    name: "Light & Thin",
+    description: "Crispy and light favorites",
+    emoji: "🫓",
+  },
+];
+
+export default function PizzaCategories() {
+  return (
+    <section className="bg-nav py-16 text-white">
+      <div className="mx-auto max-w-[1400px] px-5 sm:px-8 lg:px-12">
+        <div className="mb-12 text-center">
+          <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-brand">
+            Explore Our Menu
+          </p>
+
+          <h2 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl">
+            Pick Your Kind of Pizza
+          </h2>
+
+          <p className="mt-3 text-nav-muted">
+            Discover your favorite flavors from our delicious pizza collection.
+          </p>
+        </div>
+
+        <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+          {CATEGORIES.map((category, index) => (
+            <Link
+              key={category.name}
+              href="/menu"
+              className="group block"
+            >
+              <div
+                className={`flex h-full flex-col items-center rounded-2xl border p-6 text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-xl ${
+                  index === 0
+                    ? "border-brand bg-brand"
+                    : "border-white/10 bg-white/5 hover:border-brand/50 hover:bg-white/10"
+                }`}
+              >
+                <div className="mb-5 flex size-16 items-center justify-center rounded-full bg-white/10 transition-transform duration-300 group-hover:scale-110">
+                  <span className="text-4xl">{category.emoji}</span>
+                </div>
+
+                <h3 className="text-base font-bold text-white">
+                  {category.name}
+                </h3>
+
+                <p className="mt-2 text-xs leading-5 text-nav-muted">
+                  {category.description}
+                </p>
+
+                <span className="mt-5 text-xs font-semibold text-white transition-transform group-hover:translate-x-1">
+                  Explore Menu →
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
