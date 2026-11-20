@@ -17,14 +17,6 @@ import { authClient, useSession } from "@/lib/auth-client";
 
 const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-function getTodayDate() {
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = String(today.getMonth() + 1).padStart(2, "0");
-  const day = String(today.getDate()).padStart(2, "0");
-
-  return `${year}-${month}-${day}`;
-}
 
 export default function MenuItemDetailsPage() {
   const { id } = useParams();
@@ -349,7 +341,6 @@ export default function MenuItemDetailsPage() {
                     <input
                       id="deliveryDate"
                       type="date"
-                      min={getTodayDate()}
                       value={deliveryDate}
                       onChange={(event) => setDeliveryDate(event.target.value)}
                       required
