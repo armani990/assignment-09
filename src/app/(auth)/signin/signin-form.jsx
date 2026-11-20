@@ -12,7 +12,7 @@ function Input({ id, label, type, value, onChange, iconRight, onIconClick }) {
     <div className="space-y-1.5 text-left">
       <label
         htmlFor={id}
-        className="block text-xs font-semibold text-black/70 dark:text-white/70"
+        className="block text-xs font-semibold text-nav-muted"
       >
         {label}
       </label>
@@ -24,14 +24,14 @@ function Input({ id, label, type, value, onChange, iconRight, onIconClick }) {
           value={value}
           onChange={onChange}
           required
-          className="w-full rounded-lg border border-black/15 px-4 py-3 pr-10 text-sm outline-none transition-all focus:border-brand focus:ring-2 focus:ring-brand dark:border-white/20 dark:bg-black/5 dark:text-white"
+          className="w-full rounded-lg border border-white/10 px-4 py-3 pr-10 text-sm outline-none transition-all focus:border-brand focus:ring-2 focus:ring-brand dark:border-white/20 dark:text-white"
         />
 
         {iconRight && (
           <button
             type="button"
             onClick={onIconClick}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-[12px] text-black/40 transition-colors hover:text-brand dark:text-white/40 dark:hover:text-brand"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-[12px] text-nav-muted transition-colors hover:text-brand dark:text-white/40 dark:hover:text-brand"
             aria-label={iconRight}
           >
             {iconRight}
@@ -120,7 +120,7 @@ export default function SignInForm() {
 
   return (
     <main className="flex flex-1 items-center justify-center px-5 py-20">
-      <div className="w-full max-w-sm rounded-2xl border border-black/10 p-8 text-center dark:border-white/10">
+      <div className="w-full max-w-sm rounded-2xl border border-white/10 p-8 text-center bg-white/5 dark:bg-white/5">
         <div className="mx-auto mb-6 flex size-12 items-center justify-center rounded-full bg-brand">
           <svg
             viewBox="0 0 24 24"
@@ -135,11 +135,11 @@ export default function SignInForm() {
           </svg>
         </div>
 
-        <h1 className="mb-2 font-heading text-2xl font-bold">
+        <h1 className="mb-2 font-heading text-2xl font-bold text-white">
           Welcome back
         </h1>
 
-        <p className="mb-8 mt-2 text-sm text-black/60 dark:text-white/60">
+        <p className="mb-8 mt-2 text-sm text-nav-muted">
           Sign in to order your favorite pizza.
         </p>
 
@@ -183,7 +183,7 @@ export default function SignInForm() {
               <span className="w-full border-t border-black/10 dark:border-white/10" />
             </div>
 
-            <span className="relative bg-white px-4 text-xs font-semibold text-black/40 dark:bg-black dark:text-white/40">
+            <span className="relative bg-white/10 px-4 text-xs font-semibold text-nav-muted">
               Or continue with
             </span>
           </div>
@@ -192,7 +192,7 @@ export default function SignInForm() {
             type="button"
             onClick={handleGoogleSignin}
             disabled={loading}
-            className="flex w-full items-center justify-center gap-2 rounded-full border border-black/15 px-6 py-3 text-[15px] font-semibold text-black/70 transition-colors hover:bg-black/5 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/20 dark:text-white dark:hover:bg-white/5"
+            className="flex w-full items-center justify-center gap-2 rounded-full border border-white/10 px-6 py-3 text-[15px] font-semibold text-white transition-colors hover:bg-white/5 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/20 dark:hover:bg-white/5"
           >
             <svg
               viewBox="0 0 24 24"
@@ -209,13 +209,13 @@ export default function SignInForm() {
             Google
           </button>
 
-          <p className="mt-4 text-left text-sm text-black/60 dark:text-white/60">
+          <p className="mt-4 text-left text-sm text-nav-muted">
             <a href="#" className="font-semibold text-brand hover:underline">
               Forgot Password?
             </a>
           </p>
 
-          <p className="mt-6 text-sm text-black/60 dark:text-white/60">
+          <p className="mt-6 text-sm text-nav-muted">
             New here?{" "}
             <Link
               href="/signup"

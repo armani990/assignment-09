@@ -36,7 +36,7 @@ const FEATURES = [
 
 export default function WhyChoosePizzaHub() {
   return (
-    <section className="bg-[#12100f] text-white min-h-screen py-16 lg:py-24">
+    <section className="bg-nav text-white min-h-screen py-16 lg:py-24">
       <div className="mx-auto max-w-[1400px] px-5 sm:px-8 lg:px-12">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <div className="lg:pr-12">
@@ -45,7 +45,7 @@ export default function WhyChoosePizzaHub() {
               PizzaHub?
             </h1>
 
-            <p className="mt-6 max-w-lg text-gray-400 leading-relaxed">
+            <p className="mt-6 max-w-lg text-nav-muted leading-relaxed">
               We cook like a neighborhood pizzeria and deliver like it's our
               job, because it is.
             </p>
@@ -64,13 +64,13 @@ export default function WhyChoosePizzaHub() {
             {FEATURES.map((feature, idx) => (
               <div
                 key={idx}
-                className="rounded-2xl bg-[#1a1817] border border-white/10 p-6"
+                className="rounded-2xl bg-white/5 border border-white/10 p-6"
               >
                 <div className="mb-4 inline-flex items-center justify-center size-12 rounded-xl p-2 text-white {feature.iconBg}">
                   <feature.Icon className="size-5" />
                 </div>
                 <h3 className="text-lg font-bold">{feature.title}</h3>
-                <p className="mt-2 text-sm text-gray-400 leading-relaxed">
+                <p className="mt-2 text-sm text-nav-muted leading-relaxed">
                   {feature.desc}
                 </p>
               </div>

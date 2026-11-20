@@ -48,7 +48,7 @@ export default function FeaturedMenu() {
   }, []);
 
   return (
-    <section className="bg-white px-4 py-16 dark:bg-gray-950 sm:px-6 lg:px-8">
+    <section className="bg-nav px-4 py-16 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         {/* Section Heading */}
         <div className="mb-10 text-center">
@@ -56,11 +56,11 @@ export default function FeaturedMenu() {
             Fresh From Our Kitchen
           </p>
 
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white sm:text-4xl">
+          <h2 className="text-3xl font-bold text-white sm:text-4xl">
             Our Featured Pizzas
           </h2>
 
-          <p className="mx-auto mt-3 max-w-2xl text-gray-600 dark:text-gray-400">
+          <p className="mx-auto mt-3 max-w-2xl text-nav-muted">
             Explore our delicious collection of freshly prepared pizzas.
             Find your favorite and enjoy every bite.
           </p>
@@ -74,11 +74,11 @@ export default function FeaturedMenu() {
                 key={index}
                 className="animate-pulse overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-800"
               >
-                <div className="h-52 bg-gray-200 dark:bg-gray-800" />
+                <div className="h-52 bg-white/10 dark:bg-white/5" />
                 <div className="space-y-3 p-5">
-                  <div className="h-5 w-3/4 rounded bg-gray-200 dark:bg-gray-800" />
-                  <div className="h-4 w-full rounded bg-gray-200 dark:bg-gray-800" />
-                  <div className="h-4 w-1/3 rounded bg-gray-200 dark:bg-gray-800" />
+                  <div className="h-5 w-3/4 rounded bg-white/10 dark:bg-white/5" />
+                  <div className="h-4 w-full rounded bg-white/10 dark:bg-white/5" />
+                  <div className="h-4 w-1/3 rounded bg-white/10 dark:bg-white/5" />
                 </div>
               </div>
             ))}
@@ -92,7 +92,7 @@ export default function FeaturedMenu() {
 
         {/* Empty State */}
         {!loading && !error && menuItems.length === 0 && (
-          <p className="py-10 text-center text-gray-500 dark:text-gray-400">
+          <p className="py-10 text-center text-nav-muted">
             No featured pizzas are available right now.
           </p>
         )}
@@ -103,9 +103,9 @@ export default function FeaturedMenu() {
             {menuItems.map((item) => (
               <article
                 key={item._id}
-                className="group overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-gray-800 dark:bg-gray-900"
+                className="group overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-white/10 dark:bg-white/5"
               >
-                <div className="relative h-56 overflow-hidden bg-gray-100 dark:bg-gray-800">
+                <div className="relative h-56 overflow-hidden bg-white/10 dark:bg-white/5">
                   {item.images?.[0] ? (
                     <img
                       src={item.images[0]}
@@ -125,7 +125,7 @@ export default function FeaturedMenu() {
 
                 <div className="p-5">
                   <div className="mb-3 flex items-start justify-between gap-3">
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                    <h3 className="text-xl font-bold text-white">
                       {item.itemName}
                     </h3>
 
@@ -134,11 +134,11 @@ export default function FeaturedMenu() {
                     </span>
                   </div>
 
-                  <p className="mb-4 line-clamp-2 min-h-12 text-sm leading-6 text-gray-600 dark:text-gray-400">
+                  <p className="mb-4 line-clamp-2 min-h-12 text-sm leading-6 text-nav-muted">
                     {item.description}
                   </p>
 
-                  <p className="mb-5 flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                  <p className="mb-5 flex items-center gap-2 text-sm text-nav-muted">
                     <span>📍</span>
                     {item.location}
                   </p>
@@ -159,7 +159,7 @@ export default function FeaturedMenu() {
                       href={`/menu-items/${item._id}`}
                       className="block w-full rounded-lg bg-orange-600 px-4 py-3 text-center font-semibold text-white transition hover:bg-orange-700"
                     >
-                      Order Now
+                      Details
                     </Link>
                   )}
 
@@ -169,7 +169,7 @@ export default function FeaturedMenu() {
                       <button
                         type="button"
                         disabled
-                        className="w-full cursor-not-allowed rounded-lg bg-gray-200 px-4 py-3 font-semibold text-gray-500 dark:bg-gray-800 dark:text-gray-400"
+                        className="w-full cursor-not-allowed rounded-lg bg-white/10 px-4 py-3 font-semibold text-nav-muted"
                       >
                         Ordering for Customers Only
                       </button>
@@ -177,7 +177,7 @@ export default function FeaturedMenu() {
 
                   {/* Session is loading */}
                   {isPending && (
-                    <div className="h-12 animate-pulse rounded-lg bg-gray-200 dark:bg-gray-800" />
+                    <div className="h-12 animate-pulse rounded-lg bg-white/10" />
                   )}
                 </div>
               </article>

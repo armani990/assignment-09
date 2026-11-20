@@ -138,8 +138,8 @@ export default function AdminMenuItemsPage() {
       {/* Page Header */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold">Manage Menu Items</h1>
-          <p className="mt-1 text-sm text-gray-500">
+          <h1 className="text-2xl font-bold text-white">Manage Menu Items</h1>
+          <p className="mt-1 text-sm text-nav-muted">
             Review and manage menu items submitted by vendors.
           </p>
         </div>
@@ -148,7 +148,7 @@ export default function AdminMenuItemsPage() {
           type="button"
           onClick={loadMenuItems}
           disabled={loading}
-          className="flex items-center gap-2 rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium transition hover:bg-gray-50 disabled:opacity-50 dark:border-white/10 dark:hover:bg-white/5"
+          className="flex items-center gap-2 rounded-lg border border-white/10 px-4 py-2 text-sm font-medium transition hover:bg-white/5 disabled:opacity-50"
         >
           <RefreshCw
             className={`size-4 ${loading ? "animate-spin" : ""}`}
@@ -171,7 +171,7 @@ export default function AdminMenuItemsPage() {
             className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
               selectedStatus === filter.value
                 ? "bg-brand text-white"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-white/5 dark:text-white/70 dark:hover:bg-white/10"
+                : "text-nav-muted hover:bg-white/5"
             }`}
           >
             {filter.label}
@@ -198,10 +198,10 @@ export default function AdminMenuItemsPage() {
           <LoaderCircle className="size-8 animate-spin text-brand" />
         </div>
       ) : items.length === 0 ? (
-        <div className="flex min-h-60 flex-col items-center justify-center rounded-xl border border-dashed border-gray-300 text-center dark:border-white/10">
-          <UtensilsCrossed className="mb-3 size-10 text-gray-400" />
-          <h2 className="font-semibold">No menu items found</h2>
-          <p className="mt-1 text-sm text-gray-500">
+        <div className="flex min-h-60 flex-col items-center justify-center rounded-xl border border-dashed border-white/10 text-center">
+          <UtensilsCrossed className="mb-3 size-10 text-white/40" />
+          <h2 className="font-semibold text-white">No menu items found</h2>
+          <p className="mt-1 text-sm text-nav-muted">
             There are no items in this category yet.
           </p>
         </div>
@@ -210,11 +210,11 @@ export default function AdminMenuItemsPage() {
           {items.map((item) => (
             <div
               key={item._id}
-              className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/10 dark:bg-white/[0.02]"
+              className="overflow-hidden rounded-xl border border-white/10 bg-white/5"
             >
               <div className="flex flex-col sm:flex-row">
                 {/* Item Image */}
-                <div className="h-52 shrink-0 bg-gray-100 sm:h-auto sm:w-44 dark:bg-white/5">
+                <div className="h-52 shrink-0 bg-white/10 sm:h-auto sm:w-44">
                   {item.images?.[0] ? (
                     <img
                       src={item.images[0]}
@@ -235,7 +235,7 @@ export default function AdminMenuItemsPage() {
                       <h2 className="text-lg font-semibold">
                         {item.itemName}
                       </h2>
-                      <p className="mt-1 text-sm text-gray-500">
+                      <p className="mt-1 text-sm text-nav-muted">
                         {item.category}
                       </p>
                     </div>
@@ -243,7 +243,7 @@ export default function AdminMenuItemsPage() {
                     <span
                       className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold capitalize ${
                         STATUS_STYLES[item.status] ||
-                        "bg-gray-100 text-gray-600"
+                        "bg-white/10 text-nav-muted"
                       }`}
                     >
                       {item.status}
@@ -259,19 +259,19 @@ export default function AdminMenuItemsPage() {
                       ৳{Number(item.price).toLocaleString("en-BD")}
                     </p>
 
-                    <p className="flex items-center gap-2 text-gray-500">
+                    <p className="flex items-center gap-2 text-nav-muted">
                       <MapPin className="size-4 shrink-0" />
                       {item.location}
                     </p>
 
-                    <p className="flex items-center gap-2 text-gray-500">
+                    <p className="flex items-center gap-2 text-nav-muted">
                       <CalendarDays className="size-4 shrink-0" />
                       {item.createdAt
                         ? new Date(item.createdAt).toLocaleDateString()
                         : "Date unavailable"}
                     </p>
 
-                    <p className="break-all text-xs text-gray-400">
+                    <p className="break-all text-xs text-nav-muted">
                       Vendor ID: {String(item.vendorId || "N/A")}
                     </p>
                   </div>

@@ -72,7 +72,7 @@ export default function DashboardLayout({ children }) {
 
   const sidebar = (
     <nav className="flex flex-col gap-1 p-4">
-      <p className="mb-3 px-3 text-xs font-semibold uppercase tracking-wider text-black/40 dark:text-white/40">
+      <p className="mb-3 px-3 text-xs font-semibold uppercase tracking-wider text-nav-muted">
         {role} dashboard
       </p>
 
@@ -89,7 +89,7 @@ export default function DashboardLayout({ children }) {
             className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
               active
                 ? "bg-brand text-white"
-                : "text-black/70 hover:bg-black/5 dark:text-white/70 dark:hover:bg-white/5"
+                : "text-nav-muted hover:bg-white/5"
             }`}
           >
             <Icon className="size-4" />
@@ -103,7 +103,7 @@ export default function DashboardLayout({ children }) {
   return (
     <div className="flex min-h-screen">
       {/* Desktop Sidebar */}
-      <aside className="hidden w-64 shrink-0 border-r border-black/10 dark:border-white/10 lg:block">
+      <aside className="hidden w-64 shrink-0 border-r border-white/10 lg:block">
         {sidebar}
       </aside>
 
@@ -115,7 +115,7 @@ export default function DashboardLayout({ children }) {
             onClick={() => setOpen(false)}
           />
 
-          <aside className="absolute left-0 top-0 h-full w-64 bg-white dark:bg-black">
+          <aside className="absolute left-0 top-0 h-full w-64 bg-white/5">
             {sidebar}
           </aside>
         </div>
@@ -123,7 +123,7 @@ export default function DashboardLayout({ children }) {
 
       <div className="flex min-w-0 flex-1 flex-col">
         {/* Mobile Header */}
-        <div className="flex items-center gap-3 border-b border-black/10 px-4 py-3 dark:border-white/10 lg:hidden">
+        <div className="flex items-center gap-3 border-b border-white/10 px-4 py-3 lg:hidden">
           <button
             type="button"
             onClick={() => setOpen((prev) => !prev)}

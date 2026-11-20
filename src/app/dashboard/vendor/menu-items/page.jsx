@@ -269,8 +269,8 @@ export default function VendorMenuItemsPage() {
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold">My Menu Items</h1>
-          <p className="mt-1 text-sm text-gray-500">
+          <h1 className="text-2xl font-bold text-white">My Menu Items</h1>
+          <p className="mt-1 text-sm text-nav-muted">
             View and manage the menu items you have submitted.
           </p>
         </div>
@@ -279,7 +279,7 @@ export default function VendorMenuItemsPage() {
           type="button"
           onClick={loadMenuItems}
           disabled={loading}
-          className="flex items-center gap-2 rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium transition hover:bg-gray-50 disabled:opacity-50 dark:border-white/10 dark:hover:bg-white/5"
+          className="flex items-center gap-2 rounded-lg border border-white/10 px-4 py-2 text-sm font-medium transition hover:bg-white/5 disabled:opacity-50"
         >
           <RefreshCw
             className={`size-4 ${loading ? "animate-spin" : ""}`}
@@ -290,20 +290,20 @@ export default function VendorMenuItemsPage() {
 
       {/* Summary */}
       <div className="grid gap-4 sm:grid-cols-3">
-        <div className="rounded-xl border border-gray-200 p-4 dark:border-white/10">
-          <p className="text-sm text-gray-500">Total Items</p>
-          <p className="mt-1 text-2xl font-bold">{items.length}</p>
+        <div className="rounded-xl border border-white/10 p-4">
+          <p className="text-sm text-nav-muted">Total Items</p>
+          <p className="mt-1 text-2xl font-bold text-white">{items.length}</p>
         </div>
 
-        <div className="rounded-xl border border-gray-200 p-4 dark:border-white/10">
-          <p className="text-sm text-gray-500">Pending Approval</p>
+        <div className="rounded-xl border border-white/10 p-4">
+          <p className="text-sm text-nav-muted">Pending Approval</p>
           <p className="mt-1 text-2xl font-bold text-amber-600">
             {pendingCount}
           </p>
         </div>
 
-        <div className="rounded-xl border border-gray-200 p-4 dark:border-white/10">
-          <p className="text-sm text-gray-500">Approved Items</p>
+        <div className="rounded-xl border border-white/10 p-4">
+          <p className="text-sm text-nav-muted">Approved Items</p>
           <p className="mt-1 text-2xl font-bold text-green-600">
             {approvedCount}
           </p>
@@ -329,10 +329,10 @@ export default function VendorMenuItemsPage() {
           <LoaderCircle className="size-8 animate-spin text-brand" />
         </div>
       ) : items.length === 0 ? (
-        <div className="flex min-h-60 flex-col items-center justify-center rounded-xl border border-dashed border-gray-300 text-center dark:border-white/10">
-          <UtensilsCrossed className="mb-3 size-10 text-gray-400" />
-          <h2 className="font-semibold">No menu items yet</h2>
-          <p className="mt-1 text-sm text-gray-500">
+        <div className="flex min-h-60 flex-col items-center justify-center rounded-xl border border-dashed border-white/10 text-center">
+          <UtensilsCrossed className="mb-3 size-10 text-white/40" />
+          <h2 className="font-semibold text-white">No menu items yet</h2>
+          <p className="mt-1 text-sm text-nav-muted">
             Your submitted menu items will appear here.
           </p>
         </div>
@@ -341,11 +341,11 @@ export default function VendorMenuItemsPage() {
           {items.map((item) => (
             <div
               key={item._id}
-              className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/10 dark:bg-white/[0.02]"
+              className="overflow-hidden rounded-xl border border-white/10 bg-white/5"
             >
               <div className="flex flex-col sm:flex-row">
                 {/* Image */}
-                <div className="h-52 shrink-0 bg-gray-100 sm:h-auto sm:w-44 dark:bg-white/5">
+                <div className="h-52 shrink-0 bg-white/10 sm:h-auto sm:w-44">
                   {item.images?.[0] ? (
                     <img
                       src={item.images[0]}

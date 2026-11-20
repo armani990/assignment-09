@@ -1,11 +1,6 @@
-import React from 'react';
 
-const MenuPage = () => {
-  return (
-    <div>
-      menu page
-    </div>
-  );
-};
+import MenuPage from "@/components/menu-page";
 
-export default MenuPage;
+export default function Menu() {
+  return <MenuPage />;
+}
