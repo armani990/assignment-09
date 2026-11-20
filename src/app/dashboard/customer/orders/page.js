@@ -238,7 +238,7 @@ export default function CustomerOrdersPage() {
                     </div>
 
                     <div>
-                        <h1 className="text-2xl font-extrabold text-nav sm:text-3xl">
+                        <h1 className="text-2xl font-extrabold text-white sm:text-3xl">
                             My Orders
                         </h1>
                         <p className="mt-1 text-sm text-nav-muted">
@@ -444,7 +444,7 @@ export default function CustomerOrdersPage() {
                                                                 setConfirmingOrderId(null)
                                                             }
                                                             disabled={cancellingId === order._id}
-                                                            className="rounded-lg border border-border px-4 py-2.5 text-sm font-semibold text-nav"
+                                                            className="rounded-lg border border-border px-4 py-2.5 text-sm font-semibold text-white"
                                                         >
                                                             Keep Order
                                                         </button>
