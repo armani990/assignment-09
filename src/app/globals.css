@@ -134,6 +134,12 @@ h6 {
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+#deliveryDate::-webkit-calendar-picker-indicator {
+  filter: brightness(0) invert(1);
+  opacity: 1;
+  cursor: pointer;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

@@ -17,7 +17,6 @@ import { authClient, useSession } from "@/lib/auth-client";
 
 const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-
 export default function MenuItemDetailsPage() {
   const { id } = useParams();
   const { data: session, isPending: sessionLoading } = useSession();
@@ -92,7 +91,9 @@ export default function MenuItemDetailsPage() {
       const token = tokenResult?.data?.token;
 
       if (!token) {
-        throw new Error("Authentication token not found. Please sign in again.");
+        throw new Error(
+          "Authentication token not found. Please sign in again.",
+        );
       }
 
       const response = await fetch(`${API_URL}/orders`, {
@@ -304,8 +305,8 @@ export default function MenuItemDetailsPage() {
                 ) : (
                   <div className="rounded-xl border border-black/10 p-5 dark:border-white/10">
                     <p className="text-sm leading-6 text-black/60 dark:text-white/60">
-                      Only customers can place orders. Vendors and admins
-                      cannot order pizzas.
+                      Only customers can place orders. Vendors and admins cannot
+                      order pizzas.
                     </p>
                   </div>
                 )}
@@ -344,6 +345,7 @@ export default function MenuItemDetailsPage() {
                       value={deliveryDate}
                       onChange={(event) => setDeliveryDate(event.target.value)}
                       required
+                      style={{ colorScheme: "dark" }}
                       className="w-full rounded-lg border border-black/15 bg-transparent py-3 pl-11 pr-4 text-sm text-black outline-none transition-all focus:border-brand focus:ring-2 focus:ring-brand dark:border-white/20 dark:text-white"
                     />
                   </div>
