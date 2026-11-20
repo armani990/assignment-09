@@ -159,7 +159,7 @@ export default function FeaturedMenu() {
                       href={`/menu-items/${item._id}`}
                       className="block w-full rounded-lg bg-orange-600 px-4 py-3 text-center font-semibold text-white transition hover:bg-orange-700"
                     >
-                      Details
+                     View Details
                     </Link>
                   )}
 

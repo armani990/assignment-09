@@ -1,9 +1,9 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Search, SlidersHorizontal, MapPin, Utensils } from "lucide-react";
+import Link from "next/link";
 
 const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -45,7 +45,7 @@ export default function MenuPage() {
 
         const response = await fetch(
           `${API_URL}/menu-items${query ? `?${query}` : ""}`,
-          { signal: controller.signal }
+          { signal: controller.signal },
         );
 
         if (!response.ok) {
@@ -95,8 +95,8 @@ export default function MenuPage() {
         </h1>
 
         <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-nav-muted sm:text-base">
-          Discover delicious pizzas from restaurants around you.
-          Find your favorite taste and enjoy every bite.
+          Discover delicious pizzas from restaurants around you. Find your
+          favorite taste and enjoy every bite.
         </p>
       </section>
 
@@ -171,9 +171,7 @@ export default function MenuPage() {
         {/* Results Header */}
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h2 className="font-heading text-2xl font-bold">
-              Our Pizzas
-            </h2>
+            <h2 className="font-heading text-2xl font-bold">Our Pizzas</h2>
             <p className="mt-1 text-sm text-muted-foreground">
               Explore our available menu items.
             </p>
@@ -181,7 +179,8 @@ export default function MenuPage() {
 
           {!loading && (
             <p className="text-sm font-medium text-muted-foreground">
-              {menuItems.length} {menuItems.length === 1 ? "item" : "items"} found
+              {menuItems.length} {menuItems.length === 1 ? "item" : "items"}{" "}
+              found
             </p>
           )}
         </div>
@@ -274,10 +273,12 @@ export default function MenuPage() {
                     {item.description}
                   </p>
 
-                  <div className="mt-4 flex items-center gap-2 border-t border-border pt-4 text-sm text-muted-foreground">
-                    <MapPin size={16} className="shrink-0 text-brand" />
-                    <span>{item.location}</span>
-                  </div>
+                  <Link
+                    href={`/menu-items/${item._id}`}
+                    className="mt-5 flex w-full items-center justify-center rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-white transition hover:bg-brand-strong"
+                  >
+                    View Details
+                  </Link>
                 </div>
               </article>
             ))}
