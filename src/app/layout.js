@@ -4,6 +4,7 @@ import "./globals.css";
 import { AuthProvider } from "@/components/auth-provider";
 import Navbar from "@/components/navbar";
 import Toaster from "@/components/toaster";
+import Footer from "@/components/footer";
 
 const bricolageGrotesque = Bricolage_Grotesque({
   variable: "--font-bricolage",
@@ -31,6 +32,7 @@ export default function RootLayout({ children }) {
           <Navbar />
           <Toaster />
           {children}
+          <Footer />
         </AuthProvider>
       </body>
     </html>
