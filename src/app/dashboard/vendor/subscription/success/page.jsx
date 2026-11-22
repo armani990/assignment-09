@@ -2,6 +2,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useSession, authClient } from "@/lib/auth-client";
 import {
@@ -10,74 +11,85 @@ import {
   RefreshCw,
   Crown,
   ArrowRight,
+  XCircle,
 } from "lucide-react";
 
 const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-async function getAuthToken() {
-  const { data, error } = await authClient.token();
-
-  if (error || !data?.token) {
-    throw new Error("Authentication failed. Please sign in again.");
-  }
-
-  return data.token;
-}
-
 export default function SubscriptionSuccessPage() {
+  const searchParams = useSearchParams();
+  const sessionId = searchParams.get("session_id");
+
   const { data: session, isPending } = useSession();
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [subscription, setSubscription] = useState(null);
 
-  const checkSubscription = useCallback(async () => {
+  const verifySubscription = useCallback(async () => {
     try {
       setLoading(true);
       setError("");
+
+      if (!sessionId) {
+        throw new Error("Stripe checkout session ID is missing.");
+      }
 
       if (!API_URL) {
         throw new Error("API base URL is not configured.");
       }
 
-      const token = await getAuthToken();
+      const { data, error: tokenError } = await authClient.token();
 
-      const response = await fetch(`${API_URL}/profile`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        cache: "no-store",
-      });
+      if (tokenError || !data?.token) {
+        throw new Error("Authentication failed. Please sign in again.");
+      }
+
+      const response = await fetch(
+        `${API_URL}/vendor/subscription/verify`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${data.token}`,
+          },
+          body: JSON.stringify({
+            sessionId,
+          }),
+        }
+      );
 
       const result = await response.json();
 
-      if (!response.ok) {
-        throw new Error(result.message || "Failed to verify subscription.");
+      if (!response.ok || !result.success) {
+        throw new Error(
+          result.message || "Subscription verification failed."
+        );
       }
 
       setSubscription({
-        plan: result.subscriptionPlan || "free",
-        expiresAt: result.subscriptionExpiresAt || null,
+        plan: result.subscriptionPlan,
+        expiresAt: result.subscriptionExpiresAt,
       });
     } catch (err) {
       setError(err.message || "Could not verify subscription.");
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [sessionId]);
 
   useEffect(() => {
     if (!isPending && session?.user) {
-      checkSubscription();
+      verifySubscription();
     }
-  }, [isPending, session?.user, checkSubscription]);
+  }, [isPending, session?.user, verifySubscription]);
 
-  if (isPending || loading) {
+  if (isPending || (loading && !error)) {
     return (
       <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4">
         <LoaderCircle className="size-10 animate-spin text-brand" />
         <p className="text-sm text-nav-muted">
-          Verifying your subscription...
+          Verifying your Premium subscription...
         </p>
       </div>
     );
@@ -95,11 +107,15 @@ export default function SubscriptionSuccessPage() {
       <div className="w-full rounded-3xl border border-border bg-nav p-6 text-center sm:p-10">
         {error ? (
           <>
-            <RefreshCw className="mx-auto size-14 text-nav-muted" />
+            <XCircle className="mx-auto size-16 text-red-500" />
+
             <h1 className="mt-5 text-2xl font-bold text-white">
-              Verification Unavailable
+              Verification Failed
             </h1>
-            <p className="mt-3 text-sm text-nav-muted">{error}</p>
+
+            <p className="mt-3 text-sm leading-6 text-nav-muted">
+              {error}
+            </p>
           </>
         ) : isPremium ? (
           <>
@@ -116,9 +132,11 @@ export default function SubscriptionSuccessPage() {
 
             <div className="mt-7 rounded-2xl border border-brand/30 bg-brand/10 p-5">
               <Crown className="mx-auto size-8 text-brand" />
+
               <h2 className="mt-2 text-lg font-bold text-white">
                 Premium Plan
               </h2>
+
               <p className="mt-2 text-sm text-nav-muted">
                 Valid until:{" "}
                 {new Date(subscription.expiresAt).toLocaleDateString()}
@@ -127,16 +145,15 @@ export default function SubscriptionSuccessPage() {
           </>
         ) : (
           <>
-            <LoaderCircle className="mx-auto size-14 animate-spin text-brand" />
+            <XCircle className="mx-auto size-14 text-red-500" />
 
             <h1 className="mt-5 text-2xl font-bold text-white">
-              Payment Received
+              Subscription Not Active
             </h1>
 
             <p className="mt-3 text-sm leading-6 text-nav-muted">
-              Your payment was submitted successfully. We are waiting
-              for Stripe to confirm your subscription. Please check
-              again in a few moments.
+              Your payment was verified, but the Premium subscription
+              is not currently active.
             </p>
           </>
         )}
@@ -145,12 +162,16 @@ export default function SubscriptionSuccessPage() {
           {!isPremium && (
             <button
               type="button"
-              onClick={checkSubscription}
+              onClick={verifySubscription}
               disabled={loading}
               className="inline-flex items-center justify-center gap-2 rounded-xl border border-border px-5 py-3 text-sm font-semibold text-white transition hover:border-brand disabled:opacity-50"
             >
-              <RefreshCw className="size-4" />
-              Check Status
+              {loading ? (
+                <LoaderCircle className="size-4 animate-spin" />
+              ) : (
+                <RefreshCw className="size-4" />
+              )}
+              Try Verification Again
             </button>
           )}
 
