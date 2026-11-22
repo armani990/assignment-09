@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -11,7 +12,16 @@ const ROLES = [
   { value: "vendor", label: "Vendor" },
 ];
 
-function Input({ id, label, type, value, onChange, iconRight, onIconClick }) {
+function Input({
+  id,
+  label,
+  type,
+  value,
+  onChange,
+  iconRight,
+  onIconClick,
+  required = true,
+}) {
   return (
     <div className="space-y-1.5 text-left">
       <label
@@ -27,7 +37,7 @@ function Input({ id, label, type, value, onChange, iconRight, onIconClick }) {
           type={type}
           value={value}
           onChange={onChange}
-          required
+          required={required}
           className="w-full rounded-lg border border-white/10 px-4 py-3 pr-10 text-sm outline-none transition-all focus:border-brand focus:ring-2 focus:ring-brand dark:border-white/20 dark:text-white"
         />
 
@@ -53,6 +63,7 @@ export default function SignupForm() {
   const [form, setForm] = useState({
     name: "",
     email: "",
+    image: "",
     password: "",
     confirmPassword: "",
   });
@@ -63,10 +74,10 @@ export default function SignupForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Redirect authenticated users to Home.
+  // Redirect authenticated users to Dashboard.
   useEffect(() => {
     if (!isPending && session?.user) {
-      router.replace("/");
+      router.replace("/dashboard");
     }
   }, [session, isPending, router]);
 
@@ -79,8 +90,18 @@ export default function SignupForm() {
       return;
     }
 
-    if (form.password.length < 8) {
-      setError("Password must be at least 8 characters.");
+    if (form.password.length < 6) {
+      setError("Password must be at least 6 characters.");
+      return;
+    }
+
+    if (!/[A-Z]/.test(form.password)) {
+      setError("Password must contain at least one uppercase letter.");
+      return;
+    }
+
+    if (!/[a-z]/.test(form.password)) {
+      setError("Password must contain at least one lowercase letter.");
       return;
     }
 
@@ -90,9 +111,10 @@ export default function SignupForm() {
       const { error } = await authClient.signUp.email({
         name: form.name,
         email: form.email,
+        image: form.image.trim() || undefined,
         password: form.password,
         role,
-        callbackURL: "/",
+        callbackURL: "/dashboard",
       });
 
       if (error) {
@@ -103,7 +125,7 @@ export default function SignupForm() {
       }
 
       toast.success("Account created successfully.");
-      router.replace("/");
+      router.replace("/dashboard");
     } catch {
       setError("Something went wrong. Please try again.");
       setLoading(false);
@@ -116,12 +138,13 @@ export default function SignupForm() {
     setLoading(true);
 
     try {
-      // Google এ যাওয়ার আগে selected role cookie তে রাখছি (১০ মিনিট)
+      // Save the selected role before redirecting to Google.
       document.cookie = `signup_role=${role}; path=/; max-age=600; SameSite=Lax`;
 
       const { error } = await authClient.signIn.social({
         provider: "google",
-        callbackURL: "/",
+        callbackURL:
+          role === "vendor" ? "/dashboard/vendor" : "/dashboard/customer",
         errorCallbackURL: "/signup",
       });
 
@@ -280,7 +303,6 @@ export default function SignupForm() {
               <path d="M5.84 14.09c-.19-.63-.3-1.31-.3-2.05s.11-1.42.3-2.05V7.07H2.19C1.09 8.77.29 11.26.29 14.09s.8 5.32 1.9 7v1.96c1.16-2.1 2.76-3.52 4.68-3.52s3.52 1.42 4.68 3.52v-1.96c-1.16-1.68-2.76-2.91-4.68-2.91" />
               <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64v2.06H12V7.07c-1.16-1.08-2.62-1.69-4.21-1.69S3.58 5.99 3.58 7.07v1.96c0 1.08.44 2.05 1.2 2.77h2.65c-.52-.96-.83-2.05-.83-3.21H5.04c.79-.69 1.76-1.09 2.83-1.09 1.16 0 2.12.4 2.83 1.09H12z" />
             </svg>
-
             Google
           </button>
 

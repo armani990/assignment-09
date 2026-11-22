@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -56,11 +55,12 @@ export default function SignInForm() {
   const [loading, setLoading] = useState(false);
 
   // Redirect authenticated users to Home.
+  // Redirect authenticated users to their dashboard.
   useEffect(() => {
     if (!isPending && session?.user) {
-      router.replace("/");
+      router.replace("/dashboard");
     }
-  }, [session, isPending, router]);
+  }, [isPending, session?.user, router]);
 
   const handleSignin = async (e) => {
     e.preventDefault();
@@ -71,7 +71,7 @@ export default function SignInForm() {
       const { error } = await authClient.signIn.email({
         email: form.email,
         password: form.password,
-        callbackURL: "/",
+        callbackURL: "/dashboard",
       });
 
       if (error) {
@@ -82,7 +82,7 @@ export default function SignInForm() {
       }
 
       toast.success("Signed in successfully.");
-      router.replace("/");
+      router.replace("/dashboard");
     } catch {
       setError("Something went wrong. Please try again.");
       setLoading(false);
@@ -97,7 +97,7 @@ export default function SignInForm() {
     try {
       const { error } = await authClient.signIn.social({
         provider: "google",
-        callbackURL: "/",
+        callbackURL: "/dashboard",
         errorCallbackURL: "/signin",
       });
 
@@ -149,9 +149,7 @@ export default function SignInForm() {
             label="Email Address"
             type="email"
             value={form.email}
-            onChange={(e) =>
-              setForm({ ...form, email: e.target.value })
-            }
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
           />
 
           <Input
@@ -159,16 +157,12 @@ export default function SignInForm() {
             label="Password"
             type={passwordVisible ? "text" : "password"}
             value={form.password}
-            onChange={(e) =>
-              setForm({ ...form, password: e.target.value })
-            }
+            onChange={(e) => setForm({ ...form, password: e.target.value })}
             iconRight={passwordVisible ? "Hide" : "Show"}
             onIconClick={() => setPasswordVisible(!passwordVisible)}
           />
 
-          {error && (
-            <p className="text-left text-sm text-red-500">{error}</p>
-          )}
+          {error && <p className="text-left text-sm text-red-500">{error}</p>}
 
           <button
             type="submit"
@@ -205,7 +199,6 @@ export default function SignInForm() {
               <path d="M5.84 14.09c-.19-.63-.3-1.31-.3-2.05s.11-1.42.3-2.05V7.07H2.19C1.09 8.77.29 11.26.29 14.09s.8 5.32 1.9 7v1.96c1.16-2.1 2.76-3.52 4.68-3.52s3.52 1.42 4.68 3.52v-1.96c-1.16-1.68-2.76-2.91-4.68-2.91" />
               <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64v2.06H12V7.07c-1.16-1.08-2.62-1.69-4.21-1.69S3.58 5.99 3.58 7.07v1.96c0 1.08.44 2.05 1.2 2.77h2.65c-.52-.96-.83-2.05-.83-3.21H5.04c.79-.69 1.76-1.09 2.83-1.09 1.16 0 2.12.4 2.83 1.09H12z" />
             </svg>
-
             Google
           </button>
 

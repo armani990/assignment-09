@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -5,7 +6,13 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useSession, signOut } from "@/lib/auth-client";
-import { UserRound, LogOut, ChevronDown } from "lucide-react";
+import {
+  UserRound,
+  LogOut,
+  ChevronDown,
+  LayoutDashboard,
+  Settings,
+} from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import {
@@ -45,6 +52,14 @@ function initialsOf(name = "") {
   return (parts[0][0] + (parts[1]?.[0] ?? "")).toUpperCase();
 }
 
+function dashboardHrefForRole(role) {
+  if (role === "admin") return "/dashboard/admin";
+  if (role === "vendor") return "/dashboard/vendor";
+  if (role === "customer") return "/dashboard/customer";
+
+  return "/dashboard";
+}
+
 function linkClass(active) {
   return `text-[15px] transition-colors ${
     active ? "text-brand" : "text-nav-muted hover:text-white"
@@ -57,6 +72,8 @@ export default function Navbar() {
 
   const { data: session, isPending } = useSession();
   const user = session?.user;
+
+  const dashboardHref = dashboardHrefForRole(user?.role);
 
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -112,6 +129,18 @@ export default function Navbar() {
               </Link>
             );
           })}
+
+          {user && (
+            <Link
+              href={dashboardHref}
+              aria-current={
+                pathname.startsWith(dashboardHref) ? "page" : undefined
+              }
+              className={linkClass(pathname.startsWith(dashboardHref))}
+            >
+              Dashboard
+            </Link>
+          )}
         </nav>
 
         {/* Desktop Auth */}
@@ -155,12 +184,21 @@ export default function Navbar() {
                 <DropdownMenuSeparator className="bg-white/10" />
 
                 <DropdownMenuItem
+                  onClick={() => router.push(dashboardHref)}
+                  className="cursor-pointer text-nav-muted focus:bg-white/5 focus:text-white"
+                >
+                  <LayoutDashboard className="mr-2 size-4" />
+                  Dashboard
+                </DropdownMenuItem>
+
+                <DropdownMenuItem
                   onClick={() => router.push("/dashboard/profile")}
                   className="cursor-pointer text-nav-muted focus:bg-white/5 focus:text-white"
                 >
-                  <UserRound className="mr-2 size-4" />
-                  Profile
+                  <Settings className="mr-2 size-4" />
+                  Profile Settings
                 </DropdownMenuItem>
+
                 <DropdownMenuSeparator className="bg-white/10" />
 
                 <DropdownMenuItem
@@ -227,13 +265,29 @@ export default function Navbar() {
                   href={link.href}
                   aria-current={active ? "page" : undefined}
                   className={`py-3 text-base transition-colors ${
-                    active ? "text-brand" : "text-nav-muted hover:text-white"
+                    active
+                      ? "text-brand"
+                      : "text-nav-muted hover:text-white"
                   }`}
                 >
                   {link.label}
                 </Link>
               );
             })}
+
+            {user && (
+              <Link
+                href={dashboardHref}
+                onClick={() => setMobileOpen(false)}
+                className={`py-3 text-base transition-colors ${
+                  pathname.startsWith(dashboardHref)
+                    ? "text-brand"
+                    : "text-nav-muted hover:text-white"
+                }`}
+              >
+                Dashboard
+              </Link>
+            )}
           </nav>
 
           <div className="mt-3 border-t border-white/10 pt-4">
@@ -245,6 +299,7 @@ export default function Navbar() {
                       src={user.image || ""}
                       alt={user.name || "User"}
                     />
+
                     <AvatarFallback className="bg-brand font-heading text-sm font-bold text-white">
                       {initialsOf(user.name)}
                     </AvatarFallback>
@@ -254,6 +309,7 @@ export default function Navbar() {
                     <p className="truncate text-sm font-semibold text-white">
                       {user.name}
                     </p>
+
                     <p className="truncate text-xs text-white/50">
                       {user.email}
                     </p>
@@ -261,11 +317,21 @@ export default function Navbar() {
                 </div>
 
                 <Link
-                  href="/profile"
+                  href={dashboardHref}
+                  onClick={() => setMobileOpen(false)}
                   className="flex items-center gap-2 py-2 text-base text-nav-muted hover:text-white"
                 >
-                  <UserRound className="size-4" />
-                  Profile
+                  <LayoutDashboard className="size-4" />
+                  Dashboard
+                </Link>
+
+                <Link
+                  href="/dashboard/profile"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center gap-2 py-2 text-base text-nav-muted hover:text-white"
+                >
+                  <Settings className="size-4" />
+                  Profile Settings
                 </Link>
 
                 <button

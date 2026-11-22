@@ -1,5 +1,5 @@
-
 import { betterAuth } from "better-auth";
+import { APIError, createAuthMiddleware } from "better-auth/api";
 import { MongoClient } from "mongodb";
 import { mongodbAdapter } from "@better-auth/mongo-adapter";
 import { jwt } from "better-auth/plugins";
@@ -30,6 +30,7 @@ export const auth = betterAuth({
 
   emailAndPassword: {
     enabled: true,
+    minPasswordLength: 6,
   },
 
   socialProviders: {
@@ -48,6 +49,30 @@ export const auth = betterAuth({
         input: true,
       },
     },
+  },
+
+  // Server-side password validation
+  hooks: {
+    before: createAuthMiddleware(async (ctx) => {
+      if (ctx.path !== "/sign-up/email") {
+        return;
+      }
+
+      const password = ctx.body?.password;
+
+      const isValidPassword =
+        typeof password === "string" &&
+        password.length >= 6 &&
+        /[A-Z]/.test(password) &&
+        /[a-z]/.test(password);
+
+      if (!isValidPassword) {
+        throw new APIError("BAD_REQUEST", {
+          message:
+            "Password must be at least 6 characters and include one uppercase and one lowercase letter.",
+        });
+      }
+    }),
   },
 
   databaseHooks: {
