@@ -1,34 +1,39 @@
-
 import Link from "next/link";
 
 const CATEGORIES = [
   {
     name: "Classic Pizzas",
+    filterCategory: "Classic Pizzas",
     description: "Timeless pizza favorites",
     emoji: "🍕",
   },
   {
     name: "Vegetarian Pizzas",
+    filterCategory: "Vegetarian Pizzas",
     description: "Fresh and healthy flavors",
     emoji: "🥗",
   },
   {
     name: "Meat Lovers",
+    filterCategory: "Chicken Pizzas",
     description: "Loaded with delicious meats",
     emoji: "🍖",
   },
   {
-    name: "Specialty / Gourmet Pizzas",
+    name: "Gourmet Pizzas",
+    filterCategory: "Gourmet Pizzas",
     description: "Premium handcrafted pizzas",
     emoji: "🍕",
   },
   {
     name: "Sides & Appetizers",
+    filterCategory: "Sides & Appetizers",
     description: "Delicious bites and sides",
     emoji: "🍟",
   },
   {
     name: "Beverages & Desserts",
+    filterCategory: "Beverages & Desserts",
     description: "Drinks and sweet treats",
     emoji: "🥤",
   },
@@ -56,7 +61,7 @@ export default function PizzaCategories() {
           {CATEGORIES.map((category, index) => (
             <Link
               key={category.name}
-              href={`/menu?category=${encodeURIComponent(category.name)}`}
+              href={`/menu?category=${encodeURIComponent(category.filterCategory)}`}
               className="group block"
             >
               <div

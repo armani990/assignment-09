@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -10,7 +9,14 @@ const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export default function MenuPage() {
   const [menuItems, setMenuItems] = useState([]);
-  const [categories, setCategories] = useState([]);
+  const MENU_CATEGORIES = [
+    "Classic Pizzas",
+    "Vegetarian Pizzas",
+    "Chicken Pizzas",
+    "Gourmet Pizzas",
+    "Sides & Appetizers",
+    "Beverages & Desserts",
+  ];
   const [locations, setLocations] = useState([]);
 
   const [search, setSearch] = useState("");
@@ -68,12 +74,8 @@ export default function MenuPage() {
 
         setMenuItems(data);
 
-        // Build filter options from the initial approved menu list.
+        // Build location options from the initial approved menu list.
         if (!search && !category && !location && !sort) {
-          setCategories([
-            ...new Set(data.map((item) => item.category).filter(Boolean)),
-          ]);
-
           setLocations([
             ...new Set(data.map((item) => item.location).filter(Boolean)),
           ]);
@@ -146,7 +148,7 @@ export default function MenuPage() {
               className="h-12 rounded-xl border border-border bg-background px-4 text-sm outline-none focus:border-brand"
             >
               <option value="">All Categories</option>
-              {categories.map((item) => (
+              {MENU_CATEGORIES.map((item) => (
                 <option key={item} value={item}>
                   {item}
                 </option>
