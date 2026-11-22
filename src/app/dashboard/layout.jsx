@@ -101,9 +101,9 @@ export default function DashboardLayout({ children }) {
   );
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex h-dvh overflow-hidden">
       {/* Desktop Sidebar */}
-      <aside className="hidden w-64 shrink-0 border-r border-white/10 lg:block">
+      <aside className="sticky top-0 hidden h-dvh w-64 shrink-0 overflow-y-auto border-r border-white/10 lg:block">
         {sidebar}
       </aside>
 
@@ -115,15 +115,16 @@ export default function DashboardLayout({ children }) {
             onClick={() => setOpen(false)}
           />
 
-          <aside className="absolute left-0 top-0 h-full w-64 bg-white/5">
+          <aside className="absolute left-0 top-0 h-dvh w-64 overflow-y-auto bg-white/5">
             {sidebar}
           </aside>
         </div>
       )}
 
-      <div className="flex min-w-0 flex-1 flex-col">
+      {/* Dashboard Content */}
+      <div className="flex h-dvh min-w-0 min-h-0 flex-1 flex-col">
         {/* Mobile Header */}
-        <div className="flex items-center gap-3 border-b border-white/10 px-4 py-3 lg:hidden">
+        <div className="flex shrink-0 items-center gap-3 border-b border-white/10 px-4 py-3 lg:hidden">
           <button
             type="button"
             onClick={() => setOpen((prev) => !prev)}
@@ -141,7 +142,8 @@ export default function DashboardLayout({ children }) {
           </span>
         </div>
 
-        <main className="flex-1 p-5 lg:p-8">
+        {/* Only Main Content Scrolls */}
+        <main className="min-h-0 flex-1 overflow-y-auto p-5 lg:p-8">
           {children}
         </main>
       </div>
