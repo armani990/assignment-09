@@ -151,8 +151,8 @@ export default function VendorOverviewPage() {
       background: "bg-green-500/10",
     },
     {
-      label: "Pending Orders",
-      count: orders.filter((order) => order.status === "pending").length,
+      label: "Pending Menu Items",
+      count: menuItems.filter((item) => item.status === "pending").length,
       icon: Clock,
       color: "text-amber-500",
       background: "bg-amber-500/10",
