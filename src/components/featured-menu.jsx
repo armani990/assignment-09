@@ -138,6 +138,15 @@ export default function FeaturedMenu() {
                     {item.description}
                   </p>
 
+                  {/* Vendor Information */}
+                  <p className="mb-3 text-xs text-nav-muted">
+                    Prepared by{" "}
+                    <span className="font-semibold text-white">
+                      {item.vendor?.name || "PizzaHub Vendor"}
+                    </span>
+                  </p>
+
+                  {/* Location */}
                   <p className="mb-5 flex items-center gap-2 text-sm text-nav-muted">
                     <span>📍</span>
                     {item.location}
@@ -146,7 +155,7 @@ export default function FeaturedMenu() {
                   {/* Guest: Login required */}
                   {!isPending && !session && (
                     <Link
-                      href="/login"
+                      href="/signin"
                       className="block w-full rounded-lg bg-orange-600 px-4 py-3 text-center font-semibold text-white transition hover:bg-orange-700"
                     >
                       Login to Order
@@ -159,7 +168,7 @@ export default function FeaturedMenu() {
                       href={`/menu-items/${item._id}`}
                       className="block w-full rounded-lg bg-orange-600 px-4 py-3 text-center font-semibold text-white transition hover:bg-orange-700"
                     >
-                     View Details
+                      View Details
                     </Link>
                   )}
 

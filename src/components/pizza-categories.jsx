@@ -3,12 +3,12 @@ import Link from "next/link";
 
 const CATEGORIES = [
   {
-    name: "Classic",
+    name: "Classic Pizzas",
     description: "Timeless pizza favorites",
     emoji: "🍕",
   },
   {
-    name: "Vegetarian",
+    name: "Vegetarian Pizzas",
     description: "Fresh and healthy flavors",
     emoji: "🥗",
   },
@@ -18,19 +18,19 @@ const CATEGORIES = [
     emoji: "🍖",
   },
   {
-    name: "Gourmet",
+    name: "Specialty / Gourmet Pizzas",
     description: "Premium handcrafted pizzas",
     emoji: "🍕",
   },
   {
-    name: "Sweet & Savory",
-    description: "A unique flavor experience",
-    emoji: "🍍",
+    name: "Sides & Appetizers",
+    description: "Delicious bites and sides",
+    emoji: "🍟",
   },
   {
-    name: "Light & Thin",
-    description: "Crispy and light favorites",
-    emoji: "🫓",
+    name: "Beverages & Desserts",
+    description: "Drinks and sweet treats",
+    emoji: "🥤",
   },
 ];
 
@@ -56,7 +56,7 @@ export default function PizzaCategories() {
           {CATEGORIES.map((category, index) => (
             <Link
               key={category.name}
-              href="/menu"
+              href={`/menu?category=${encodeURIComponent(category.name)}`}
               className="group block"
             >
               <div

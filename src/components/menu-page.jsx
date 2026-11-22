@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -20,6 +21,17 @@ export default function MenuPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  // Get selected category from URL
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const selectedCategory = params.get("category");
+
+    if (selectedCategory) {
+      setCategory(selectedCategory);
+    }
+  }, []);
+
+  // Fetch menu items
   useEffect(() => {
     if (!API_URL) {
       setError("API URL is not configured.");
@@ -272,6 +284,18 @@ export default function MenuPage() {
                   <p className="mt-3 line-clamp-2 min-h-10 text-sm leading-6 text-muted-foreground">
                     {item.description}
                   </p>
+
+                  {/* Location and Vendor */}
+                  <div className="mt-3 flex items-center justify-between gap-3 text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1">
+                      <MapPin size={14} />
+                      {item.location}
+                    </span>
+
+                    <span className="truncate">
+                      By {item.vendor?.name || "PizzaHub Vendor"}
+                    </span>
+                  </div>
 
                   <Link
                     href={`/menu-items/${item._id}`}
