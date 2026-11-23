@@ -16,6 +16,8 @@ import {
     Ban,
     PackageCheck,
     RefreshCw,
+    CheckCircle2,
+    Circle,
 } from "lucide-react";
 import { authClient, useSession } from "@/lib/auth-client";
 
@@ -58,6 +60,49 @@ function formatDate(date) {
         year: "numeric",
     });
 }
+
+
+function formatDateTime(value) {
+    if (!value) return "Time unavailable";
+
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+        return "Time unavailable";
+    }
+
+    return date.toLocaleString("en-BD", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+    });
+}
+
+function getOrderTimeline(order) {
+    if (order.statusHistory?.length) {
+        return order.statusHistory;
+    }
+
+    // Fallback for orders created before status history was added.
+    const history = [
+        {
+            status: "pending",
+            updatedAt: order.createdAt,
+        },
+    ];
+
+    if (order.status !== "pending") {
+        history.push({
+            status: order.status,
+            updatedAt: order.updatedAt || null,
+        });
+    }
+
+    return history;
+}
+
 
 function getVendorName(vendor) {
     return vendor?.businessName || vendor?.name || "PizzaHub Vendor";
@@ -551,6 +596,79 @@ export default function CustomerOrdersPage() {
                                     </p>
                                 </div>
                             </div>
+
+
+                            {/* Order Status Timeline */}
+                            <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+                                <h3 className="mb-5 flex items-center gap-2 font-bold text-white">
+                                    <Clock size={18} className="text-brand" />
+                                    Order Status Timeline
+                                </h3>
+
+                                <div className="space-y-0">
+                                    {getOrderTimeline(selectedOrder).map((item, index, history) => {
+                                        const isLast = index === history.length - 1;
+
+                                        return (
+                                            <div
+                                                key={`${item.status}-${index}`}
+                                                className="relative flex gap-3 pb-5 last:pb-0"
+                                            >
+                                                {/* Timeline Line */}
+                                                {!isLast && (
+                                                    <div className="absolute left-[9px] top-6 h-full w-0.5 bg-white/10" />
+                                                )}
+
+                                                {/* Status Icon */}
+                                                <div className="relative z-10 shrink-0">
+                                                    {isLast ? (
+                                                        <CheckCircle2
+                                                            size={20}
+                                                            className="text-brand"
+                                                        />
+                                                    ) : (
+                                                        <Circle
+                                                            size={20}
+                                                            className="text-green-500"
+                                                        />
+                                                    )}
+                                                </div>
+
+                                                {/* Status Information */}
+                                                <div className="min-w-0 flex-1">
+                                                    <p className="text-sm font-semibold capitalize text-white">
+                                                        {item.status}
+                                                        {isLast && (
+                                                            <span className="ml-2 text-xs font-medium text-brand">
+                                                                Current
+                                                            </span>
+                                                        )}
+                                                    </p>
+
+                                                    <p className="mt-1 text-xs text-white/50">
+                                                        {formatDateTime(item.updatedAt)}
+                                                    </p>
+
+                                                    <p className="mt-1 text-xs text-white/60">
+                                                        {item.status === "pending" &&
+                                                            "Your order has been placed."}
+
+                                                        {item.status === "accepted" &&
+                                                            "The vendor accepted your order."}
+
+                                                        {item.status === "rejected" &&
+                                                            "The vendor rejected your order."}
+
+                                                        {item.status === "cancelled" &&
+                                                            "You cancelled this order."}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+
 
                             {/* Status Notices */}
                             {selectedOrder.status === "pending" && (
