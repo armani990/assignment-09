@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
@@ -10,6 +11,7 @@ import {
   CalendarDays,
   LoaderCircle,
   Search,
+  Trash2,
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "react-hot-toast";
@@ -39,6 +41,7 @@ export default function AdminMenuItemsPage() {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+
   const loadMenuItems = useCallback(async () => {
     try {
       setLoading(true);
@@ -55,13 +58,17 @@ export default function AdminMenuItemsPage() {
         throw new Error("Authentication token not found.");
       }
 
-      const query = selectedStatus === "all" ? "" : `?status=${selectedStatus}`;
+      const query =
+        selectedStatus === "all" ? "" : `?status=${selectedStatus}`;
 
-      const response = await fetch(`${API_BASE_URL}/admin/menu-items${query}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `${API_BASE_URL}/admin/menu-items${query}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       const result = await response.json();
 
@@ -92,6 +99,7 @@ export default function AdminMenuItemsPage() {
       item.location?.toLowerCase().includes(search)
     );
   });
+
   const handleStatusUpdate = async (id, status) => {
     try {
       setBusyId(id);
@@ -114,7 +122,7 @@ export default function AdminMenuItemsPage() {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ status }),
-        },
+        }
       );
 
       const result = await response.json();
@@ -123,8 +131,66 @@ export default function AdminMenuItemsPage() {
         throw new Error(result.message || "Failed to update menu item.");
       }
 
-      toast.success(result.message || `Menu item ${status} successfully.`);
-      setMessage(result.message || `Menu item ${status} successfully.`);
+      toast.success(
+        result.message || `Menu item ${status} successfully.`
+      );
+
+      setMessage(
+        result.message || `Menu item ${status} successfully.`
+      );
+
+      await loadMenuItems();
+    } catch (err) {
+      setError(err.message || "Something went wrong.");
+      toast.error(err.message || "Something went wrong.");
+    } finally {
+      setBusyId(null);
+    }
+  };
+
+  const handleDelete = async (id, itemName) => {
+    const confirmed = window.confirm(
+      `Are you sure you want to permanently delete "${itemName}"?`
+    );
+
+    if (!confirmed) return;
+
+    try {
+      setBusyId(id);
+      setError("");
+      setMessage("");
+
+      const { data } = await authClient.token();
+      const token = data?.token;
+
+      if (!token) {
+        throw new Error("Authentication token not found.");
+      }
+
+      const response = await fetch(
+        `${API_BASE_URL}/admin/menu-items/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to delete menu item.");
+      }
+
+      toast.success(
+        result.message || "Menu item deleted successfully."
+      );
+
+      setMessage(
+        result.message || "Menu item deleted successfully."
+      );
+
       await loadMenuItems();
     } catch (err) {
       setError(err.message || "Something went wrong.");
@@ -139,7 +205,9 @@ export default function AdminMenuItemsPage() {
       {/* Page Header */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">Manage Menu Items</h1>
+          <h1 className="text-2xl font-bold text-white">
+            Manage Menu Items
+          </h1>
           <p className="mt-1 text-sm text-nav-muted">
             Review and manage menu items submitted by vendors.
           </p>
@@ -151,7 +219,9 @@ export default function AdminMenuItemsPage() {
           disabled={loading}
           className="flex items-center gap-2 rounded-lg border border-white/10 px-4 py-2 text-sm font-medium transition hover:bg-white/5 disabled:opacity-50"
         >
-          <RefreshCw className={`size-4 ${loading ? "animate-spin" : ""}`} />
+          <RefreshCw
+            className={`size-4 ${loading ? "animate-spin" : ""}`}
+          />
           Refresh
         </button>
       </div>
@@ -212,11 +282,13 @@ export default function AdminMenuItemsPage() {
       ) : filteredItems.length === 0 ? (
         <div className="flex min-h-60 flex-col items-center justify-center rounded-xl border border-dashed border-white/10 text-center">
           <UtensilsCrossed className="mb-3 size-10 text-white/40" />
+
           <h2 className="font-semibold text-white">
             {searchTerm
               ? "No matching menu items found"
               : "No menu items found"}
           </h2>
+
           <p className="mt-1 text-sm text-nav-muted">
             {searchTerm
               ? "Try searching with a different keyword."
@@ -250,7 +322,10 @@ export default function AdminMenuItemsPage() {
                 <div className="flex min-w-0 flex-1 flex-col p-4">
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
-                      <h2 className="text-lg font-semibold">{item.itemName}</h2>
+                      <h2 className="text-lg font-semibold">
+                        {item.itemName}
+                      </h2>
+
                       <p className="mt-1 text-sm text-nav-muted">
                         {item.category}
                       </p>
@@ -297,7 +372,9 @@ export default function AdminMenuItemsPage() {
                     <div className="mt-5 flex gap-3">
                       <button
                         type="button"
-                        onClick={() => handleStatusUpdate(item._id, "approved")}
+                        onClick={() =>
+                          handleStatusUpdate(item._id, "approved")
+                        }
                         disabled={busyId === item._id}
                         className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-green-600 px-3 py-2.5 text-sm font-semibold text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50"
                       >
@@ -311,7 +388,9 @@ export default function AdminMenuItemsPage() {
 
                       <button
                         type="button"
-                        onClick={() => handleStatusUpdate(item._id, "rejected")}
+                        onClick={() =>
+                          handleStatusUpdate(item._id, "rejected")
+                        }
                         disabled={busyId === item._id}
                         className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-red-600 px-3 py-2.5 text-sm font-semibold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
                       >
@@ -320,6 +399,25 @@ export default function AdminMenuItemsPage() {
                       </button>
                     </div>
                   )}
+
+                  {/* Delete Action - Available for Every Status */}
+                  <div className="mt-4">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleDelete(item._id, item.itemName)
+                      }
+                      disabled={busyId === item._id}
+                      className="flex w-full items-center justify-center gap-2 rounded-lg border border-red-500/30 px-3 py-2.5 text-sm font-semibold text-red-500 transition hover:bg-red-500/10 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      {busyId === item._id ? (
+                        <LoaderCircle className="size-4 animate-spin" />
+                      ) : (
+                        <Trash2 className="size-4" />
+                      )}
+                      Delete Menu Item
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
