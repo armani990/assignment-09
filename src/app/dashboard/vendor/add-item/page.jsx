@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, ImagePlus, Loader2, Upload, X } from "lucide-react";
 import Link from "next/link";
@@ -22,6 +22,75 @@ export default function AddMenuItemPage() {
   const [imageFile, setImageFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  // Vendor access states
+  const [accessLoading, setAccessLoading] = useState(true);
+  const [accessError, setAccessError] = useState("");
+  const [isLimitReached, setIsLimitReached] = useState(false);
+  const [approvedCount, setApprovedCount] = useState(0);
+
+  // Check vendor subscription and active menu item limit
+  useEffect(() => {
+    async function checkMenuItemAccess() {
+      try {
+        const { data, error: tokenError } = await authClient.token();
+
+        if (tokenError || !data?.token) {
+          throw new Error("Authentication failed. Please sign in again.");
+        }
+
+        const headers = {
+          Authorization: `Bearer ${data.token}`,
+        };
+
+        const [profileResponse, menuResponse] = await Promise.all([
+          fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/profile`, {
+            headers,
+          }),
+          fetch(
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/vendor/menu-items`,
+            { headers }
+          ),
+        ]);
+
+        const profile = await profileResponse.json();
+        const menuItems = await menuResponse.json();
+
+        if (!profileResponse.ok || !menuResponse.ok) {
+          throw new Error(
+            profile.message ||
+              menuItems.message ||
+              "Failed to check menu item access."
+          );
+        }
+
+        if (!Array.isArray(menuItems)) {
+          throw new Error("Invalid menu items response.");
+        }
+
+        const isPremiumActive =
+          profile.subscriptionPlan === "premium" &&
+          profile.subscriptionExpiresAt &&
+          new Date(profile.subscriptionExpiresAt) > new Date();
+
+        const activeMenuCount = menuItems.filter(
+          (item) => item.status === "approved"
+        ).length;
+
+        setApprovedCount(activeMenuCount);
+        setIsLimitReached(!isPremiumActive && activeMenuCount >= 3);
+      } catch (error) {
+        console.error("Menu Item Access Error:", error);
+        setAccessError(
+          error.message || "Failed to check your subscription."
+        );
+      } finally {
+        setAccessLoading(false);
+      }
+    }
+
+    checkMenuItemAccess();
+  }, []);
 
   // Handle form inputs
   function handleChange(e) {
@@ -149,6 +218,74 @@ export default function AddMenuItemPage() {
     } finally {
       setLoading(false);
     }
+  }
+
+  // Show loading while checking vendor access
+  if (accessLoading) {
+    return (
+      <div className="flex min-h-[50vh] items-center justify-center">
+        <Loader2 className="size-8 animate-spin text-brand" />
+      </div>
+    );
+  }
+
+  // Show error if access check fails
+  if (accessError) {
+    return (
+      <div className="mx-auto max-w-3xl rounded-2xl border border-red-500/20 bg-red-500/5 p-8 text-center">
+        <h2 className="text-xl font-bold text-red-500">
+          Unable to Check Menu Access
+        </h2>
+
+        <p className="mt-3 text-sm text-black/60 dark:text-white/60">
+          {accessError}
+        </p>
+
+        <button
+          onClick={() => window.location.reload()}
+          className="mt-5 rounded-lg bg-brand px-5 py-2.5 font-semibold text-white"
+        >
+          Try Again
+        </button>
+      </div>
+    );
+  }
+
+  // Block Free vendors after 3 active menu items
+  if (isLimitReached) {
+    return (
+      <div className="mx-auto max-w-2xl rounded-2xl border border-brand/20 bg-white p-6 text-center shadow-sm dark:bg-white/5 sm:p-10">
+        <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-brand/10">
+          <Upload className="size-8 text-brand" />
+        </div>
+
+        <h1 className="mt-5 text-2xl font-bold text-black dark:text-white">
+          Free Plan Limit Reached
+        </h1>
+
+        <p className="mt-3 text-sm leading-7 text-black/60 dark:text-white/60">
+          You already have {approvedCount} active menu items.
+          The Free plan allows a maximum of 3 active menu items.
+          Upgrade to Premium to add unlimited menu items.
+        </p>
+
+        <Link
+          href="/dashboard/vendor/subscription"
+          className="mt-6 inline-flex items-center justify-center rounded-lg bg-brand px-6 py-3 font-semibold text-white transition hover:opacity-90"
+        >
+          Upgrade to Premium
+        </Link>
+
+        <div>
+          <Link
+            href="/dashboard/vendor"
+            className="mt-4 inline-block text-sm text-black/60 transition hover:text-brand dark:text-white/60"
+          >
+            Back to Dashboard
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   return (
