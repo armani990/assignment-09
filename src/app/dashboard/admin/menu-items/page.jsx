@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
@@ -10,6 +9,7 @@ import {
   MapPin,
   CalendarDays,
   LoaderCircle,
+  Search,
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "react-hot-toast";
@@ -38,7 +38,7 @@ export default function AdminMenuItemsPage() {
   const [busyId, setBusyId] = useState(null);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
-
+  const [searchTerm, setSearchTerm] = useState("");
   const loadMenuItems = useCallback(async () => {
     try {
       setLoading(true);
@@ -55,26 +55,18 @@ export default function AdminMenuItemsPage() {
         throw new Error("Authentication token not found.");
       }
 
-      const query =
-        selectedStatus === "all"
-          ? ""
-          : `?status=${selectedStatus}`;
+      const query = selectedStatus === "all" ? "" : `?status=${selectedStatus}`;
 
-      const response = await fetch(
-        `${API_BASE_URL}/admin/menu-items${query}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}/admin/menu-items${query}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(
-          result.message || "Failed to load menu items."
-        );
+        throw new Error(result.message || "Failed to load menu items.");
       }
 
       setItems(result);
@@ -89,6 +81,17 @@ export default function AdminMenuItemsPage() {
     loadMenuItems();
   }, [loadMenuItems]);
 
+  const filteredItems = items.filter((item) => {
+    const search = searchTerm.trim().toLowerCase();
+
+    if (!search) return true;
+
+    return (
+      item.itemName?.toLowerCase().includes(search) ||
+      item.category?.toLowerCase().includes(search) ||
+      item.location?.toLowerCase().includes(search)
+    );
+  });
   const handleStatusUpdate = async (id, status) => {
     try {
       setBusyId(id);
@@ -111,15 +114,13 @@ export default function AdminMenuItemsPage() {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ status }),
-        }
+        },
       );
 
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(
-          result.message || "Failed to update menu item."
-        );
+        throw new Error(result.message || "Failed to update menu item.");
       }
 
       toast.success(result.message || `Menu item ${status} successfully.`);
@@ -150,9 +151,7 @@ export default function AdminMenuItemsPage() {
           disabled={loading}
           className="flex items-center gap-2 rounded-lg border border-white/10 px-4 py-2 text-sm font-medium transition hover:bg-white/5 disabled:opacity-50"
         >
-          <RefreshCw
-            className={`size-4 ${loading ? "animate-spin" : ""}`}
-          />
+          <RefreshCw className={`size-4 ${loading ? "animate-spin" : ""}`} />
           Refresh
         </button>
       </div>
@@ -179,6 +178,19 @@ export default function AdminMenuItemsPage() {
         ))}
       </div>
 
+      {/* Search Menu Items */}
+      <div className="relative max-w-md">
+        <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-nav-muted" />
+
+        <input
+          type="search"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Search by item name, category or location..."
+          className="w-full rounded-lg border border-white/10 bg-white/5 py-3 pl-10 pr-4 text-sm text-white outline-none transition placeholder:text-nav-muted focus:border-brand"
+        />
+      </div>
+
       {/* Feedback Messages */}
       {message && (
         <div className="rounded-lg bg-green-50 px-4 py-3 text-sm text-green-700 dark:bg-green-500/10 dark:text-green-400">
@@ -197,17 +209,23 @@ export default function AdminMenuItemsPage() {
         <div className="flex min-h-60 items-center justify-center">
           <LoaderCircle className="size-8 animate-spin text-brand" />
         </div>
-      ) : items.length === 0 ? (
+      ) : filteredItems.length === 0 ? (
         <div className="flex min-h-60 flex-col items-center justify-center rounded-xl border border-dashed border-white/10 text-center">
           <UtensilsCrossed className="mb-3 size-10 text-white/40" />
-          <h2 className="font-semibold text-white">No menu items found</h2>
+          <h2 className="font-semibold text-white">
+            {searchTerm
+              ? "No matching menu items found"
+              : "No menu items found"}
+          </h2>
           <p className="mt-1 text-sm text-nav-muted">
-            There are no items in this category yet.
+            {searchTerm
+              ? "Try searching with a different keyword."
+              : "There are no items in this category yet."}
           </p>
         </div>
       ) : (
         <div className="grid gap-5 xl:grid-cols-2">
-          {items.map((item) => (
+          {filteredItems.map((item) => (
             <div
               key={item._id}
               className="overflow-hidden rounded-xl border border-white/10 bg-white/5"
@@ -232,9 +250,7 @@ export default function AdminMenuItemsPage() {
                 <div className="flex min-w-0 flex-1 flex-col p-4">
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
-                      <h2 className="text-lg font-semibold">
-                        {item.itemName}
-                      </h2>
+                      <h2 className="text-lg font-semibold">{item.itemName}</h2>
                       <p className="mt-1 text-sm text-nav-muted">
                         {item.category}
                       </p>
@@ -281,9 +297,7 @@ export default function AdminMenuItemsPage() {
                     <div className="mt-5 flex gap-3">
                       <button
                         type="button"
-                        onClick={() =>
-                          handleStatusUpdate(item._id, "approved")
-                        }
+                        onClick={() => handleStatusUpdate(item._id, "approved")}
                         disabled={busyId === item._id}
                         className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-green-600 px-3 py-2.5 text-sm font-semibold text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50"
                       >
@@ -297,9 +311,7 @@ export default function AdminMenuItemsPage() {
 
                       <button
                         type="button"
-                        onClick={() =>
-                          handleStatusUpdate(item._id, "rejected")
-                        }
+                        onClick={() => handleStatusUpdate(item._id, "rejected")}
                         disabled={busyId === item._id}
                         className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-red-600 px-3 py-2.5 text-sm font-semibold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
                       >
