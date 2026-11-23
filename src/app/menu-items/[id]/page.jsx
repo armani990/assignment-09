@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import {
   ArrowLeft,
   MapPin,
@@ -13,12 +13,14 @@ import {
   X,
   Image as ImageIcon,
 } from "lucide-react";
+import { toast } from "react-hot-toast";
 import { authClient, useSession } from "@/lib/auth-client";
 
 const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export default function MenuItemDetailsPage() {
   const { id } = useParams();
+  const router = useRouter();
   const { data: session, isPending: sessionLoading } = useSession();
 
   const [item, setItem] = useState(null);
@@ -116,15 +118,9 @@ export default function MenuItemDetailsPage() {
         throw new Error(data.message || "Failed to place order");
       }
 
-      setFeedback({
-        type: "success",
-        text: "Your order has been placed successfully!",
-      });
+      toast.success("Your order has been placed successfully!");
 
-      setDeliveryDate("");
-      setDeliveryAddress("");
-      setMessage("");
-      setShowOrderForm(false);
+      router.push("/dashboard/customer/orders?order=success");
     } catch (error) {
       setFeedback({
         type: "error",
