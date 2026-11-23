@@ -17,6 +17,19 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
+import {
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  Legend,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+} from "recharts";
 
 const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -25,6 +38,15 @@ const STATUS_STYLES = {
   accepted: "bg-green-500/10 text-green-500",
   rejected: "bg-red-500/10 text-red-500",
   cancelled: "bg-gray-500/10 text-gray-400",
+};
+
+const USER_CHART_COLORS = ["#3B82F6", "#A855F7"];
+
+const ORDER_CHART_COLORS = {
+  Pending: "#F59E0B",
+  Accepted: "#22C55E",
+  Rejected: "#EF4444",
+  Cancelled: "#9CA3AF",
 };
 
 function formatDate(value) {
@@ -48,13 +70,9 @@ function StatCard({ label, count, icon: Icon, color, background }) {
     <div className="rounded-2xl border border-border bg-nav p-5 transition hover:border-brand/40">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <p className="text-sm font-medium text-nav-muted">
-            {label}
-          </p>
+          <p className="text-sm font-medium text-nav-muted">{label}</p>
 
-          <p className="mt-3 text-3xl font-extrabold text-white">
-            {count}
-          </p>
+          <p className="mt-3 text-3xl font-extrabold text-white">{count}</p>
         </div>
 
         <div
@@ -85,24 +103,23 @@ export default function AdminOverviewPage() {
       const token = data?.token;
 
       if (!token) {
-        throw new Error("Authentication token not found. Please sign in again.");
+        throw new Error(
+          "Authentication token not found. Please sign in again.",
+        );
       }
 
-      const response = await fetch(
-        `${API_URL}/admin/dashboard/stats`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          cache: "no-store",
-        }
-      );
+      const response = await fetch(`${API_URL}/admin/dashboard/stats`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        cache: "no-store",
+      });
 
       const result = await response.json();
 
       if (!response.ok) {
         throw new Error(
-          result.message || "Failed to load dashboard statistics."
+          result.message || "Failed to load dashboard statistics.",
         );
       }
 
@@ -119,6 +136,23 @@ export default function AdminOverviewPage() {
   }, [loadDashboard]);
 
   const stats = dashboardData?.stats;
+
+  // Chart data must stay inside the component because it uses stats.
+  const userChartData = stats
+    ? [
+        { name: "Customers", count: stats.totalCustomers },
+        { name: "Vendors", count: stats.totalVendors },
+      ]
+    : [];
+
+  const orderChartData = stats
+    ? [
+        { name: "Pending", count: stats.pendingOrders },
+        { name: "Accepted", count: stats.acceptedOrders },
+        { name: "Rejected", count: stats.rejectedOrders },
+        { name: "Cancelled", count: stats.cancelledOrders ?? 0 },
+      ]
+    : [];
 
   const statCards = stats
     ? [
@@ -223,10 +257,7 @@ export default function AdminOverviewPage() {
           disabled={loading}
           className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold text-white transition hover:border-brand hover:text-brand disabled:opacity-50"
         >
-          <RefreshCw
-            size={16}
-            className={loading ? "animate-spin" : ""}
-          />
+          <RefreshCw size={16} className={loading ? "animate-spin" : ""} />
           Refresh
         </button>
       </div>
@@ -255,11 +286,144 @@ export default function AdminOverviewPage() {
             ))}
           </div>
 
+          {/* Dashboard Charts */}
+          <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+            {/* User Distribution Chart */}
+            <div className="rounded-2xl border border-border bg-nav p-5 sm:p-6">
+              <div>
+                <h2 className="text-lg font-bold text-white">
+                  User Distribution
+                </h2>
+
+                <p className="mt-1 text-sm text-nav-muted">
+                  Customer and vendor account distribution.
+                </p>
+              </div>
+
+              {stats.totalCustomers + stats.totalVendors === 0 ? (
+                <p className="flex h-[280px] items-center justify-center text-sm text-nav-muted">
+                  No user data available yet.
+                </p>
+              ) : (
+                <div className="mt-5 h-[280px] w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={userChartData}
+                        dataKey="count"
+                        nameKey="name"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={95}
+                        paddingAngle={3}
+                        label={({ name, percent }) =>
+                          `${name} ${(percent * 100).toFixed(0)}%`
+                        }
+                      >
+                        {userChartData.map((entry, index) => (
+                          <Cell
+                            key={entry.name}
+                            fill={USER_CHART_COLORS[index]}
+                          />
+                        ))}
+                      </Pie>
+
+                      <Tooltip
+                        contentStyle={{
+                          backgroundColor: "#171717",
+                          border: "1px solid #404040",
+                          borderRadius: "10px",
+                          color: "#ffffff",
+                        }}
+                      />
+
+                      <Legend />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+              )}
+            </div>
+
+            {/* Order Status Chart */}
+            <div className="rounded-2xl border border-border bg-nav p-5 sm:p-6">
+              <div>
+                <h2 className="text-lg font-bold text-white">
+                  Order Status Overview
+                </h2>
+
+                <p className="mt-1 text-sm text-nav-muted">
+                  Overview of customer order statuses.
+                </p>
+              </div>
+
+              {stats.totalOrders === 0 ? (
+                <p className="flex h-[280px] items-center justify-center text-sm text-nav-muted">
+                  No order data available yet.
+                </p>
+              ) : (
+                <div className="mt-5 h-[280px] w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart
+                      data={orderChartData}
+                      margin={{
+                        top: 10,
+                        right: 10,
+                        left: -15,
+                        bottom: 5,
+                      }}
+                    >
+                      <CartesianGrid
+                        strokeDasharray="3 3"
+                        stroke="#404040"
+                        vertical={false}
+                      />
+
+                      <XAxis
+                        dataKey="name"
+                        tick={{ fill: "#9CA3AF", fontSize: 12 }}
+                        axisLine={false}
+                        tickLine={false}
+                      />
+
+                      <YAxis
+                        allowDecimals={false}
+                        tick={{ fill: "#9CA3AF", fontSize: 12 }}
+                        axisLine={false}
+                        tickLine={false}
+                      />
+
+                      <Tooltip
+                        cursor={{ fill: "rgba(255,255,255,0.05)" }}
+                        contentStyle={{
+                          backgroundColor: "#171717",
+                          border: "1px solid #404040",
+                          borderRadius: "10px",
+                          color: "#ffffff",
+                        }}
+                      />
+
+                      <Bar
+                        dataKey="count"
+                        name="Orders"
+                        radius={[6, 6, 0, 0]}
+                      >
+                        {orderChartData.map((entry) => (
+                          <Cell
+                            key={entry.name}
+                            fill={ORDER_CHART_COLORS[entry.name]}
+                          />
+                        ))}
+                      </Bar>
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              )}
+            </div>
+          </div>
+
           {/* Quick Actions */}
           <div className="rounded-2xl border border-border bg-nav p-6">
-            <h2 className="text-lg font-bold text-white">
-              Quick Actions
-            </h2>
+            <h2 className="text-lg font-bold text-white">Quick Actions</h2>
 
             <p className="mt-1 text-sm text-nav-muted">
               Quickly access important administration pages.
@@ -274,9 +438,7 @@ export default function AdminOverviewPage() {
                   <Users className="size-5 text-brand" />
 
                   <div>
-                    <h3 className="font-semibold text-white">
-                      Manage Users
-                    </h3>
+                    <h3 className="font-semibold text-white">Manage Users</h3>
                     <p className="mt-1 text-xs text-nav-muted">
                       View customers and vendors.
                     </p>
@@ -311,9 +473,7 @@ export default function AdminOverviewPage() {
           {/* Recent Orders */}
           <div className="rounded-2xl border border-border bg-nav p-5 sm:p-6">
             <div>
-              <h2 className="text-lg font-bold text-white">
-                Recent Orders
-              </h2>
+              <h2 className="text-lg font-bold text-white">Recent Orders</h2>
 
               <p className="mt-1 text-sm text-nav-muted">
                 Latest orders placed by customers.
