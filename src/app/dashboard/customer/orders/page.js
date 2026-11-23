@@ -130,6 +130,7 @@ export default function CustomerOrdersPage() {
     const [selectedOrder, setSelectedOrder] = useState(null);
     const [confirmingOrderId, setConfirmingOrderId] = useState(null);
     const [cancellingId, setCancellingId] = useState(null);
+    const [orderSuccess, setOrderSuccess] = useState(false);
 
     const fetchOrders = useCallback(async () => {
         try {
@@ -175,6 +176,20 @@ export default function CustomerOrdersPage() {
             setLoading(false);
         }
     }, [sessionLoading, session, fetchOrders]);
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+
+        if (params.get("order") === "success") {
+            setOrderSuccess(true);
+
+            window.history.replaceState(
+                null,
+                "",
+                window.location.pathname
+            );
+        }
+    }, []);
 
     const handleCancelOrder = async (orderId) => {
         try {
@@ -288,6 +303,22 @@ export default function CustomerOrdersPage() {
                     Refresh
                 </button>
             </div>
+            {/* Order Success Message */}
+            {orderSuccess && (
+                <div className="flex items-start gap-3 rounded-xl border border-green-500/30 bg-green-500/10 p-4">
+                    <CheckCircle2 className="mt-0.5 h-6 w-6 shrink-0 text-green-500" />
+
+                    <div>
+                        <h2 className="font-bold text-green-500">
+                            Order Placed Successfully!
+                        </h2>
+
+                        <p className="mt-1 text-sm text-green-400/90">
+                            Thank you for ordering with PizzaHub. Your order has been received and is waiting for vendor approval.
+                        </p>
+                    </div>
+                </div>
+            )}
 
             {/* Feedback */}
             {error && (
