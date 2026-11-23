@@ -152,13 +152,13 @@ export default function FeaturedMenu() {
                     {item.location}
                   </p>
 
-                  {/* Guest: Login required */}
+                  {/* Guest: SignIn required */}
                   {!isPending && !session && (
                     <Link
                       href="/signin"
                       className="block w-full rounded-lg bg-orange-600 px-4 py-3 text-center font-semibold text-white transition hover:bg-orange-700"
                     >
-                      Login to Order
+                      Sign in to Order
                     </Link>
                   )}
 

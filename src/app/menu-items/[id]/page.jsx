@@ -271,7 +271,7 @@ export default function MenuItemDetailsPage() {
                       Please sign in as a customer to order this pizza.
                     </p>
                     <Link
-                      href="/login"
+                      href="/signin"
                       className="mt-4 inline-flex rounded-full bg-brand px-6 py-3 text-[15px] font-semibold text-white transition-colors hover:bg-brand-strong"
                     >
                       Sign In to Order
