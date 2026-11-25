@@ -9,6 +9,8 @@ import {
   UserRound,
   Mail,
   CalendarDays,
+  Search,
+  X,
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 
@@ -46,6 +48,7 @@ function formatDate(value) {
 export default function AdminUsersPage() {
   const [users, setUsers] = useState([]);
   const [selectedRole, setSelectedRole] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -65,13 +68,20 @@ export default function AdminUsersPage() {
         throw new Error("Authentication token not found.");
       }
 
-      const query =
-        selectedRole === "all"
-          ? ""
-          : `?role=${selectedRole}`;
+      const params = new URLSearchParams();
+
+      if (selectedRole !== "all") {
+        params.set("role", selectedRole);
+      }
+
+      if (searchTerm.trim()) {
+        params.set("search", searchTerm.trim());
+      }
+
+      const query = params.toString();
 
       const response = await fetch(
-        `${API_URL}/admin/users${query}`,
+        `${API_URL}/admin/users${query ? `?${query}` : ""}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -94,10 +104,14 @@ export default function AdminUsersPage() {
     } finally {
       setLoading(false);
     }
-  }, [selectedRole]);
+  }, [selectedRole, searchTerm]);
 
   useEffect(() => {
-    loadUsers();
+    const timeoutId = setTimeout(() => {
+      loadUsers();
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
   }, [loadUsers]);
 
   return (
@@ -126,6 +140,31 @@ export default function AdminUsersPage() {
           />
           Refresh
         </button>
+      </div>
+
+      {/* Search */}
+      <div className="relative">
+        <Search className="absolute left-4 top-1/2 size-5 -translate-y-1/2 text-nav-muted" />
+
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={(event) => setSearchTerm(event.target.value)}
+          placeholder="Search users by name or email..."
+          maxLength={100}
+          className="w-full rounded-xl border border-border bg-nav py-3 pl-12 pr-12 text-sm text-white outline-none transition placeholder:text-nav-muted focus:border-brand"
+        />
+
+        {searchTerm && (
+          <button
+            type="button"
+            onClick={() => setSearchTerm("")}
+            aria-label="Clear search"
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-nav-muted transition hover:text-white"
+          >
+            <X size={18} />
+          </button>
+        )}
       </div>
 
       {/* Role Filters */}
@@ -159,7 +198,7 @@ export default function AdminUsersPage() {
           <Users className="size-5 text-brand" />
 
           <p className="text-sm text-nav-muted">
-            Total users:{" "}
+            Matching users:{" "}
             <span className="font-bold text-white">
               {users.length}
             </span>
@@ -181,7 +220,7 @@ export default function AdminUsersPage() {
           </h2>
 
           <p className="mt-1 text-sm text-nav-muted">
-            No users are available for this filter.
+            No users match your search or selected filter.
           </p>
         </div>
       ) : (
