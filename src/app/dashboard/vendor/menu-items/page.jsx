@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
@@ -47,6 +46,8 @@ export default function VendorMenuItemsPage() {
 
   const [saving, setSaving] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
+  const [availabilityUpdatingId, setAvailabilityUpdatingId] =
+    useState(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
 
   const getToken = async () => {
@@ -256,6 +257,47 @@ export default function VendorMenuItemsPage() {
     }
   };
 
+  const handleAvailabilityToggle = async (item) => {
+    const nextStatus =
+      item.status === "approved" ? "inactive" : "approved";
+
+    try {
+      setAvailabilityUpdatingId(item._id);
+      setError("");
+      setMessage("");
+
+      const token = await getToken();
+
+      const response = await fetch(
+        `${API_BASE_URL}/vendor/menu-items/${item._id}/availability`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ status: nextStatus }),
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          result.message || "Failed to update item availability."
+        );
+      }
+
+      toast.success(result.message);
+      await loadMenuItems();
+    } catch (err) {
+      setError(err.message || "Something went wrong.");
+      toast.error(err.message || "Something went wrong.");
+    } finally {
+      setAvailabilityUpdatingId(null);
+    }
+  };
+
   const pendingCount = items.filter(
     (item) => item.status === "pending"
   ).length;
@@ -404,11 +446,11 @@ export default function VendorMenuItemsPage() {
                   </div>
 
                   {/* Actions */}
-                  <div className="mt-5 flex gap-3">
+                  <div className="mt-5 flex flex-wrap gap-3">
                     <button
                       type="button"
                       onClick={() => openEditForm(item)}
-                      className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-brand px-3 py-2.5 text-sm font-semibold text-brand transition hover:bg-brand hover:text-white"
+                      className="flex min-w-[100px] flex-1 items-center justify-center gap-2 rounded-lg border border-brand px-3 py-2.5 text-sm font-semibold text-brand transition hover:bg-brand hover:text-white"
                     >
                       <Pencil className="size-4" />
                       Edit
@@ -418,7 +460,7 @@ export default function VendorMenuItemsPage() {
                       type="button"
                       onClick={() => setConfirmDeleteId(item._id)}
                       disabled={deletingId === item._id}
-                      className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-red-200 px-3 py-2.5 text-sm font-semibold text-red-600 transition hover:bg-red-600 hover:text-white disabled:opacity-50"
+                      className="flex min-w-[100px] flex-1 items-center justify-center gap-2 rounded-lg border border-red-200 px-3 py-2.5 text-sm font-semibold text-red-600 transition hover:bg-red-600 hover:text-white disabled:opacity-50"
                     >
                       {deletingId === item._id ? (
                         <LoaderCircle className="size-4 animate-spin" />
@@ -427,6 +469,33 @@ export default function VendorMenuItemsPage() {
                       )}
                       Delete
                     </button>
+
+                    {(item.status === "approved" ||
+                      item.status === "inactive") && (
+                      <button
+                        type="button"
+                        onClick={() => handleAvailabilityToggle(item)}
+                        disabled={
+                          availabilityUpdatingId === item._id ||
+                          deletingId === item._id
+                        }
+                        className={`flex min-w-[120px] flex-1 items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50 ${
+                          item.status === "approved"
+                            ? "border border-amber-500/30 text-amber-500 hover:bg-amber-500 hover:text-white"
+                            : "border border-green-500/30 text-green-500 hover:bg-green-500 hover:text-white"
+                        }`}
+                      >
+                        {availabilityUpdatingId === item._id ? (
+                          <LoaderCircle className="size-4 animate-spin" />
+                        ) : null}
+
+                        {availabilityUpdatingId === item._id
+                          ? "Updating..."
+                          : item.status === "approved"
+                            ? "Deactivate"
+                            : "Activate"}
+                      </button>
+                    )}
                   </div>
 
                   {/* Delete Confirmation */}
