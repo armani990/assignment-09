@@ -9,8 +9,9 @@
   --color-foreground: var(--foreground);
   --color-brand: #ea3d1b;
   --color-brand-strong: #cf3413;
-  --color-nav: #1d1b1a;
-  --color-nav-muted: #d8d4d1;
+  --color-nav: var(--nav);
+  --color-nav-muted: var(--nav-muted);
+  --color-nav-foreground: var(--nav-foreground);
   --font-sans: var(--font-sans);
   --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -88,6 +89,9 @@ h6 {
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
+  --nav: #f5f3f1;
+  --nav-foreground: #211d1b;
+  --nav-muted: #6b625d;
   --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
@@ -101,6 +105,9 @@ h6 {
 
 .dark {
   --background: oklch(0.145 0 0);
+  --nav: #1d1b1a;
+  --nav-foreground: #ffffff;
+  --nav-muted: #d8d4d1;
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
