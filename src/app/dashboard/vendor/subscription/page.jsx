@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
@@ -47,10 +46,13 @@ export default function VendorSubscriptionPage() {
   const [subscription, setSubscription] = useState({
     plan: "free",
     expiresAt: null,
+    cancelAtPeriodEnd: false,
   });
 
   const [loading, setLoading] = useState(true);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [cancelLoading, setCancelLoading] = useState(false);
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
 
   const loadSubscription = useCallback(async () => {
     try {
@@ -80,6 +82,8 @@ export default function VendorSubscriptionPage() {
       setSubscription({
         plan: result.subscriptionPlan || "free",
         expiresAt: result.subscriptionExpiresAt || null,
+        cancelAtPeriodEnd:
+          result.subscriptionCancelAtPeriodEnd || false,
       });
     } catch (error) {
       toast.error(error.message || "Failed to load subscription.");
@@ -96,6 +100,43 @@ export default function VendorSubscriptionPage() {
     subscription.plan === "premium" &&
     subscription.expiresAt &&
     new Date(subscription.expiresAt) > new Date();
+
+  async function handleCancelSubscription() {
+    try {
+      setCancelLoading(true);
+
+      const token = await getAuthToken();
+
+      const response = await fetch(
+        `${API_URL}/vendor/subscription/cancel`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          result.message || "Failed to cancel subscription."
+        );
+      }
+
+      toast.success(
+        result.message || "Subscription cancellation scheduled."
+      );
+
+      setShowCancelConfirm(false);
+      await loadSubscription();
+    } catch (error) {
+      toast.error(error.message || "Unable to cancel subscription.");
+    } finally {
+      setCancelLoading(false);
+    }
+  }
 
   async function handleUpgrade() {
     try {
@@ -209,14 +250,60 @@ export default function VendorSubscriptionPage() {
           </div>
 
           {isPremiumActive && (
-            <div className="sm:text-right">
-              <p className="text-sm text-nav-muted">
-                Subscription Expires
-              </p>
+            <div className="space-y-3 sm:text-right">
+              <div>
+                <p className="text-sm text-nav-muted">
+                  Subscription Expires
+                </p>
 
-              <p className="mt-1 font-semibold text-white">
-                {formatDate(subscription.expiresAt)}
-              </p>
+                <p className="mt-1 font-semibold text-white">
+                  {formatDate(subscription.expiresAt)}
+                </p>
+              </div>
+
+              {subscription.cancelAtPeriodEnd ? (
+                <p className="text-sm font-semibold text-amber-400">
+                  Cancellation Scheduled
+                </p>
+              ) : showCancelConfirm ? (
+                <div className="space-y-3">
+                  <p className="text-sm text-amber-400">
+                    Are you sure you want to cancel your subscription?
+                    Premium access will remain active until the expiry
+                    date.
+                  </p>
+
+                  <div className="flex flex-wrap gap-2 sm:justify-end">
+                    <button
+                      type="button"
+                      onClick={() => setShowCancelConfirm(false)}
+                      disabled={cancelLoading}
+                      className="rounded-xl border border-border px-4 py-2 text-sm font-semibold text-white hover:bg-white/5 disabled:opacity-50"
+                    >
+                      Keep Subscription
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={handleCancelSubscription}
+                      disabled={cancelLoading}
+                      className="rounded-xl bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-500 disabled:opacity-50"
+                    >
+                      {cancelLoading
+                        ? "Cancelling..."
+                        : "Confirm Cancel"}
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setShowCancelConfirm(true)}
+                  className="rounded-xl border border-red-500/40 px-4 py-2 text-sm font-semibold text-red-400 transition hover:bg-red-500/10"
+                >
+                  Cancel Subscription
+                </button>
+              )}
             </div>
           )}
         </div>
