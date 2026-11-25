@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
@@ -9,6 +8,7 @@ import {
   Store,
   UtensilsCrossed,
   ClipboardList,
+  CreditCard,
   Clock,
   CheckCircle,
   XCircle,
@@ -204,6 +204,13 @@ export default function AdminOverviewPage() {
           icon: ClipboardList,
           color: "text-brand",
           background: "bg-brand/10",
+        },
+        {
+          label: "Total Transactions",
+          count: stats.totalTransactions,
+          icon: CreditCard,
+          color: "text-purple-500",
+          background: "bg-purple-500/10",
         },
         {
           label: "Pending Orders",
@@ -402,11 +409,7 @@ export default function AdminOverviewPage() {
                         }}
                       />
 
-                      <Bar
-                        dataKey="count"
-                        name="Orders"
-                        radius={[6, 6, 0, 0]}
-                      >
+                      <Bar dataKey="count" name="Orders" radius={[6, 6, 0, 0]}>
                         {orderChartData.map((entry) => (
                           <Cell
                             key={entry.name}
