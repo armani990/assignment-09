@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -20,10 +19,9 @@ export default function FeaturedMenu() {
 
     const fetchFeaturedItems = async () => {
       try {
-        const response = await fetch(
-          `${API_URL}/menu-items/featured`,
-          { signal: controller.signal }
-        );
+        const response = await fetch(`${API_URL}/menu-items/featured`, {
+          signal: controller.signal,
+        });
 
         if (!response.ok) {
           throw new Error("Failed to load menu items");
@@ -61,8 +59,8 @@ export default function FeaturedMenu() {
           </h2>
 
           <p className="mx-auto mt-3 max-w-2xl text-nav-muted">
-            Explore our delicious collection of freshly prepared pizzas.
-            Find your favorite and enjoy every bite.
+            Explore our delicious collection of freshly prepared pizzas. Find
+            your favorite and enjoy every bite.
           </p>
         </div>
 
@@ -139,12 +137,19 @@ export default function FeaturedMenu() {
                   </p>
 
                   {/* Vendor Information */}
-                  <p className="mb-3 text-xs text-nav-muted">
-                    Prepared by{" "}
+                  <div className="mb-3 flex flex-wrap items-center gap-2 text-xs">
+                    <span className="text-nav-muted">Prepared by</span>
+
                     <span className="font-semibold text-white">
                       {item.vendor?.name || "PizzaHub Vendor"}
                     </span>
-                  </p>
+
+                    {item.vendor?.isPremium && (
+                      <span className="rounded-full border border-amber-400/30 bg-amber-400/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-400">
+                        Premium Vendor
+                      </span>
+                    )}
+                  </div>
 
                   {/* Location */}
                   <p className="mb-5 flex items-center gap-2 text-sm text-nav-muted">
@@ -173,16 +178,15 @@ export default function FeaturedMenu() {
                   )}
 
                   {/* Vendor and Admin: Cannot order */}
-                  {!isPending &&
-                    (role === "vendor" || role === "admin") && (
-                      <button
-                        type="button"
-                        disabled
-                        className="w-full cursor-not-allowed rounded-lg bg-white/10 px-4 py-3 font-semibold text-nav-muted"
-                      >
-                        Ordering for Customers Only
-                      </button>
-                    )}
+                  {!isPending && (role === "vendor" || role === "admin") && (
+                    <button
+                      type="button"
+                      disabled
+                      className="w-full cursor-not-allowed rounded-lg bg-white/10 px-4 py-3 font-semibold text-nav-muted"
+                    >
+                      Ordering for Customers Only
+                    </button>
+                  )}
 
                   {/* Session is loading */}
                   {isPending && (
