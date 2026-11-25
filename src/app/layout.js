@@ -5,6 +5,7 @@ import { AuthProvider } from "@/components/auth-provider";
 import Navbar from "@/components/navbar";
 import Toaster from "@/components/toaster";
 import Footer from "@/components/footer";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const bricolageGrotesque = Bricolage_Grotesque({
   variable: "--font-bricolage",
@@ -25,15 +26,17 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`dark ${bricolageGrotesque.variable} ${dmSans.variable} h-full antialiased`}
+      className={`${bricolageGrotesque.variable} ${dmSans.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <AuthProvider>
-          <Navbar />
-          <Toaster />
-          {children}
-          <Footer />
-        </AuthProvider>
+        <ThemeProvider>
+          <AuthProvider>
+            <Navbar />
+            <Toaster />
+            {children}
+            <Footer />
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

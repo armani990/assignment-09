@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -6,12 +5,15 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useSession, signOut } from "@/lib/auth-client";
+import { useTheme } from "@/components/theme-provider";
 import {
   UserRound,
   LogOut,
   ChevronDown,
   LayoutDashboard,
   Settings,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -72,6 +74,8 @@ export default function Navbar() {
 
   const { data: session, isPending } = useSession();
   const user = session?.user;
+
+  const { theme, toggleTheme } = useTheme();
 
   const dashboardHref = dashboardHrefForRole(user?.role);
 
@@ -145,6 +149,20 @@ export default function Navbar() {
 
         {/* Desktop Auth */}
         <div className="hidden items-center gap-6 md:flex">
+          <button
+            type="button"
+            onClick={toggleTheme}
+            aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+            title={`Switch to ${theme === "dark" ? "Light" : "Dark"} Mode`}
+            className="flex size-10 items-center justify-center rounded-full border border-white/15 text-nav-muted transition-colors hover:bg-white/10 hover:text-white"
+          >
+            {theme === "dark" ? (
+              <Sun className="size-5" />
+            ) : (
+              <Moon className="size-5" />
+            )}
+          </button>
+
           {isPending ? null : user ? (
             <DropdownMenu>
               <DropdownMenuTrigger
@@ -255,6 +273,27 @@ export default function Navbar() {
       {/* Mobile Menu */}
       {mobileOpen && (
         <div className="border-t border-white/10 bg-nav px-5 pt-2 pb-6 md:hidden">
+          <div className="flex justify-end py-3">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+              className="flex items-center gap-2 rounded-full border border-white/15 px-4 py-2 text-sm text-nav-muted transition-colors hover:bg-white/10 hover:text-white"
+            >
+              {theme === "dark" ? (
+                <>
+                  <Sun className="size-4" />
+                  Light Mode
+                </>
+              ) : (
+                <>
+                  <Moon className="size-4" />
+                  Dark Mode
+                </>
+              )}
+            </button>
+          </div>
+
           <nav className="flex flex-col">
             {navLinks.map((link) => {
               const active = pathname === link.href;
