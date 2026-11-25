@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
@@ -12,6 +11,8 @@ import {
   ArrowRight,
   RefreshCw,
   LoaderCircle,
+  Crown,
+  CalendarDays,
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 
@@ -48,9 +49,7 @@ function StatCard({ label, count, icon: Icon, color, background }) {
       <div className="flex items-center justify-between gap-3">
         <div>
           <p className="text-sm font-medium text-nav-muted">{label}</p>
-          <p className="mt-3 text-3xl font-extrabold text-white">
-            {count}
-          </p>
+          <p className="mt-3 text-3xl font-extrabold text-white">{count}</p>
         </div>
 
         <div
@@ -76,6 +75,11 @@ async function getAuthToken() {
 export default function VendorOverviewPage() {
   const [menuItems, setMenuItems] = useState([]);
   const [orders, setOrders] = useState([]);
+  const [subscription, setSubscription] = useState({
+    plan: "free",
+    expiresAt: null,
+    cancelAtPeriodEnd: false,
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -94,20 +98,26 @@ export default function VendorOverviewPage() {
         Authorization: `Bearer ${token}`,
       };
 
-      const [menuResponse, orderResponse] = await Promise.all([
-        fetch(`${API_URL}/vendor/menu-items`, {
-          headers,
-          cache: "no-store",
-        }),
-        fetch(`${API_URL}/vendor/orders`, {
-          headers,
-          cache: "no-store",
-        }),
-      ]);
+      const [menuResponse, orderResponse, profileResponse] =
+        await Promise.all([
+          fetch(`${API_URL}/vendor/menu-items`, {
+            headers,
+            cache: "no-store",
+          }),
+          fetch(`${API_URL}/vendor/orders`, {
+            headers,
+            cache: "no-store",
+          }),
+          fetch(`${API_URL}/profile`, {
+            headers,
+            cache: "no-store",
+          }),
+        ]);
 
-      const [menuData, orderData] = await Promise.all([
+      const [menuData, orderData, profileData] = await Promise.all([
         menuResponse.json(),
         orderResponse.json(),
+        profileResponse.json(),
       ]);
 
       if (!menuResponse.ok) {
@@ -122,8 +132,21 @@ export default function VendorOverviewPage() {
         );
       }
 
+      if (!profileResponse.ok) {
+        throw new Error(
+          profileData.message || "Failed to load subscription details."
+        );
+      }
+
       setMenuItems(Array.isArray(menuData) ? menuData : []);
       setOrders(Array.isArray(orderData) ? orderData : []);
+
+      setSubscription({
+        plan: profileData.subscriptionPlan || "free",
+        expiresAt: profileData.subscriptionExpiresAt || null,
+        cancelAtPeriodEnd:
+          profileData.subscriptionCancelAtPeriodEnd || false,
+      });
     } catch (err) {
       setError(err.message || "Something went wrong.");
     } finally {
@@ -164,7 +187,19 @@ export default function VendorOverviewPage() {
       color: "text-green-500",
       background: "bg-green-500/10",
     },
+    {
+      label: "Pending Orders",
+      count: orders.filter((order) => order.status === "pending").length,
+      icon: Clock,
+      color: "text-amber-500",
+      background: "bg-amber-500/10",
+    },
   ];
+
+  const isPremiumActive =
+    subscription.plan === "premium" &&
+    subscription.expiresAt &&
+    new Date(subscription.expiresAt) > new Date();
 
   if (loading) {
     return (
@@ -215,17 +250,88 @@ export default function VendorOverviewPage() {
       )}
 
       {/* Statistics */}
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-5">
         {stats.map((stat) => (
           <StatCard key={stat.label} {...stat} />
         ))}
       </div>
 
+      {/* Subscription Overview */}
+      <div className="rounded-2xl border border-border bg-nav p-6">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div
+              className={`flex size-12 items-center justify-center rounded-xl ${
+                isPremiumActive
+                  ? "bg-amber-500/10 text-amber-400"
+                  : "bg-white/5 text-nav-muted"
+              }`}
+            >
+              <Crown size={24} />
+            </div>
+
+            <div>
+              <h2 className="text-lg font-bold text-white">
+                Subscription Overview
+              </h2>
+
+              <p className="mt-1 text-sm text-nav-muted">
+                Your current vendor subscription details.
+              </p>
+            </div>
+          </div>
+
+          <span
+            className={`rounded-full px-3 py-1.5 text-xs font-bold ${
+              isPremiumActive
+                ? "bg-amber-500/10 text-amber-400"
+                : "bg-white/10 text-nav-muted"
+            }`}
+          >
+            {isPremiumActive ? "PREMIUM" : "FREE PLAN"}
+          </span>
+        </div>
+
+        <div className="mt-5 flex flex-wrap items-center justify-between gap-4 border-t border-border pt-5">
+          <div>
+            <p className="text-sm text-nav-muted">Current Plan</p>
+
+            <p className="mt-1 text-xl font-bold capitalize text-white">
+              {isPremiumActive ? "Premium" : "Free"}
+            </p>
+          </div>
+
+          {isPremiumActive && (
+            <div>
+              <p className="flex items-center gap-2 text-sm text-nav-muted">
+                <CalendarDays size={15} />
+                Subscription Expires
+              </p>
+
+              <p className="mt-1 font-semibold text-white">
+                {formatDate(subscription.expiresAt)}
+              </p>
+            </div>
+          )}
+
+          {isPremiumActive && subscription.cancelAtPeriodEnd && (
+            <p className="text-sm font-semibold text-amber-400">
+              Cancellation Scheduled
+            </p>
+          )}
+
+          <Link
+            href="/dashboard/vendor/subscription"
+            className="text-sm font-semibold text-brand transition hover:underline"
+          >
+            Manage Subscription →
+          </Link>
+        </div>
+      </div>
+
       {/* Quick Actions */}
       <div className="rounded-2xl border border-border bg-nav p-6">
-        <h2 className="text-lg font-bold text-white">
-          Quick Actions
-        </h2>
+        <h2 className="text-lg font-bold text-white">Quick Actions</h2>
 
         <p className="mt-1 text-sm text-nav-muted">
           Quickly access your most important dashboard features.
@@ -242,9 +348,7 @@ export default function VendorOverviewPage() {
               </div>
 
               <div>
-                <h3 className="font-semibold text-white">
-                  Add Menu Item
-                </h3>
+                <h3 className="font-semibold text-white">Add Menu Item</h3>
                 <p className="mt-1 text-xs text-nav-muted">
                   Add a new pizza to your menu.
                 </p>
@@ -264,9 +368,7 @@ export default function VendorOverviewPage() {
               </div>
 
               <div>
-                <h3 className="font-semibold text-white">
-                  Manage Orders
-                </h3>
+                <h3 className="font-semibold text-white">Manage Orders</h3>
                 <p className="mt-1 text-xs text-nav-muted">
                   Review and manage customer orders.
                 </p>
@@ -340,9 +442,7 @@ export default function VendorOverviewPage() {
       <div className="rounded-2xl border border-border bg-nav p-5 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h2 className="text-lg font-bold text-white">
-              Recent Menu Items
-            </h2>
+            <h2 className="text-lg font-bold text-white">Recent Menu Items</h2>
             <p className="mt-1 text-sm text-nav-muted">
               Recently added items from your menu.
             </p>
@@ -387,15 +487,13 @@ export default function VendorOverviewPage() {
 
                   <p className="mt-1 text-xs text-nav-muted">
                     {item.category || "Uncategorized"}
-                    {" · "}
-                    ৳{Number(item.price || 0).toLocaleString("en-BD")}
+                    {" · "}৳{Number(item.price || 0).toLocaleString("en-BD")}
                   </p>
                 </div>
 
                 <span
                   className={`rounded-full px-3 py-1.5 text-xs font-bold capitalize ${
-                    STATUS_STYLES[item.status] ||
-                    "bg-gray-500/10 text-gray-400"
+                    STATUS_STYLES[item.status] || "bg-gray-500/10 text-gray-400"
                   }`}
                 >
                   {item.status || "Unknown"}
