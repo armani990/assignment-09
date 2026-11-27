@@ -321,7 +321,7 @@ export default function VendorMenuItemsPage() {
           type="button"
           onClick={loadMenuItems}
           disabled={loading}
-          className="flex items-center gap-2 rounded-lg border border-white/10 px-4 py-2 text-sm font-medium transition hover:bg-white/5 disabled:opacity-50"
+          className="flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium transition hover:bg-card disabled:opacity-50"
         >
           <RefreshCw
             className={`size-4 ${loading ? "animate-spin" : ""}`}
@@ -332,19 +332,19 @@ export default function VendorMenuItemsPage() {
 
       {/* Summary */}
       <div className="grid gap-4 sm:grid-cols-3">
-        <div className="rounded-xl border border-white/10 p-4">
+        <div className="rounded-xl border border-border p-4">
           <p className="text-sm text-nav-muted">Total Items</p>
           <p className="mt-1 text-2xl font-bold text-white">{items.length}</p>
         </div>
 
-        <div className="rounded-xl border border-white/10 p-4">
+        <div className="rounded-xl border border-border p-4">
           <p className="text-sm text-nav-muted">Pending Approval</p>
           <p className="mt-1 text-2xl font-bold text-amber-600">
             {pendingCount}
           </p>
         </div>
 
-        <div className="rounded-xl border border-white/10 p-4">
+        <div className="rounded-xl border border-border p-4">
           <p className="text-sm text-nav-muted">Approved Items</p>
           <p className="mt-1 text-2xl font-bold text-green-600">
             {approvedCount}
@@ -371,8 +371,8 @@ export default function VendorMenuItemsPage() {
           <LoaderCircle className="size-8 animate-spin text-brand" />
         </div>
       ) : items.length === 0 ? (
-        <div className="flex min-h-60 flex-col items-center justify-center rounded-xl border border-dashed border-white/10 text-center">
-          <UtensilsCrossed className="mb-3 size-10 text-white/40" />
+        <div className="flex min-h-60 flex-col items-center justify-center rounded-xl border border-dashed border-border text-center">
+          <UtensilsCrossed className="mb-3 size-10 text-muted-foreground" />
           <h2 className="font-semibold text-white">No menu items yet</h2>
           <p className="mt-1 text-sm text-nav-muted">
             Your submitted menu items will appear here.
@@ -383,11 +383,11 @@ export default function VendorMenuItemsPage() {
           {items.map((item) => (
             <div
               key={item._id}
-              className="overflow-hidden rounded-xl border border-white/10 bg-white/5"
+              className="overflow-hidden rounded-xl border border-border bg-card"
             >
               <div className="flex flex-col sm:flex-row">
                 {/* Image */}
-                <div className="h-52 shrink-0 bg-white/10 sm:h-auto sm:w-44">
+                <div className="h-52 shrink-0 bg-muted sm:h-auto sm:w-44">
                   {item.images?.[0] ? (
                     <img
                       src={item.images[0]}
@@ -396,7 +396,7 @@ export default function VendorMenuItemsPage() {
                     />
                   ) : (
                     <div className="flex h-full min-h-40 items-center justify-center">
-                      <UtensilsCrossed className="size-10 text-gray-400" />
+                      <UtensilsCrossed className="size-10 text-muted-foreground" />
                     </div>
                   )}
                 </div>
@@ -408,7 +408,7 @@ export default function VendorMenuItemsPage() {
                       <h2 className="text-lg font-semibold">
                         {item.itemName}
                       </h2>
-                      <p className="mt-1 text-sm text-gray-500">
+                      <p className="mt-1 text-sm text-muted-foreground">
                         {item.category}
                       </p>
                     </div>
@@ -423,7 +423,7 @@ export default function VendorMenuItemsPage() {
                     </span>
                   </div>
 
-                  <p className="mt-3 line-clamp-3 text-sm leading-6 text-gray-600 dark:text-white/60">
+                  <p className="mt-3 line-clamp-3 text-sm leading-6 text-muted-foreground">
                     {item.description}
                   </p>
 
@@ -432,12 +432,12 @@ export default function VendorMenuItemsPage() {
                       ৳{Number(item.price).toLocaleString("en-BD")}
                     </p>
 
-                    <p className="flex items-center gap-2 text-gray-500">
+                    <p className="flex items-center gap-2 text-muted-foreground">
                       <MapPin className="size-4 shrink-0" />
                       {item.location}
                     </p>
 
-                    <p className="flex items-center gap-2 text-gray-500">
+                    <p className="flex items-center gap-2 text-muted-foreground">
                       <CalendarDays className="size-4 shrink-0" />
                       {item.createdAt
                         ? new Date(item.createdAt).toLocaleDateString()
@@ -521,7 +521,7 @@ export default function VendorMenuItemsPage() {
                           type="button"
                           onClick={() => setConfirmDeleteId(null)}
                           disabled={deletingId === item._id}
-                          className="rounded-md border border-gray-300 px-3 py-2 text-xs font-semibold dark:border-white/20"
+                          className="rounded-md border border-gray-300 px-3 py-2 text-xs font-semibold border-border"
                         >
                           Cancel
                         </button>
@@ -538,11 +538,11 @@ export default function VendorMenuItemsPage() {
       {/* Edit Modal */}
       {editingItem && (
         <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/60 p-4">
-          <div className="my-auto w-full max-w-2xl rounded-2xl bg-white p-6 shadow-xl dark:bg-[#151515]">
+          <div className="my-auto w-full max-w-2xl rounded-2xl border border-border bg-card p-6 text-card-foreground shadow-xl">
             <div className="mb-6 flex items-center justify-between gap-3">
               <div>
                 <h2 className="text-xl font-bold">Edit Menu Item</h2>
-                <p className="mt-1 text-sm text-gray-500">
+                <p className="mt-1 text-sm text-muted-foreground">
                   Changes will require admin approval again.
                 </p>
               </div>
@@ -552,7 +552,7 @@ export default function VendorMenuItemsPage() {
                 onClick={closeEditForm}
                 disabled={saving}
                 aria-label="Close edit form"
-                className="rounded-lg p-2 transition hover:bg-gray-100 dark:hover:bg-white/10"
+                className="rounded-lg p-2 transition hover:bg-gray-100 dark:hover:bg-muted"
               >
                 <X className="size-5" />
               </button>
@@ -643,10 +643,10 @@ export default function VendorMenuItemsPage() {
                   />
                 )}
 
-                <label className="flex cursor-pointer items-center gap-3 rounded-lg border border-dashed border-gray-300 p-4 transition hover:border-brand dark:border-white/20">
+                <label className="flex cursor-pointer items-center gap-3 rounded-lg border border-dashed border-gray-300 p-4 transition hover:border-brand border-border">
                   <Upload className="size-5 text-brand" />
 
-                  <span className="text-sm text-gray-500">
+                  <span className="text-sm text-muted-foreground">
                     {imageFile
                       ? imageFile.name
                       : "Choose a new image (optional)"}
@@ -679,7 +679,7 @@ export default function VendorMenuItemsPage() {
                   />
                 </label>
 
-                <p className="mt-1 text-xs text-gray-400">
+                <p className="mt-1 text-xs text-muted-foreground">
                   Leave empty to keep the current image. Maximum size: 5 MB.
                 </p>
               </div>
@@ -689,7 +689,7 @@ export default function VendorMenuItemsPage() {
                   type="button"
                   onClick={closeEditForm}
                   disabled={saving}
-                  className="rounded-lg border border-gray-300 px-5 py-2.5 text-sm font-semibold dark:border-white/20"
+                  className="rounded-lg border border-gray-300 px-5 py-2.5 text-sm font-semibold border-border"
                 >
                   Cancel
                 </button>

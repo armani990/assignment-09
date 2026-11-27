@@ -41,7 +41,7 @@ const CATEGORIES = [
 
 export default function PizzaCategories() {
   return (
-    <section className="bg-nav py-16 text-white">
+    <section className="bg-nav py-16 text-nav-foreground">
       <div className="mx-auto max-w-[1400px] px-5 sm:px-8 lg:px-12">
         <div className="mb-12 text-center">
           <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-brand">
@@ -75,7 +75,9 @@ export default function PizzaCategories() {
                   <span className="text-4xl">{category.emoji}</span>
                 </div>
 
-                <h3 className="text-base font-bold text-white">
+                <h3
+                  className={`text-base font-bold ${index === 0 ? "text-white" : "text-nav-foreground"}`}
+                >
                   {category.name}
                 </h3>
 
@@ -83,7 +85,9 @@ export default function PizzaCategories() {
                   {category.description}
                 </p>
 
-                <span className="mt-5 text-xs font-semibold text-white transition-transform group-hover:translate-x-1">
+                <span
+                  className={`mt-5 text-xs font-semibold transition-transform group-hover:translate-x-1 ${index === 0 ? "text-white" : "text-nav-foreground"}`}
+                >
                   Explore Menu →
                 </span>
               </div>

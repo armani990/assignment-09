@@ -142,11 +142,11 @@ export default function MenuItemDetailsPage() {
   if (!item) {
     return (
       <section className="mx-auto flex min-h-[60vh] max-w-7xl flex-col items-center justify-center px-4 text-center">
-        <ImageIcon className="mb-4 h-12 w-12 text-black/40 dark:text-white/40" />
-        <h2 className="font-heading text-2xl font-bold text-black dark:text-white">
+        <ImageIcon className="mb-4 h-12 w-12 	text-muted-foreground" />
+        <h2 className="font-heading text-2xl font-bold text-foreground">
           Pizza Not Found
         </h2>
-        <p className="mt-2 text-black/60 dark:text-white/60">
+        <p className="mt-2 text-muted-foreground">
           This pizza may have been removed or is no longer available.
         </p>
         <Link
@@ -186,7 +186,7 @@ export default function MenuItemDetailsPage() {
                   />
                 ) : (
                   <div className="flex aspect-[4/3] items-center justify-center">
-                    <ImageIcon className="h-16 w-16 text-black/30 dark:text-white/30" />
+                    <ImageIcon className="h-16 w-16 text-muted-foreground" />
                   </div>
                 )}
               </div>
@@ -201,7 +201,7 @@ export default function MenuItemDetailsPage() {
                       className={`overflow-hidden rounded-lg border-2 transition-colors ${
                         selectedImage === image
                           ? "border-brand"
-                          : "border-black/10 dark:border-white/10"
+                          : "border-border"
                       }`}
                     >
                       <img
@@ -221,7 +221,7 @@ export default function MenuItemDetailsPage() {
                 {item.category}
               </span>
 
-              <h1 className="mt-3 font-heading text-3xl font-bold text-black dark:text-white sm:text-4xl">
+              <h1 className="mt-3 font-heading text-3xl font-bold text-foreground sm:text-4xl">
                 {item.itemName}
               </h1>
 
@@ -230,22 +230,22 @@ export default function MenuItemDetailsPage() {
               </p>
 
               <div className="mt-5 space-y-3 border-y border-black/10 py-5 dark:border-white/10">
-                <div className="flex items-center gap-3 text-sm text-black/70 dark:text-white/70">
+                <div className="flex items-center gap-3 text-sm text-muted-foreground">
                   <MapPin className="h-5 w-5 shrink-0 text-brand" />
                   <span>{item.location}</span>
                 </div>
 
-                <div className="flex items-center gap-3 text-sm text-black/70 dark:text-white/70">
+                <div className="flex items-center gap-3 text-sm text-muted-foreground">
                   <Store className="h-5 w-5 shrink-0 text-brand" />
                   <span>{vendorName}</span>
                 </div>
               </div>
 
               <div className="mt-5">
-                <h2 className="font-heading text-lg font-bold text-black dark:text-white">
+                <h2 className="font-heading text-lg font-bold text-foreground">
                   About This Pizza
                 </h2>
-                <p className="mt-2 text-sm leading-7 text-black/70 dark:text-white/70">
+                <p className="mt-2 text-sm leading-7 text-muted-foreground">
                   {item.description}
                 </p>
               </div>
@@ -267,7 +267,7 @@ export default function MenuItemDetailsPage() {
               <div className="mt-6 lg:mt-auto lg:pt-6">
                 {!isLoggedIn ? (
                   <div className="rounded-xl border border-black/10 p-5 dark:border-white/10">
-                    <p className="text-sm text-black/60 dark:text-white/60">
+                    <p className="text-sm text-muted-foreground">
                       Please sign in as a customer to order this pizza.
                     </p>
                     <Link
@@ -300,7 +300,7 @@ export default function MenuItemDetailsPage() {
                   </button>
                 ) : (
                   <div className="rounded-xl border border-black/10 p-5 dark:border-white/10">
-                    <p className="text-sm leading-6 text-black/60 dark:text-white/60">
+                    <p className="text-sm leading-6 text-muted-foreground">
                       Only customers can place orders. Vendors and admins cannot
                       order pizzas.
                     </p>
@@ -317,10 +317,10 @@ export default function MenuItemDetailsPage() {
               className="mt-8 border-t border-black/10 pt-6 dark:border-white/10"
             >
               <div className="mb-5">
-                <h2 className="font-heading text-xl font-bold text-black dark:text-white">
+                <h2 className="font-heading text-xl font-bold text-foreground">
                   Delivery Information
                 </h2>
-                <p className="mt-1 text-sm text-black/60 dark:text-white/60">
+                <p className="mt-1 text-sm text-muted-foreground">
                   Provide your delivery details to place the order.
                 </p>
               </div>
@@ -329,12 +329,12 @@ export default function MenuItemDetailsPage() {
                 <div>
                   <label
                     htmlFor="deliveryDate"
-                    className="mb-1.5 block text-xs font-semibold text-black/70 dark:text-white/70"
+                    className="mb-1.5 block text-xs font-semibold text-muted-foreground"
                   >
                     Delivery Date
                   </label>
                   <div className="relative">
-                    <CalendarDays className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-black/40 dark:text-white/40" />
+                    <CalendarDays className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 	text-muted-foreground" />
                     <input
                       id="deliveryDate"
                       type="date"
@@ -342,7 +342,7 @@ export default function MenuItemDetailsPage() {
                       onChange={(event) => setDeliveryDate(event.target.value)}
                       required
                       style={{ colorScheme: "dark" }}
-                      className="w-full rounded-lg border border-black/15 bg-transparent py-3 pl-11 pr-4 text-sm text-black outline-none transition-all focus:border-brand focus:ring-2 focus:ring-brand dark:border-white/20 dark:text-white"
+                      className="w-full rounded-lg border border-border bg-background py-3 pl-11 pr-4 text-sm text-foreground outline-none transition-all placeholder:text-muted-foreground focus:border-brand focus:ring-2 focus:ring-brand [color-scheme:light] dark:[color-scheme:dark]"
                     />
                   </div>
                 </div>
@@ -350,7 +350,7 @@ export default function MenuItemDetailsPage() {
                 <div>
                   <label
                     htmlFor="deliveryAddress"
-                    className="mb-1.5 block text-xs font-semibold text-black/70 dark:text-white/70"
+                    className="mb-1.5 block text-xs font-semibold text-muted-foreground"
                   >
                     Delivery Address
                   </label>
@@ -362,17 +362,17 @@ export default function MenuItemDetailsPage() {
                     rows={3}
                     maxLength={500}
                     required
-                    className="w-full resize-none rounded-lg border border-black/15 bg-transparent px-4 py-3 text-sm text-black outline-none transition-all placeholder:text-black/40 focus:border-brand focus:ring-2 focus:ring-brand dark:border-white/20 dark:text-white dark:placeholder:text-white/40"
+                    className="w-full resize-none rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground outline-none transition-all placeholder:text-muted-foreground focus:border-brand focus:ring-2 focus:ring-brand"
                   />
                 </div>
 
                 <div className="sm:col-span-2">
                   <label
                     htmlFor="message"
-                    className="mb-1.5 block text-xs font-semibold text-black/70 dark:text-white/70"
+                    className="mb-1.5 block text-xs font-semibold text-muted-foreground"
                   >
                     Additional Message
-                    <span className="ml-2 font-normal text-black/40 dark:text-white/40">
+                    <span className="ml-2 font-normal 	text-muted-foreground">
                       (Optional)
                     </span>
                   </label>
@@ -383,7 +383,7 @@ export default function MenuItemDetailsPage() {
                     placeholder="Any special instructions?"
                     rows={3}
                     maxLength={500}
-                    className="w-full resize-none rounded-lg border border-black/15 bg-transparent px-4 py-3 text-sm text-black outline-none transition-all placeholder:text-black/40 focus:border-brand focus:ring-2 focus:ring-brand dark:border-white/20 dark:text-white dark:placeholder:text-white/40"
+                    className="w-full resize-none rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground outline-none transition-all placeholder:text-muted-foreground focus:border-brand focus:ring-2 focus:ring-brand"
                   />
                 </div>
               </div>
@@ -393,7 +393,7 @@ export default function MenuItemDetailsPage() {
                   type="button"
                   onClick={() => setShowOrderForm(false)}
                   disabled={submitting}
-                  className="rounded-full border border-black/15 px-6 py-3 text-[15px] font-semibold text-black/70 transition-colors hover:bg-black/5 disabled:opacity-50 dark:border-white/20 dark:text-white dark:hover:bg-white/5"
+                  className="rounded-full border border-border px-6 py-3 text-[15px] font-semibold text-foreground transition-colors hover:bg-accent disabled:opacity-50"
                 >
                   Cancel
                 </button>

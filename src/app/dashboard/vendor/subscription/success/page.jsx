@@ -104,12 +104,12 @@ export default function SubscriptionSuccessPage() {
 
   return (
     <div className="mx-auto flex min-h-[60vh] max-w-2xl items-center justify-center">
-      <div className="w-full rounded-3xl border border-border bg-nav p-6 text-center sm:p-10">
+      <div className="w-full rounded-3xl border border-border bg-card p-6 text-center sm:p-10">
         {error ? (
           <>
             <XCircle className="mx-auto size-16 text-red-500" />
 
-            <h1 className="mt-5 text-2xl font-bold text-white">
+            <h1 className="mt-5 text-2xl font-bold text-foreground">
               Verification Failed
             </h1>
 
@@ -121,7 +121,7 @@ export default function SubscriptionSuccessPage() {
           <>
             <CheckCircle2 className="mx-auto size-16 text-green-500" />
 
-            <h1 className="mt-5 text-2xl font-extrabold text-white sm:text-3xl">
+            <h1 className="mt-5 text-2xl font-extrabold text-foreground sm:text-3xl">
               Subscription Activated!
             </h1>
 
@@ -133,7 +133,7 @@ export default function SubscriptionSuccessPage() {
             <div className="mt-7 rounded-2xl border border-brand/30 bg-brand/10 p-5">
               <Crown className="mx-auto size-8 text-brand" />
 
-              <h2 className="mt-2 text-lg font-bold text-white">
+              <h2 className="mt-2 text-lg font-bold text-foreground">
                 Premium Plan
               </h2>
 
@@ -147,7 +147,7 @@ export default function SubscriptionSuccessPage() {
           <>
             <XCircle className="mx-auto size-14 text-red-500" />
 
-            <h1 className="mt-5 text-2xl font-bold text-white">
+            <h1 className="mt-5 text-2xl font-bold text-foreground">
               Subscription Not Active
             </h1>
 
@@ -164,7 +164,7 @@ export default function SubscriptionSuccessPage() {
               type="button"
               onClick={verifySubscription}
               disabled={loading}
-              className="inline-flex items-center justify-center gap-2 rounded-xl border border-border px-5 py-3 text-sm font-semibold text-white transition hover:border-brand disabled:opacity-50"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-border px-5 py-3 text-sm font-semibold text-foreground transition hover:border-brand disabled:opacity-50"
             >
               {loading ? (
                 <LoaderCircle className="size-4 animate-spin" />

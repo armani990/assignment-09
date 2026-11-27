@@ -218,7 +218,7 @@ export default function VendorOrdersPage() {
           </div>
 
           <div>
-            <h1 className="text-2xl font-extrabold text-white sm:text-3xl">
+            <h1 className="text-2xl font-extrabold text-foreground sm:text-3xl">
               Customer Orders
             </h1>
             <p className="mt-1 text-sm text-nav-muted">
@@ -231,7 +231,7 @@ export default function VendorOrdersPage() {
           type="button"
           onClick={loadOrders}
           disabled={loading}
-          className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2.5 text-sm font-semibold transition hover:border-brand hover:text-brand disabled:opacity-50"
+          className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold transition hover:border-brand hover:text-brand disabled:opacity-50"
         >
           <RefreshCw
             size={16}
@@ -267,7 +267,7 @@ export default function VendorOrdersPage() {
         ].map((item) => (
           <div
             key={item.status}
-            className="rounded-xl border border-white/10 bg-white/5 p-4"
+            className="rounded-xl border border-border bg-card p-4"
           >
             <p className="text-sm text-nav-muted">{item.label} Orders</p>
             <p className={`mt-1 text-2xl font-bold ${item.color}`}>
@@ -287,7 +287,7 @@ export default function VendorOrdersPage() {
             className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
               selectedStatus === filter.value
                 ? "bg-brand text-white"
-                : "border border-white/10 text-nav-muted hover:bg-white/5"
+                : "border border-border text-nav-muted hover:bg-card"
             }`}
           >
             {filter.label}
@@ -311,10 +311,10 @@ export default function VendorOrdersPage() {
           <LoaderCircle className="size-9 animate-spin text-brand" />
         </div>
       ) : filteredOrders.length === 0 ? (
-        <div className="flex min-h-60 flex-col items-center justify-center rounded-2xl border border-dashed border-white/10 px-4 text-center">
-          <ClipboardList className="mb-3 size-10 text-white/40" />
+        <div className="flex min-h-60 flex-col items-center justify-center rounded-2xl border border-dashed border-border px-4 text-center">
+          <ClipboardList className="mb-3 size-10 text-muted-foreground" />
 
-          <h2 className="text-lg font-semibold text-white">
+          <h2 className="text-lg font-semibold text-foreground">
             No orders found
           </h2>
 
@@ -328,7 +328,7 @@ export default function VendorOrdersPage() {
         /* Orders List */
         <div className="space-y-5">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold text-white">
+            <h2 className="text-lg font-bold text-foreground">
               {selectedStatus === "all"
                 ? "All Orders"
                 : `${selectedStatus} Orders`}
@@ -344,11 +344,11 @@ export default function VendorOrdersPage() {
             {filteredOrders.map((order) => (
               <article
                 key={order._id}
-                className="overflow-hidden rounded-2xl border border-white/10 bg-white/5"
+                className="overflow-hidden rounded-2xl border border-border bg-card"
               >
                 <div className="flex flex-col sm:flex-row">
                   {/* Pizza Image */}
-                  <div className="relative h-52 shrink-0 overflow-hidden bg-white/10 sm:w-44">
+                  <div className="relative h-52 shrink-0 overflow-hidden bg-muted sm:w-44">
                     {order.item?.images?.[0] ? (
                       <Image
                         src={order.item.images[0]}
@@ -360,7 +360,7 @@ export default function VendorOrdersPage() {
                       />
                     ) : (
                       <div className="flex h-full items-center justify-center">
-                        <UtensilsCrossed className="size-10 text-white/40" />
+                        <UtensilsCrossed className="size-10 text-muted-foreground" />
                       </div>
                     )}
                   </div>
@@ -369,7 +369,7 @@ export default function VendorOrdersPage() {
                   <div className="flex min-w-0 flex-1 flex-col p-5">
                     <div className="flex flex-wrap items-start justify-between gap-3">
                       <div>
-                        <h3 className="text-lg font-bold text-white">
+                        <h3 className="text-lg font-bold text-foreground">
                           {order.item?.itemName || "Menu item unavailable"}
                         </h3>
 
@@ -393,7 +393,7 @@ export default function VendorOrdersPage() {
                         <User className="mt-0.5 size-4 shrink-0 text-brand" />
 
                         <div className="min-w-0">
-                          <p className="font-semibold text-white">
+                          <p className="font-semibold text-foreground">
                             {order.customer?.name || "Unknown Customer"}
                           </p>
                           <p className="break-all text-xs text-nav-muted">
@@ -429,7 +429,7 @@ export default function VendorOrdersPage() {
 
                     {/* Customer Message */}
                     {order.message && (
-                      <div className="mt-5 rounded-xl bg-white/5 p-3">
+                      <div className="mt-5 rounded-xl bg-card p-3">
                         <div className="mb-1 flex items-center gap-2 text-xs font-semibold text-brand">
                           <MessageSquare size={14} />
                           Customer Message

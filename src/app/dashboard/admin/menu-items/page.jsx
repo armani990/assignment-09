@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
@@ -58,17 +57,13 @@ export default function AdminMenuItemsPage() {
         throw new Error("Authentication token not found.");
       }
 
-      const query =
-        selectedStatus === "all" ? "" : `?status=${selectedStatus}`;
+      const query = selectedStatus === "all" ? "" : `?status=${selectedStatus}`;
 
-      const response = await fetch(
-        `${API_BASE_URL}/admin/menu-items${query}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}/admin/menu-items${query}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       const result = await response.json();
 
@@ -122,7 +117,7 @@ export default function AdminMenuItemsPage() {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ status }),
-        }
+        },
       );
 
       const result = await response.json();
@@ -131,13 +126,9 @@ export default function AdminMenuItemsPage() {
         throw new Error(result.message || "Failed to update menu item.");
       }
 
-      toast.success(
-        result.message || `Menu item ${status} successfully.`
-      );
+      toast.success(result.message || `Menu item ${status} successfully.`);
 
-      setMessage(
-        result.message || `Menu item ${status} successfully.`
-      );
+      setMessage(result.message || `Menu item ${status} successfully.`);
 
       await loadMenuItems();
     } catch (err) {
@@ -150,7 +141,7 @@ export default function AdminMenuItemsPage() {
 
   const handleDelete = async (id, itemName) => {
     const confirmed = window.confirm(
-      `Are you sure you want to permanently delete "${itemName}"?`
+      `Are you sure you want to permanently delete "${itemName}"?`,
     );
 
     if (!confirmed) return;
@@ -167,15 +158,12 @@ export default function AdminMenuItemsPage() {
         throw new Error("Authentication token not found.");
       }
 
-      const response = await fetch(
-        `${API_BASE_URL}/admin/menu-items/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}/admin/menu-items/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       const result = await response.json();
 
@@ -183,13 +171,9 @@ export default function AdminMenuItemsPage() {
         throw new Error(result.message || "Failed to delete menu item.");
       }
 
-      toast.success(
-        result.message || "Menu item deleted successfully."
-      );
+      toast.success(result.message || "Menu item deleted successfully.");
 
-      setMessage(
-        result.message || "Menu item deleted successfully."
-      );
+      setMessage(result.message || "Menu item deleted successfully.");
 
       await loadMenuItems();
     } catch (err) {
@@ -205,7 +189,7 @@ export default function AdminMenuItemsPage() {
       {/* Page Header */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">
+          <h1 className="text-2xl font-bold text-foreground">
             Manage Menu Items
           </h1>
           <p className="mt-1 text-sm text-nav-muted">
@@ -217,11 +201,9 @@ export default function AdminMenuItemsPage() {
           type="button"
           onClick={loadMenuItems}
           disabled={loading}
-          className="flex items-center gap-2 rounded-lg border border-white/10 px-4 py-2 text-sm font-medium transition hover:bg-white/5 disabled:opacity-50"
+          className="flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium transition hover:bg-card disabled:opacity-50"
         >
-          <RefreshCw
-            className={`size-4 ${loading ? "animate-spin" : ""}`}
-          />
+          <RefreshCw className={`size-4 ${loading ? "animate-spin" : ""}`} />
           Refresh
         </button>
       </div>
@@ -240,7 +222,7 @@ export default function AdminMenuItemsPage() {
             className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
               selectedStatus === filter.value
                 ? "bg-brand text-white"
-                : "text-nav-muted hover:bg-white/5"
+                : "text-nav-muted hover:bg-card"
             }`}
           >
             {filter.label}
@@ -257,7 +239,7 @@ export default function AdminMenuItemsPage() {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search by item name, category or location..."
-          className="w-full rounded-lg border border-white/10 bg-white/5 py-3 pl-10 pr-4 text-sm text-white outline-none transition placeholder:text-nav-muted focus:border-brand"
+          className="w-full rounded-lg border border-border bg-background py-3 pl-10 pr-4 text-sm text-foreground outline-none transition placeholder:text-nav-muted focus:border-brand"
         />
       </div>
 
@@ -280,8 +262,8 @@ export default function AdminMenuItemsPage() {
           <LoaderCircle className="size-8 animate-spin text-brand" />
         </div>
       ) : filteredItems.length === 0 ? (
-        <div className="flex min-h-60 flex-col items-center justify-center rounded-xl border border-dashed border-white/10 text-center">
-          <UtensilsCrossed className="mb-3 size-10 text-white/40" />
+        <div className="flex min-h-60 flex-col items-center justify-center rounded-xl border border-dashed border-border text-center">
+          <UtensilsCrossed className="mb-3 size-10 text-muted-foreground" />
 
           <h2 className="font-semibold text-white">
             {searchTerm
@@ -300,11 +282,11 @@ export default function AdminMenuItemsPage() {
           {filteredItems.map((item) => (
             <div
               key={item._id}
-              className="overflow-hidden rounded-xl border border-white/10 bg-white/5"
+              className="overflow-hidden rounded-xl border border-border bg-card"
             >
               <div className="flex flex-col sm:flex-row">
                 {/* Item Image */}
-                <div className="h-52 shrink-0 bg-white/10 sm:h-auto sm:w-44">
+                <div className="h-52 shrink-0 bg-muted sm:h-auto sm:w-44">
                   {item.images?.[0] ? (
                     <img
                       src={item.images[0]}
@@ -313,7 +295,7 @@ export default function AdminMenuItemsPage() {
                     />
                   ) : (
                     <div className="flex h-full min-h-40 items-center justify-center">
-                      <UtensilsCrossed className="size-10 text-gray-400" />
+                      <UtensilsCrossed className="size-10 text-muted-foreground" />
                     </div>
                   )}
                 </div>
@@ -322,9 +304,7 @@ export default function AdminMenuItemsPage() {
                 <div className="flex min-w-0 flex-1 flex-col p-4">
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
-                      <h2 className="text-lg font-semibold">
-                        {item.itemName}
-                      </h2>
+                      <h2 className="text-lg font-semibold">{item.itemName}</h2>
 
                       <p className="mt-1 text-sm text-nav-muted">
                         {item.category}
@@ -333,15 +313,14 @@ export default function AdminMenuItemsPage() {
 
                     <span
                       className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold capitalize ${
-                        STATUS_STYLES[item.status] ||
-                        "bg-white/10 text-nav-muted"
+                        STATUS_STYLES[item.status] || "bg-muted text-nav-muted"
                       }`}
                     >
                       {item.status}
                     </span>
                   </div>
 
-                  <p className="mt-3 line-clamp-3 text-sm leading-6 text-gray-600 dark:text-white/60">
+                  <p className="mt-3 line-clamp-3 text-sm leading-6 text-muted-foreground">
                     {item.description}
                   </p>
 
@@ -372,9 +351,7 @@ export default function AdminMenuItemsPage() {
                     <div className="mt-5 flex gap-3">
                       <button
                         type="button"
-                        onClick={() =>
-                          handleStatusUpdate(item._id, "approved")
-                        }
+                        onClick={() => handleStatusUpdate(item._id, "approved")}
                         disabled={busyId === item._id}
                         className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-green-600 px-3 py-2.5 text-sm font-semibold text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50"
                       >
@@ -388,9 +365,7 @@ export default function AdminMenuItemsPage() {
 
                       <button
                         type="button"
-                        onClick={() =>
-                          handleStatusUpdate(item._id, "rejected")
-                        }
+                        onClick={() => handleStatusUpdate(item._id, "rejected")}
                         disabled={busyId === item._id}
                         className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-red-600 px-3 py-2.5 text-sm font-semibold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
                       >
@@ -404,9 +379,7 @@ export default function AdminMenuItemsPage() {
                   <div className="mt-4">
                     <button
                       type="button"
-                      onClick={() =>
-                        handleDelete(item._id, item.itemName)
-                      }
+                      onClick={() => handleDelete(item._id, item.itemName)}
                       disabled={busyId === item._id}
                       className="flex w-full items-center justify-center gap-2 rounded-lg border border-red-500/30 px-3 py-2.5 text-sm font-semibold text-red-500 transition hover:bg-red-500/10 disabled:cursor-not-allowed disabled:opacity-50"
                     >

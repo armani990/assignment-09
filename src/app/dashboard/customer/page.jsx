@@ -107,7 +107,7 @@ export default function CustomerOverviewPage() {
             {/* Page Heading */}
             <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-extrabold text-white sm:text-3xl">
+                    <h1 className="text-2xl font-extrabold text-card-foreground sm:text-3xl">
                         Customer Overview
                     </h1>
                     <p className="mt-2 text-sm text-nav-muted">
@@ -119,7 +119,7 @@ export default function CustomerOverviewPage() {
                     type="button"
                     onClick={fetchOrders}
                     disabled={loading}
-                    className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold text-white transition hover:border-brand hover:text-brand disabled:opacity-50"
+                    className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold text-card-foreground transition hover:border-brand hover:text-brand disabled:opacity-50"
                 >
                     <RefreshCw size={16} />
                     Refresh
@@ -134,7 +134,7 @@ export default function CustomerOverviewPage() {
                     return (
                         <div
                             key={stat.label}
-                            className="rounded-2xl border border-border bg-nav p-5 transition hover:border-brand/40"
+                            className="rounded-2xl border border-border bg-card p-5 transition hover:border-brand/40"
                         >
                             <div className="flex items-center justify-between gap-3">
                                 <div>
@@ -142,7 +142,7 @@ export default function CustomerOverviewPage() {
                                         {stat.label}
                                     </p>
 
-                                    <p className="mt-3 text-3xl font-extrabold text-white">
+                                    <p className="mt-3 text-3xl font-extrabold text-card-foreground">
                                         {stat.count}
                                     </p>
                                 </div>
@@ -159,8 +159,8 @@ export default function CustomerOverviewPage() {
             </div>
 
             {/* Welcome Section */}
-            <div className="rounded-2xl border border-border bg-nav p-6">
-                <h2 className="text-xl font-bold text-white">
+            <div className="rounded-2xl border border-border bg-card p-6">
+                <h2 className="text-xl font-bold text-card-foreground">
                     Welcome to Your Dashboard!
                 </h2>
 

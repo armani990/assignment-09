@@ -190,7 +190,7 @@ export default function VendorSubscriptionPage() {
       {/* Page Header */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-white sm:text-3xl">
+          <h1 className="text-2xl font-extrabold text-foreground sm:text-3xl">
             Subscription Plans
           </h1>
 
@@ -203,7 +203,7 @@ export default function VendorSubscriptionPage() {
           type="button"
           onClick={loadSubscription}
           disabled={loading}
-          className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold text-white transition hover:border-brand hover:text-brand disabled:opacity-50"
+          className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold text-foregroundtransition hover:border-brand hover:text-brand disabled:opacity-50"
         >
           <RefreshCw className="size-4" />
           Refresh
@@ -218,7 +218,7 @@ export default function VendorSubscriptionPage() {
               className={`flex size-14 shrink-0 items-center justify-center rounded-2xl ${
                 isPremiumActive
                   ? "bg-amber-500/10 text-amber-400"
-                  : "bg-white/5 text-nav-muted"
+                  : "bg-muted text-nav-muted"
               }`}
             >
               {isPremiumActive ? (
@@ -233,7 +233,7 @@ export default function VendorSubscriptionPage() {
                 Your Current Plan
               </p>
 
-              <h2 className="mt-1 text-2xl font-extrabold capitalize text-white">
+              <h2 className="mt-1 text-2xl font-extrabold capitalize text-foreground">
                 {isPremiumActive ? "Premium" : "Free"}
               </h2>
 
@@ -241,7 +241,7 @@ export default function VendorSubscriptionPage() {
                 className={`mt-2 inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
                   isPremiumActive
                     ? "bg-green-500/10 text-green-400"
-                    : "bg-white/10 text-nav-muted"
+                    : "bg-border text-nav-muted"
                 }`}
               >
                 {isPremiumActive ? "Active Subscription" : "Free Plan"}
@@ -256,7 +256,7 @@ export default function VendorSubscriptionPage() {
                   Subscription Expires
                 </p>
 
-                <p className="mt-1 font-semibold text-white">
+                <p className="mt-1 font-semibold text-foregrounds">
                   {formatDate(subscription.expiresAt)}
                 </p>
               </div>
@@ -314,12 +314,12 @@ export default function VendorSubscriptionPage() {
         {/* Free Plan */}
         <div className="flex flex-col rounded-2xl border border-border bg-nav p-6 sm:p-8">
           <div className="flex items-center gap-3">
-            <div className="flex size-11 items-center justify-center rounded-xl bg-white/5 text-nav-muted">
+            <div className="flex size-11 items-center justify-center rounded-xl bg-muted text-nav-muted">
               <ShieldCheck className="size-5" />
             </div>
 
             <div>
-              <h2 className="text-xl font-bold text-white">
+              <h2 className="text-xl font-bold text-foreground">
                 Free Plan
               </h2>
               <p className="text-sm text-nav-muted">
@@ -329,7 +329,7 @@ export default function VendorSubscriptionPage() {
           </div>
 
           <div className="mt-7">
-            <span className="text-4xl font-extrabold text-white">
+            <span className="text-4xl font-extrabold text-foreground">
               $0
             </span>
             <span className="ml-2 text-sm text-nav-muted">
@@ -375,7 +375,7 @@ export default function VendorSubscriptionPage() {
         </div>
 
         {/* Premium Plan */}
-        <div className="relative flex flex-col overflow-hidden rounded-2xl border border-amber-500/40 bg-gradient-to-br from-amber-500/10 via-nav to-nav p-6 sm:p-8">
+        <div className="relative flex flex-col overflow-hidden rounded-2xl border border-amber-500/40 bg-gradient-to-br from-amber-500/10 via-card to-card p-6 sm:p-8">
           <div className="absolute right-5 top-5 rounded-full bg-amber-500 px-3 py-1 text-xs font-bold text-black">
             PREMIUM
           </div>
@@ -386,7 +386,7 @@ export default function VendorSubscriptionPage() {
             </div>
 
             <div>
-              <h2 className="text-xl font-bold text-white">
+              <h2 className="text-xl font-bold text-foreground">
                 Premium Plan
               </h2>
               <p className="text-sm text-nav-muted">
@@ -396,7 +396,7 @@ export default function VendorSubscriptionPage() {
           </div>
 
           <div className="mt-7">
-            <span className="text-4xl font-extrabold text-white">
+            <span className="text-4xl font-extrabold text-foreground">
               $9.99
             </span>
             <span className="ml-2 text-sm text-nav-muted">
@@ -404,7 +404,7 @@ export default function VendorSubscriptionPage() {
             </span>
           </div>
 
-          <div className="my-7 h-px bg-white/10" />
+          <div className="my-7 h-px bg-border" />
 
           <ul className="flex-1 space-y-4 text-sm text-nav-muted">
             <li className="flex items-center gap-3">
@@ -467,7 +467,7 @@ export default function VendorSubscriptionPage() {
         <CreditCard className="mt-0.5 size-5 shrink-0 text-brand" />
 
         <div>
-          <h3 className="font-semibold text-white">
+          <h3 className="font-semibold text-foreground">
             Secure Payments
           </h3>
 

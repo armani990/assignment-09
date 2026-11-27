@@ -119,7 +119,7 @@ export default function AdminUsersPage() {
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-white sm:text-3xl">
+          <h1 className="text-2xl font-extrabold text-foreground sm:text-3xl">
             Manage Users
           </h1>
 
@@ -132,7 +132,7 @@ export default function AdminUsersPage() {
           type="button"
           onClick={loadUsers}
           disabled={loading}
-          className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold text-white transition hover:border-brand hover:text-brand disabled:opacity-50"
+          className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold text-foreground transition hover:border-brand hover:text-brand disabled:opacity-50"
         >
           <RefreshCw
             size={16}
@@ -152,7 +152,7 @@ export default function AdminUsersPage() {
           onChange={(event) => setSearchTerm(event.target.value)}
           placeholder="Search users by name or email..."
           maxLength={100}
-          className="w-full rounded-xl border border-border bg-nav py-3 pl-12 pr-12 text-sm text-white outline-none transition placeholder:text-nav-muted focus:border-brand"
+          className="w-full rounded-xl border border-border bg-card py-3 pl-12 pr-12 text-sm text-foreground outline-none transition placeholder:text-nav-muted focus:border-brand"
         />
 
         {searchTerm && (
@@ -160,7 +160,7 @@ export default function AdminUsersPage() {
             type="button"
             onClick={() => setSearchTerm("")}
             aria-label="Clear search"
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-nav-muted transition hover:text-white"
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-nav-muted transition hover:text-foreground"
           >
             <X size={18} />
           </button>
@@ -177,7 +177,7 @@ export default function AdminUsersPage() {
             className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
               selectedRole === filter.value
                 ? "bg-brand text-white"
-                : "text-nav-muted hover:bg-white/5"
+                : "text-nav-muted hover:bg-accent"
             }`}
           >
             {filter.label}
@@ -194,12 +194,12 @@ export default function AdminUsersPage() {
 
       {/* User Count */}
       {!loading && !error && (
-        <div className="flex items-center gap-3 rounded-xl border border-border bg-nav p-4">
+        <div className="flex items-center gap-3 rounded-xl border border-border bg-card p-4">
           <Users className="size-5 text-brand" />
 
           <p className="text-sm text-nav-muted">
             Matching users:{" "}
-            <span className="font-bold text-white">
+            <span className="font-bold text-foreground">
               {users.length}
             </span>
           </p>
@@ -215,7 +215,7 @@ export default function AdminUsersPage() {
         <div className="flex min-h-60 flex-col items-center justify-center rounded-xl border border-dashed border-border text-center">
           <Users className="mb-3 size-10 text-nav-muted" />
 
-          <h2 className="font-semibold text-white">
+          <h2 className="font-semibold text-foreground">
             No users found
           </h2>
 
@@ -228,7 +228,7 @@ export default function AdminUsersPage() {
           {users.map((user) => (
             <article
               key={user._id || user.id || user.email}
-              className="flex flex-col gap-4 rounded-xl border border-border bg-nav p-5 sm:flex-row sm:items-center"
+              className="flex flex-col gap-4 rounded-xl border border-border bg-card p-5 sm:flex-row sm:items-center"
             >
               {/* Avatar */}
               <div className="flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-full bg-brand/10">
@@ -246,7 +246,7 @@ export default function AdminUsersPage() {
               {/* Information */}
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-center gap-2">
-                  <h2 className="font-bold text-white">
+                  <h2 className="font-bold text-foreground">
                     {user.name || "Unnamed User"}
                   </h2>
 

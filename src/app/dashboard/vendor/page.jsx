@@ -45,11 +45,11 @@ function formatDate(value) {
 
 function StatCard({ label, count, icon: Icon, color, background }) {
   return (
-    <div className="rounded-2xl border border-border bg-nav p-5 transition hover:border-brand/40">
+    <div className="rounded-2xl border border-border bg-card p-5 transition hover:border-brand/40">
       <div className="flex items-center justify-between gap-3">
         <div>
           <p className="text-sm font-medium text-nav-muted">{label}</p>
-          <p className="mt-3 text-3xl font-extrabold text-white">{count}</p>
+          <p className="mt-3 text-3xl font-extrabold text-card-foreground">{count}</p>
         </div>
 
         <div
@@ -214,7 +214,7 @@ export default function VendorOverviewPage() {
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-white sm:text-3xl">
+          <h1 className="text-2xl font-extrabold text-card-foreground sm:text-3xl">
             Vendor Overview
           </h1>
 
@@ -227,7 +227,7 @@ export default function VendorOverviewPage() {
           type="button"
           onClick={loadDashboard}
           disabled={loading}
-          className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold text-white transition hover:border-brand hover:text-brand disabled:opacity-50"
+          className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold text-card-foreground transition hover:border-brand hover:text-brand disabled:opacity-50"
         >
           <RefreshCw size={16} />
           Refresh
@@ -257,7 +257,7 @@ export default function VendorOverviewPage() {
       </div>
 
       {/* Subscription Overview */}
-      <div className="rounded-2xl border border-border bg-nav p-6">
+      <div className="rounded-2xl border border-border bg-card p-6">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div
@@ -271,7 +271,7 @@ export default function VendorOverviewPage() {
             </div>
 
             <div>
-              <h2 className="text-lg font-bold text-white">
+              <h2 className="text-lg font-bold text-card-foreground">
                 Subscription Overview
               </h2>
 
@@ -296,7 +296,7 @@ export default function VendorOverviewPage() {
           <div>
             <p className="text-sm text-nav-muted">Current Plan</p>
 
-            <p className="mt-1 text-xl font-bold capitalize text-white">
+            <p className="mt-1 text-xl font-bold capitalize text-card-foreground">
               {isPremiumActive ? "Premium" : "Free"}
             </p>
           </div>
@@ -308,7 +308,7 @@ export default function VendorOverviewPage() {
                 Subscription Expires
               </p>
 
-              <p className="mt-1 font-semibold text-white">
+              <p className="mt-1 font-semibold text-card-foreground">
                 {formatDate(subscription.expiresAt)}
               </p>
             </div>
@@ -330,8 +330,8 @@ export default function VendorOverviewPage() {
       </div>
 
       {/* Quick Actions */}
-      <div className="rounded-2xl border border-border bg-nav p-6">
-        <h2 className="text-lg font-bold text-white">Quick Actions</h2>
+      <div className="rounded-2xl border border-border bg-card p-6">
+        <h2 className="text-lg font-bold text-card-foreground">Quick Actions</h2>
 
         <p className="mt-1 text-sm text-nav-muted">
           Quickly access your most important dashboard features.
@@ -340,7 +340,7 @@ export default function VendorOverviewPage() {
         <div className="mt-5 grid gap-4 sm:grid-cols-2">
           <Link
             href="/dashboard/vendor/add-item"
-            className="flex items-center justify-between gap-3 rounded-xl border border-border p-4 transition hover:border-brand hover:bg-white/5"
+            className="flex items-center justify-between gap-3 rounded-xl border border-border p-4 transition hover:border-brand hover:bg-accent"
           >
             <div className="flex items-center gap-3">
               <div className="flex size-10 items-center justify-center rounded-lg bg-brand/10 text-brand">
@@ -348,7 +348,7 @@ export default function VendorOverviewPage() {
               </div>
 
               <div>
-                <h3 className="font-semibold text-white">Add Menu Item</h3>
+                <h3 className="font-semibold text-card-foreground">Add Menu Item</h3>
                 <p className="mt-1 text-xs text-nav-muted">
                   Add a new pizza to your menu.
                 </p>
@@ -360,7 +360,7 @@ export default function VendorOverviewPage() {
 
           <Link
             href="/dashboard/vendor/orders"
-            className="flex items-center justify-between gap-3 rounded-xl border border-border p-4 transition hover:border-brand hover:bg-white/5"
+            className="flex items-center justify-between gap-3 rounded-xl border border-border p-4 transition hover:border-brand hover:bg-accent"
           >
             <div className="flex items-center gap-3">
               <div className="flex size-10 items-center justify-center rounded-lg bg-green-500/10 text-green-500">
@@ -368,7 +368,7 @@ export default function VendorOverviewPage() {
               </div>
 
               <div>
-                <h3 className="font-semibold text-white">Manage Orders</h3>
+                <h3 className="font-semibold text-card-foreground">Manage Orders</h3>
                 <p className="mt-1 text-xs text-nav-muted">
                   Review and manage customer orders.
                 </p>
@@ -381,10 +381,10 @@ export default function VendorOverviewPage() {
       </div>
 
       {/* Recent Orders */}
-      <div className="rounded-2xl border border-border bg-nav p-5 sm:p-6">
+      <div className="rounded-2xl border border-border bg-card p-5 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h2 className="text-lg font-bold text-white">
+            <h2 className="text-lg font-bold text-card-foreground">
               Recent Customer Orders
             </h2>
             <p className="mt-1 text-sm text-nav-muted">
@@ -413,7 +413,7 @@ export default function VendorOverviewPage() {
                 className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border p-4"
               >
                 <div className="min-w-0">
-                  <h3 className="truncate font-semibold text-white">
+                  <h3 className="truncate font-semibold text-card-foreground">
                     {order.item?.itemName || "Menu item unavailable"}
                   </h3>
 
@@ -439,10 +439,10 @@ export default function VendorOverviewPage() {
       </div>
 
       {/* Recent Menu Items */}
-      <div className="rounded-2xl border border-border bg-nav p-5 sm:p-6">
+      <div className="rounded-2xl border border-border bg-card p-5 sm:p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h2 className="text-lg font-bold text-white">Recent Menu Items</h2>
+            <h2 className="text-lg font-bold text-card-foreground">Recent Menu Items</h2>
             <p className="mt-1 text-sm text-nav-muted">
               Recently added items from your menu.
             </p>
@@ -481,7 +481,7 @@ export default function VendorOverviewPage() {
                 className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border p-4"
               >
                 <div className="min-w-0">
-                  <h3 className="truncate font-semibold text-white">
+                  <h3 className="truncate font-semibold text-card-foreground">
                     {item.itemName}
                   </h3>
 

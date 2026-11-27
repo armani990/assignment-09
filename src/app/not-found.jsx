@@ -14,11 +14,11 @@ export default function NotFound() {
           Page Not Found
         </p>
 
-        <h1 className="mt-3 font-heading text-7xl font-extrabold text-white sm:text-8xl">
+        <h1 className="mt-3 font-heading text-7xl font-extrabold text-foreground sm:text-8xl">
           404
         </h1>
 
-        <h2 className="mt-4 text-2xl font-bold text-white sm:text-3xl">
+        <h2 className="mt-4 text-2xl font-bold text-foreground sm:text-3xl">
           Oops! This page is missing.
         </h2>
 
@@ -38,7 +38,7 @@ export default function NotFound() {
 
           <Link
             href="/menu"
-            className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 px-6 py-3 text-sm font-semibold text-white transition hover:border-brand hover:text-brand"
+            className="inline-flex items-center justify-center gap-2 rounded-xl border border-border px-6 py-3 text-sm font-semibold text-foreground transition hover:border-brand hover:text-brand"
           >
             <ArrowLeft className="size-4" />
             Browse Menu

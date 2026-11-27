@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowUpRight } from "lucide-react";
@@ -20,20 +20,14 @@ function PizzaMark() {
 export default function Footer() {
   const pathname = usePathname();
 
-  const hiddenRoutes = [
-    "/signin",
-    "/signup",
-  ];
+  const hiddenRoutes = ["/signin", "/signup"];
 
-  if (
-    pathname.startsWith("/dashboard") ||
-    hiddenRoutes.includes(pathname)
-  ) {
+  if (pathname.startsWith("/dashboard") || hiddenRoutes.includes(pathname)) {
     return null;
   }
 
   return (
-    <footer className="mt-auto border-t border-white/10 bg-[#171514] text-white">
+    <footer className="mt-auto border-t border-border bg-nav text-nav-foreground">
       <div className="mx-auto max-w-[1400px] px-5 py-14 sm:px-8 lg:px-12">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
@@ -69,16 +63,11 @@ export default function Footer() {
 
           {/* Explore */}
           <div>
-            <h3 className="font-heading text-base font-bold">
-              Explore
-            </h3>
+            <h3 className="font-heading text-base font-bold">Explore</h3>
 
             <ul className="mt-5 space-y-3 text-sm text-nav-muted">
               <li>
-                <Link
-                  href="/"
-                  className="transition-colors hover:text-brand"
-                >
+                <Link href="/" className="transition-colors hover:text-brand">
                   Home
                 </Link>
               </li>
@@ -96,9 +85,7 @@ export default function Footer() {
 
           {/* Account */}
           <div>
-            <h3 className="font-heading text-base font-bold">
-              Your Account
-            </h3>
+            <h3 className="font-heading text-base font-bold">Your Account</h3>
 
             <ul className="mt-5 space-y-3 text-sm text-nav-muted">
               <li>
@@ -132,14 +119,10 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 flex flex-col gap-3 border-t border-white/10 pt-6 text-center text-xs text-white/50 sm:flex-row sm:items-center sm:justify-between sm:text-left">
-          <p>
-            © {new Date().getFullYear()} PizzaHub. All rights reserved.
-          </p>
+        <div className="mt-12 flex flex-col gap-3 border-t border-border pt-6 text-center text-xs text-nav-muted sm:flex-row sm:items-center sm:justify-between sm:text-left">
+          <p>© {new Date().getFullYear()} PizzaHub. All rights reserved.</p>
 
-          <p>
-            Made for pizza lovers.
-          </p>
+          <p>Made for pizza lovers.</p>
         </div>
       </div>
     </footer>

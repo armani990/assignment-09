@@ -141,9 +141,13 @@ h6 {
 }
 
 #deliveryDate::-webkit-calendar-picker-indicator {
-  filter: brightness(0) invert(1);
+  filter: none;
   opacity: 1;
   cursor: pointer;
+}
+
+.dark #deliveryDate::-webkit-calendar-picker-indicator {
+  filter: brightness(0) invert(1);
 }
 
 @layer base {

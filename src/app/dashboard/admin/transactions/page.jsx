@@ -118,7 +118,7 @@ export default function AdminTransactionsPage() {
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-white sm:text-3xl">
+          <h1 className="text-2xl font-extrabold text-foreground sm:text-3xl">
             Transactions
           </h1>
 
@@ -131,7 +131,7 @@ export default function AdminTransactionsPage() {
           type="button"
           onClick={loadTransactions}
           disabled={loading}
-          className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold text-white transition hover:border-brand hover:text-brand disabled:opacity-50"
+          className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold text-foreground transition hover:border-brand hover:text-brand disabled:opacity-50"
         >
           <RefreshCw
             size={16}
@@ -151,7 +151,7 @@ export default function AdminTransactionsPage() {
             className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
               selectedStatus === filter.value
                 ? "bg-brand text-white"
-                : "text-nav-muted hover:bg-white/5"
+                : "text-nav-muted hover:bg-muted"
             }`}
           >
             {filter.label}
@@ -168,12 +168,12 @@ export default function AdminTransactionsPage() {
 
       {/* Transaction Count */}
       {!loading && !error && (
-        <div className="flex items-center gap-3 rounded-xl border border-border bg-nav p-4">
+        <div className="flex items-center gap-3 rounded-xl border border-border bg-card p-4">
           <ReceiptText className="size-5 text-brand" />
 
           <p className="text-sm text-nav-muted">
             Total transactions:{" "}
-            <span className="font-bold text-white">
+            <span className="font-bold text-foreground">
               {transactions.length}
             </span>
           </p>
@@ -198,10 +198,10 @@ export default function AdminTransactionsPage() {
           </p>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-xl border border-border bg-nav">
+        <div className="overflow-hidden rounded-xl border border-border bg-card">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[850px] text-left text-sm">
-              <thead className="border-b border-border bg-white/5">
+              <thead className="border-b border-border bg-muted">
                 <tr className="text-nav-muted">
                   <th className="px-5 py-4 font-semibold">
                     Vendor
@@ -233,7 +233,7 @@ export default function AdminTransactionsPage() {
                 {transactions.map((transaction, index) => (
                   <tr
                     key={transaction._id || transaction.stripeSessionId || index}
-                    className="transition hover:bg-white/[0.03]"
+                    className="transition hover:bg-accent"
                   >
                     {/* Vendor */}
                     <td className="px-5 py-4">
@@ -243,7 +243,7 @@ export default function AdminTransactionsPage() {
                         </div>
 
                         <div className="min-w-0">
-                          <p className="font-semibold text-white">
+                          <p className="font-semibold text-foreground">
                             {transaction.vendor?.name || "Unknown Vendor"}
                           </p>
 
@@ -262,13 +262,13 @@ export default function AdminTransactionsPage() {
 
                     {/* Plan */}
                     <td className="px-5 py-4">
-                      <span className="font-semibold capitalize text-white">
+                      <span className="font-semibold capitalize text-foreground">
                         {transaction.plan || "N/A"}
                       </span>
                     </td>
 
                     {/* Amount */}
-                    <td className="px-5 py-4 font-semibold text-white">
+                    <td className="px-5 py-4 font-semibold text-foreground">
                       {formatAmount(
                         transaction.amount,
                         transaction.currency

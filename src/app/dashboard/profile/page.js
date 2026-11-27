@@ -65,8 +65,8 @@ function SectionHeading({ icon: Icon, title, description }) {
       </div>
 
       <div>
-        <h2 className="font-bold text-white">{title}</h2>
-        <p className="mt-1 text-sm text-nav-muted">{description}</p>
+        <h2 className="font-bold text-foreground">{title}</h2>
+        <p className="mt-1 text-sm text-muted-foreground">{description}</p>
       </div>
     </div>
   );
@@ -77,7 +77,7 @@ function Field({ label, id, ...props }) {
     <div className="space-y-2">
       <label
         htmlFor={id}
-        className="block text-sm font-medium text-nav-muted"
+        className="block text-sm font-medium text-muted-foreground"
       >
         {label}
       </label>
@@ -85,7 +85,7 @@ function Field({ label, id, ...props }) {
       <input
         id={id}
         {...props}
-        className="w-full rounded-xl border border-border bg-transparent px-4 py-3 text-sm text-white outline-none transition placeholder:text-nav-muted/60 focus:border-brand focus:ring-2 focus:ring-brand/20 disabled:cursor-not-allowed disabled:opacity-60"
+        className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground outline-none transition placeholder:text-muted-foreground focus:border-brand focus:ring-2 focus:ring-brand/20 disabled:cursor-not-allowed disabled:opacity-60"
       />
     </div>
   );
@@ -361,11 +361,11 @@ export default function ProfilePage() {
       {/* Page Header */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-white sm:text-3xl">
+          <h1 className="text-2xl font-extrabold text-foreground sm:text-3xl">
             Profile Settings
           </h1>
 
-          <p className="mt-2 text-sm text-nav-muted">
+          <p className="mt-2 text-sm text-muted-foreground">
             Manage your personal information and account security.
           </p>
         </div>
@@ -374,7 +374,7 @@ export default function ProfilePage() {
           type="button"
           onClick={loadProfile}
           disabled={loading}
-          className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold text-white transition hover:border-brand hover:text-brand disabled:opacity-50"
+          className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold text-foreground transition hover:border-brand hover:text-brand disabled:opacity-50"
         >
           <RefreshCw className="size-4" />
           Refresh
@@ -382,7 +382,7 @@ export default function ProfilePage() {
       </div>
 
       {/* Account Overview */}
-      <div className="flex flex-col gap-5 rounded-2xl border border-border bg-nav p-6 sm:flex-row sm:items-center">
+      <div className="flex flex-col gap-5 rounded-2xl border border-border bg-card p-6 sm:flex-row sm:items-center">
         <div className="flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-brand/30 bg-brand/10">
           {displayedImage ? (
             <img
@@ -396,11 +396,11 @@ export default function ProfilePage() {
         </div>
 
         <div className="min-w-0 flex-1">
-          <h2 className="break-words text-xl font-bold text-white">
+          <h2 className="break-words text-xl font-bold text-foreground">
             {profile.name || "Your Name"}
           </h2>
 
-          <p className="mt-1 break-all text-sm text-nav-muted">
+          <p className="mt-1 break-all text-sm text-muted-foreground">
             {profile.email}
           </p>
 
@@ -414,7 +414,7 @@ export default function ProfilePage() {
       {/* Personal Information */}
       <form
         onSubmit={handleProfileSubmit}
-        className="space-y-6 rounded-2xl border border-border bg-nav p-5 sm:p-7"
+        className="space-y-6 rounded-2xl border border-border bg-card p-5 sm:p-7"
       >
         <SectionHeading
           icon={UserRound}
@@ -439,7 +439,7 @@ export default function ProfilePage() {
           <div>
             <label
               htmlFor="profileImage"
-              className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold text-white transition hover:border-brand hover:text-brand"
+              className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold text-foreground transition hover:border-brand hover:text-brand"
             >
               <Camera className="size-4" />
               Change Photo
@@ -453,7 +453,7 @@ export default function ProfilePage() {
               className="hidden"
             />
 
-            <p className="mt-2 text-xs text-nav-muted">
+            <p className="mt-2 text-xs text-muted-foreground">
               JPG, PNG or other image formats. Maximum 32MB.
             </p>
 
@@ -479,24 +479,24 @@ export default function ProfilePage() {
           <div className="space-y-2">
             <label
               htmlFor="profileEmail"
-              className="block text-sm font-medium text-nav-muted"
+              className="block text-sm font-medium text-muted-foreground"
             >
               Email Address
             </label>
 
             <div className="relative">
-              <Mail className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-nav-muted" />
+              <Mail className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
 
               <input
                 id="profileEmail"
                 type="email"
                 value={profile.email}
                 readOnly
-                className="w-full cursor-not-allowed rounded-xl border border-border bg-white/5 py-3 pl-11 pr-4 text-sm text-nav-muted outline-none"
+                className="w-full cursor-not-allowed rounded-xl border border-border bg-muted py-3 pl-11 pr-4 text-sm text-muted-foreground outline-none"
               />
             </div>
 
-            <p className="text-xs text-nav-muted">
+            <p className="text-xs text-muted-foreground">
               Email address cannot be changed here.
             </p>
           </div>
@@ -506,7 +506,7 @@ export default function ProfilePage() {
           <button
             type="submit"
             disabled={profileSaving}
-            className="inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-white transition hover:bg-brand-strong disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-foreground transition hover:bg-brand-strong disabled:cursor-not-allowed disabled:opacity-60"
           >
             {profileSaving ? (
               <LoaderCircle className="size-4 animate-spin" />
@@ -523,7 +523,7 @@ export default function ProfilePage() {
       {role === "vendor" && (
         <form
           onSubmit={handleBusinessSubmit}
-          className="space-y-6 rounded-2xl border border-border bg-nav p-5 sm:p-7"
+          className="space-y-6 rounded-2xl border border-border bg-card p-5 sm:p-7"
         >
           <SectionHeading
             icon={Building2}
@@ -546,7 +546,7 @@ export default function ProfilePage() {
             <button
               type="submit"
               disabled={businessSaving}
-              className="inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-white transition hover:bg-brand-strong disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-foreground transition hover:bg-brand-strong disabled:cursor-not-allowed disabled:opacity-60"
             >
               {businessSaving ? (
                 <LoaderCircle className="size-4 animate-spin" />
@@ -563,7 +563,7 @@ export default function ProfilePage() {
       {/* Password Settings */}
       <form
         onSubmit={handlePasswordSubmit}
-        className="space-y-6 rounded-2xl border border-border bg-nav p-5 sm:p-7"
+        className="space-y-6 rounded-2xl border border-border bg-card p-5 sm:p-7"
       >
         <SectionHeading
           icon={LockKeyhole}
@@ -575,7 +575,7 @@ export default function ProfilePage() {
           <div className="space-y-2 sm:col-span-2">
             <label
               htmlFor="currentPassword"
-              className="block text-sm font-medium text-nav-muted"
+              className="block text-sm font-medium text-muted-foreground"
             >
               Current Password
             </label>
@@ -591,7 +591,7 @@ export default function ProfilePage() {
                 placeholder="Enter current password"
                 autoComplete="current-password"
                 required
-                className="w-full rounded-xl border border-border bg-transparent px-4 py-3 pr-12 text-sm text-white outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/20"
+                className="w-full rounded-xl border border-border bg-background px-4 py-3 pr-12 text-sm text-foreground outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/20"
               />
 
               <button
@@ -604,7 +604,7 @@ export default function ProfilePage() {
                     ? "Hide current password"
                     : "Show current password"
                 }
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-nav-muted hover:text-brand"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-brand"
               >
                 {showCurrentPassword ? (
                   <EyeOff className="size-4" />
@@ -618,7 +618,7 @@ export default function ProfilePage() {
           <div className="space-y-2">
             <label
               htmlFor="newPassword"
-              className="block text-sm font-medium text-nav-muted"
+              className="block text-sm font-medium text-muted-foreground"
             >
               New Password
             </label>
@@ -633,7 +633,7 @@ export default function ProfilePage() {
                 autoComplete="new-password"
                 minLength={6}
                 required
-                className="w-full rounded-xl border border-border bg-transparent px-4 py-3 pr-12 text-sm text-white outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/20"
+                className="w-full rounded-xl border border-border bg-background px-4 py-3 pr-12 text-sm text-foreground outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/20"
               />
 
               <button
@@ -646,7 +646,7 @@ export default function ProfilePage() {
                     ? "Hide new password"
                     : "Show new password"
                 }
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-nav-muted hover:text-brand"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-brand"
               >
                 {showNewPassword ? (
                   <EyeOff className="size-4" />
@@ -660,7 +660,7 @@ export default function ProfilePage() {
           <div className="space-y-2">
             <label
               htmlFor="confirmPassword"
-              className="block text-sm font-medium text-nav-muted"
+              className="block text-sm font-medium text-muted-foreground"
             >
               Confirm New Password
             </label>
@@ -677,7 +677,7 @@ export default function ProfilePage() {
                 autoComplete="new-password"
                 minLength={6}
                 required
-                className="w-full rounded-xl border border-border bg-transparent px-4 py-3 pr-12 text-sm text-white outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/20"
+                className="w-full rounded-xl border border-border bg-background px-4 py-3 pr-12 text-sm text-foreground outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/20"
               />
 
               <button
@@ -690,7 +690,7 @@ export default function ProfilePage() {
                     ? "Hide confirm password"
                     : "Show confirm password"
                 }
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-nav-muted hover:text-brand"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-brand"
               >
                 {showConfirmPassword ? (
                   <EyeOff className="size-4" />
@@ -702,7 +702,7 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        <p className="text-xs text-nav-muted">
+        <p className="text-xs text-muted-foreground">
           Your new password must contain at least 6 characters.
         </p>
 
@@ -710,7 +710,7 @@ export default function ProfilePage() {
           <button
             type="submit"
             disabled={passwordSaving}
-            className="inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-white transition hover:bg-brand-strong disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-3 text-sm font-semibold text-foreground transition hover:bg-brand-strong disabled:cursor-not-allowed disabled:opacity-60"
           >
             {passwordSaving ? (
               <LoaderCircle className="size-4 animate-spin" />

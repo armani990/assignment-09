@@ -23,7 +23,7 @@ function Input({ id, label, type, value, onChange, iconRight, onIconClick }) {
           value={value}
           onChange={onChange}
           required
-          className="w-full rounded-lg border border-white/10 px-4 py-3 pr-10 text-sm outline-none transition-all focus:border-brand focus:ring-2 focus:ring-brand dark:border-white/20 dark:text-white"
+          className="w-full rounded-lg border border-border bg-background px-4 py-3 pr-10 text-sm text-foreground outline-none transition-all focus:border-brand focus:ring-2 focus:ring-brand"
         />
 
         {iconRight && (
@@ -120,7 +120,7 @@ export default function SignInForm() {
 
   return (
     <main className="flex flex-1 items-center justify-center px-5 py-20">
-      <div className="w-full max-w-sm rounded-2xl border border-white/10 p-8 text-center bg-white/5 dark:bg-white/5">
+      <div className="w-full max-w-sm rounded-2xl border border-border bg-card p-8 text-center">
         <div className="mx-auto mb-6 flex size-12 items-center justify-center rounded-full bg-brand">
           <svg
             viewBox="0 0 24 24"
@@ -135,7 +135,7 @@ export default function SignInForm() {
           </svg>
         </div>
 
-        <h1 className="mb-2 font-heading text-2xl font-bold text-white">
+        <h1 className="mb-2 font-heading text-2xl font-bold text-foreground">
           Welcome back
         </h1>
 
@@ -174,10 +174,10 @@ export default function SignInForm() {
 
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-black/10 dark:border-white/10" />
+              <span className="w-full border-t border-border" />
             </div>
 
-            <span className="relative bg-white/10 px-4 text-xs font-semibold text-nav-muted">
+            <span className="relative bg-card px-4 text-xs font-semibold text-nav-muted">
               Or continue with
             </span>
           </div>
@@ -186,7 +186,7 @@ export default function SignInForm() {
             type="button"
             onClick={handleGoogleSignin}
             disabled={loading}
-            className="flex w-full items-center justify-center gap-2 rounded-full border border-white/10 px-6 py-3 text-[15px] font-semibold text-white transition-colors hover:bg-white/5 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/20 dark:hover:bg-white/5"
+           className="flex w-full items-center justify-center gap-2 rounded-full border border-border px-6 py-3 text-[15px] font-semibold text-foreground transition-colors hover:bg-accent disabled:cursor-not-allowed disabled:opacity-60"
           >
             <svg
               viewBox="0 0 24 24"

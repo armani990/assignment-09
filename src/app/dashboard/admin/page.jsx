@@ -67,12 +67,12 @@ function formatDate(value) {
 
 function StatCard({ label, count, icon: Icon, color, background }) {
   return (
-    <div className="rounded-2xl border border-border bg-nav p-5 transition hover:border-brand/40">
+    <div className="rounded-2xl border border-border bg-card p-5 transition hover:border-brand/40">
       <div className="flex items-center justify-between gap-3">
         <div>
           <p className="text-sm font-medium text-nav-muted">{label}</p>
 
-          <p className="mt-3 text-3xl font-extrabold text-white">{count}</p>
+          <p className="mt-3 text-3xl font-extrabold text-card-foreground">{count}</p>
         </div>
 
         <div
@@ -249,7 +249,7 @@ export default function AdminOverviewPage() {
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-white sm:text-3xl">
+          <h1 className="text-2xl font-extrabold text-card-foreground sm:text-3xl">
             Admin Overview
           </h1>
 
@@ -262,7 +262,7 @@ export default function AdminOverviewPage() {
           type="button"
           onClick={loadDashboard}
           disabled={loading}
-          className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold text-white transition hover:border-brand hover:text-brand disabled:opacity-50"
+          className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold text-card-foreground transition hover:border-brand hover:text-brand disabled:opacity-50"
         >
           <RefreshCw size={16} className={loading ? "animate-spin" : ""} />
           Refresh
@@ -296,9 +296,9 @@ export default function AdminOverviewPage() {
           {/* Dashboard Charts */}
           <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
             {/* User Distribution Chart */}
-            <div className="rounded-2xl border border-border bg-nav p-5 sm:p-6">
+            <div className="rounded-2xl border border-border bg-card p-5 sm:p-6">
               <div>
-                <h2 className="text-lg font-bold text-white">
+                <h2 className="text-lg font-bold text-card-foreground">
                   User Distribution
                 </h2>
 
@@ -352,9 +352,9 @@ export default function AdminOverviewPage() {
             </div>
 
             {/* Order Status Chart */}
-            <div className="rounded-2xl border border-border bg-nav p-5 sm:p-6">
+            <div className="rounded-2xl border border-border bg-card p-5 sm:p-6">
               <div>
-                <h2 className="text-lg font-bold text-white">
+                <h2 className="text-lg font-bold text-card-foreground">
                   Order Status Overview
                 </h2>
 
@@ -425,8 +425,8 @@ export default function AdminOverviewPage() {
           </div>
 
           {/* Quick Actions */}
-          <div className="rounded-2xl border border-border bg-nav p-6">
-            <h2 className="text-lg font-bold text-white">Quick Actions</h2>
+          <div className="rounded-2xl border border-border bg-card p-6">
+            <h2 className="text-lg font-bold text-card-foreground">Quick Actions</h2>
 
             <p className="mt-1 text-sm text-nav-muted">
               Quickly access important administration pages.
@@ -435,13 +435,13 @@ export default function AdminOverviewPage() {
             <div className="mt-5 grid gap-4 sm:grid-cols-2">
               <Link
                 href="/dashboard/admin/users"
-                className="flex items-center justify-between gap-3 rounded-xl border border-border p-4 transition hover:border-brand hover:bg-white/5"
+                className="flex items-center justify-between gap-3 rounded-xl border border-border p-4 transition hover:border-brand hover:bg-accent"
               >
                 <div className="flex items-center gap-3">
                   <Users className="size-5 text-brand" />
 
                   <div>
-                    <h3 className="font-semibold text-white">Manage Users</h3>
+                    <h3 className="font-semibold text-card-foreground">Manage Users</h3>
                     <p className="mt-1 text-xs text-nav-muted">
                       View customers and vendors.
                     </p>
@@ -453,13 +453,13 @@ export default function AdminOverviewPage() {
 
               <Link
                 href="/dashboard/admin/menu-items"
-                className="flex items-center justify-between gap-3 rounded-xl border border-border p-4 transition hover:border-brand hover:bg-white/5"
+                className="flex items-center justify-between gap-3 rounded-xl border border-border p-4 transition hover:border-brand hover:bg-accent"
               >
                 <div className="flex items-center gap-3">
                   <UtensilsCrossed className="size-5 text-brand" />
 
                   <div>
-                    <h3 className="font-semibold text-white">
+                    <h3 className="font-semibold text-card-foreground">
                       Manage Menu Items
                     </h3>
                     <p className="mt-1 text-xs text-nav-muted">
@@ -474,9 +474,9 @@ export default function AdminOverviewPage() {
           </div>
 
           {/* Recent Orders */}
-          <div className="rounded-2xl border border-border bg-nav p-5 sm:p-6">
+          <div className="rounded-2xl border border-border bg-card p-5 sm:p-6">
             <div>
-              <h2 className="text-lg font-bold text-white">Recent Orders</h2>
+              <h2 className="text-lg font-bold text-card-foreground">Recent Orders</h2>
 
               <p className="mt-1 text-sm text-nav-muted">
                 Latest orders placed by customers.
@@ -495,7 +495,7 @@ export default function AdminOverviewPage() {
                     className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border p-4"
                   >
                     <div className="min-w-0">
-                      <h3 className="truncate font-semibold text-white">
+                      <h3 className="truncate font-semibold text-card-foreground">
                         {order.itemName}
                       </h3>
 

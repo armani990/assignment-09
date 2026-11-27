@@ -54,7 +54,7 @@ export default function FeaturedMenu() {
             Fresh From Our Kitchen
           </p>
 
-          <h2 className="text-3xl font-bold text-white sm:text-4xl">
+          <h2 className="text-3xl font-bold text-nav-foreground sm:text-4xl">
             Our Featured Pizzas
           </h2>
 
@@ -74,9 +74,9 @@ export default function FeaturedMenu() {
               >
                 <div className="h-52 bg-white/10 dark:bg-white/5" />
                 <div className="space-y-3 p-5">
-                  <div className="h-5 w-3/4 rounded bg-white/10 dark:bg-white/5" />
-                  <div className="h-4 w-full rounded bg-white/10 dark:bg-white/5" />
-                  <div className="h-4 w-1/3 rounded bg-white/10 dark:bg-white/5" />
+                  <div className="h-5 w-3/4 rounded bg-muted" />
+                  <div className="h-4 w-full rounded bg-muted" />
+                  <div className="h-4 w-1/3 rounded bg-muted" />
                 </div>
               </div>
             ))}
@@ -101,9 +101,9 @@ export default function FeaturedMenu() {
             {menuItems.map((item) => (
               <article
                 key={item._id}
-                className="group overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-white/10 dark:bg-white/5"
+                className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl"
               >
-                <div className="relative h-56 overflow-hidden bg-white/10 dark:bg-white/5">
+                <div className="relative h-56 overflow-hidden bg-muted">
                   {item.images?.[0] ? (
                     <img
                       src={item.images[0]}
@@ -123,7 +123,7 @@ export default function FeaturedMenu() {
 
                 <div className="p-5">
                   <div className="mb-3 flex items-start justify-between gap-3">
-                    <h3 className="text-xl font-bold text-white">
+                    <h3 className="text-xl font-bold text-card-foreground">
                       {item.itemName}
                     </h3>
 
@@ -140,7 +140,7 @@ export default function FeaturedMenu() {
                   <div className="mb-3 flex flex-wrap items-center gap-2 text-xs">
                     <span className="text-nav-muted">Prepared by</span>
 
-                    <span className="font-semibold text-white">
+                    <span className="font-semibold text-card-foreground">
                       {item.vendor?.name || "PizzaHub Vendor"}
                     </span>
 

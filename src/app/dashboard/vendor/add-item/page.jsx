@@ -237,7 +237,7 @@ export default function AddMenuItemPage() {
           Unable to Check Menu Access
         </h2>
 
-        <p className="mt-3 text-sm text-black/60 dark:text-white/60">
+        <p className="mt-3 text-sm text-muted-foreground">
           {accessError}
         </p>
 
@@ -254,16 +254,16 @@ export default function AddMenuItemPage() {
   // Block Free vendors after 3 active menu items
   if (isLimitReached) {
     return (
-      <div className="mx-auto max-w-2xl rounded-2xl border border-brand/20 bg-white p-6 text-center shadow-sm dark:bg-white/5 sm:p-10">
+      <div className="mx-auto max-w-2xl rounded-2xl border border-brand/20 bg-card p-6 text-center shadow-sm bg-card sm:p-10">
         <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-brand/10">
           <Upload className="size-8 text-brand" />
         </div>
 
-        <h1 className="mt-5 text-2xl font-bold text-black dark:text-white">
+        <h1 className="mt-5 text-2xl font-bold text-foreground">
           Free Plan Limit Reached
         </h1>
 
-        <p className="mt-3 text-sm leading-7 text-black/60 dark:text-white/60">
+        <p className="mt-3 text-sm leading-7 text-muted-foreground">
           You already have {approvedCount} active menu items.
           The Free plan allows a maximum of 3 active menu items.
           Upgrade to Premium to add unlimited menu items.
@@ -300,11 +300,11 @@ export default function AddMenuItemPage() {
           Back to Dashboard
         </Link>
 
-        <h1 className="text-2xl font-bold text-black dark:text-white sm:text-3xl">
+        <h1 className="text-2xl font-bold text-foreground sm:text-3xl">
           Add New Menu Item
         </h1>
 
-        <p className="mt-2 text-sm text-black/60 dark:text-white/60">
+        <p className="mt-2 text-sm text-muted-foreground">
           Add a new delicious item to your restaurant menu.
         </p>
       </div>
@@ -312,7 +312,7 @@ export default function AddMenuItemPage() {
       {/* Form */}
       <form
         onSubmit={handleSubmit}
-        className="space-y-6 rounded-2xl border border-black/10 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-white/5 sm:p-8"
+        className="space-y-6 rounded-2xl border border-black/10 bg-card p-5 shadow-sm dark:border-border bg-card sm:p-8"
       >
         {/* Item Name */}
         <div>
@@ -331,7 +331,7 @@ export default function AddMenuItemPage() {
             onChange={handleChange}
             placeholder="e.g. Chicken BBQ Pizza"
             required
-            className="w-full rounded-lg border border-black/10 bg-transparent px-4 py-3 outline-none transition focus:border-brand dark:border-white/10"
+            className="w-full rounded-lg border border-black/10 bg-background px-4 py-3 outline-none transition focus:border-brand dark:border-border"
           />
         </div>
 
@@ -352,7 +352,7 @@ export default function AddMenuItemPage() {
             onChange={handleChange}
             placeholder="e.g. Pizza"
             required
-            className="w-full rounded-lg border border-black/10 bg-transparent px-4 py-3 outline-none transition focus:border-brand dark:border-white/10"
+            className="w-full rounded-lg border border-black/10 bg-background px-4 py-3 outline-none transition focus:border-brand dark:border-border"
           />
         </div>
 
@@ -373,7 +373,7 @@ export default function AddMenuItemPage() {
             placeholder="Describe your menu item..."
             rows={4}
             required
-            className="w-full resize-y rounded-lg border border-black/10 bg-transparent px-4 py-3 outline-none transition focus:border-brand dark:border-white/10"
+            className="w-full resize-y rounded-lg border border-black/10 bg-background px-4 py-3 outline-none transition focus:border-brand dark:border-border"
           />
         </div>
 
@@ -397,7 +397,7 @@ export default function AddMenuItemPage() {
               onChange={handleChange}
               placeholder="450"
               required
-              className="w-full rounded-lg border border-black/10 bg-transparent px-4 py-3 outline-none transition focus:border-brand dark:border-white/10"
+              className="w-full rounded-lg border border-black/10 bg-background px-4 py-3 outline-none transition focus:border-brand dark:border-border"
             />
           </div>
 
@@ -417,7 +417,7 @@ export default function AddMenuItemPage() {
               onChange={handleChange}
               placeholder="e.g. Feni"
               required
-              className="w-full rounded-lg border border-black/10 bg-transparent px-4 py-3 outline-none transition focus:border-brand dark:border-white/10"
+              className="w-full rounded-lg border border-black/10 bg-background px-4 py-3 outline-none transition focus:border-brand dark:border-border"
             />
           </div>
         </div>
@@ -431,7 +431,7 @@ export default function AddMenuItemPage() {
           {!imageFile ? (
             <label
               htmlFor="image"
-              className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-black/20 px-5 py-10 text-center transition hover:border-brand dark:border-white/20"
+              className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-border px-5 py-10 text-center transition hover:border-brand dark:border-border"
             >
               <ImagePlus className="mb-3 size-10 text-brand" />
 
@@ -439,7 +439,7 @@ export default function AddMenuItemPage() {
                 Click to upload food image
               </span>
 
-              <span className="mt-1 text-xs text-black/50 dark:text-white/50">
+              <span className="mt-1 text-xs text-muted-foreground">
                 PNG, JPG or WEBP (Maximum 32MB)
               </span>
 
@@ -452,7 +452,7 @@ export default function AddMenuItemPage() {
               />
             </label>
           ) : (
-            <div className="flex items-center justify-between gap-3 rounded-xl border border-black/10 p-4 dark:border-white/10">
+            <div className="flex items-center justify-between gap-3 rounded-xl border border-black/10 p-4 dark:border-border">
               <div className="flex min-w-0 items-center gap-3">
                 <ImagePlus className="size-8 shrink-0 text-brand" />
 
@@ -461,7 +461,7 @@ export default function AddMenuItemPage() {
                     {imageFile.name}
                   </p>
 
-                  <p className="text-xs text-black/50 dark:text-white/50">
+                  <p className="text-xs text-muted-foreground">
                     {(imageFile.size / (1024 * 1024)).toFixed(2)} MB
                   </p>
                 </div>
@@ -505,7 +505,7 @@ export default function AddMenuItemPage() {
           )}
         </button>
 
-        <p className="text-center text-xs text-black/50 dark:text-white/50">
+        <p className="text-center text-xs text-muted-foreground">
           Your menu item will remain pending until approved by an admin.
         </p>
       </form>

@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -28,9 +27,7 @@ export default function DashboardLayout({ children }) {
 
   const user = session?.user;
 
-  const role = VALID_ROLES.includes(user?.role)
-    ? user.role
-    : null;
+  const role = VALID_ROLES.includes(user?.role) ? user.role : null;
 
   const base = role ? `/dashboard/${role}` : null;
 
@@ -89,7 +86,7 @@ export default function DashboardLayout({ children }) {
             className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
               active
                 ? "bg-brand text-white"
-                : "text-nav-muted hover:bg-white/5"
+                : "text-nav-muted hover:bg-accent hover:text-nav-foreground"
             }`}
           >
             <Icon className="size-4" />
@@ -103,7 +100,7 @@ export default function DashboardLayout({ children }) {
   return (
     <div className="flex h-dvh overflow-hidden">
       {/* Desktop Sidebar */}
-      <aside className="sticky top-0 hidden h-dvh w-64 shrink-0 overflow-y-auto border-r border-white/10 lg:block">
+      <aside className="sticky top-0 hidden h-dvh w-64 shrink-0 overflow-y-auto border-r border-border bg-nav text-nav-foreground lg:block">
         {sidebar}
       </aside>
 
@@ -115,7 +112,7 @@ export default function DashboardLayout({ children }) {
             onClick={() => setOpen(false)}
           />
 
-          <aside className="absolute left-0 top-0 h-dvh w-64 overflow-y-auto bg-white/5">
+          <aside className="absolute left-0 top-0 h-dvh w-64 overflow-y-auto bg-nav text-nav-foreground">
             {sidebar}
           </aside>
         </div>
@@ -124,22 +121,16 @@ export default function DashboardLayout({ children }) {
       {/* Dashboard Content */}
       <div className="flex h-dvh min-w-0 min-h-0 flex-1 flex-col">
         {/* Mobile Header */}
-        <div className="flex shrink-0 items-center gap-3 border-b border-white/10 px-4 py-3 lg:hidden">
+        <div className="flex shrink-0 items-center gap-3 border-b border-border px-4 py-3 lg:hidden">
           <button
             type="button"
             onClick={() => setOpen((prev) => !prev)}
             aria-label="Toggle menu"
           >
-            {open ? (
-              <X className="size-5" />
-            ) : (
-              <Menu className="size-5" />
-            )}
+            {open ? <X className="size-5" /> : <Menu className="size-5" />}
           </button>
 
-          <span className="font-semibold capitalize">
-            {role} Dashboard
-          </span>
+          <span className="font-semibold capitalize">{role} Dashboard</span>
         </div>
 
         {/* Only Main Content Scrolls */}

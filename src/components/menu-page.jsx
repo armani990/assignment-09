@@ -267,7 +267,7 @@ export default function MenuPage() {
                     </div>
                   )}
 
-                  <span className="absolute left-4 top-4 rounded-full bg-nav px-3 py-1 text-xs font-semibold text-white">
+                  <span className="absolute left-4 top-4 rounded-full bg-nav px-3 py-1 text-xs font-semibold text-nav-foreground">
                     {item.category}
                   </span>
                 </div>

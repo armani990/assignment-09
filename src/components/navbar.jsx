@@ -64,7 +64,7 @@ function dashboardHrefForRole(role) {
 
 function linkClass(active) {
   return `text-[15px] transition-colors ${
-    active ? "text-brand" : "text-nav-muted hover:text-white"
+    active ? "text-brand" : "text-nav-muted hover:text-nav-foreground"
   }`;
 }
 
@@ -112,7 +112,7 @@ export default function Navbar() {
           </span>
 
           <span className="font-heading flex items-baseline gap-1.5 text-[22px] leading-none font-bold tracking-tight">
-            <span className="text-white">Pizza</span>
+            <span className="text-nav-foreground">Pizza</span>
             <span className="text-brand">Hub</span>
           </span>
         </Link>
@@ -154,7 +154,7 @@ export default function Navbar() {
             onClick={toggleTheme}
             aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
             title={`Switch to ${theme === "dark" ? "Light" : "Dark"} Mode`}
-            className="flex size-10 items-center justify-center rounded-full border border-white/15 text-nav-muted transition-colors hover:bg-white/10 hover:text-white"
+            className="flex size-10 items-center justify-center rounded-full border border-border text-nav-muted transition-colors hover:bg-accent hover:text-foreground"
           >
             {theme === "dark" ? (
               <Sun className="size-5" />
@@ -185,7 +185,7 @@ export default function Navbar() {
 
               <DropdownMenuContent
                 align="end"
-                className="w-56 border-white/10 bg-[#262322] text-white"
+                className="w-56 border-border bg-popover text-popover-foreground"
               >
                 <DropdownMenuGroup>
                   <DropdownMenuLabel className="font-normal">
@@ -193,17 +193,17 @@ export default function Navbar() {
                       {user.name}
                     </p>
 
-                    <p className="truncate text-xs text-white/50">
+                    <p className="truncate text-xs text-muted-foreground">
                       {user.email}
                     </p>
                   </DropdownMenuLabel>
                 </DropdownMenuGroup>
 
-                <DropdownMenuSeparator className="bg-white/10" />
+                <DropdownMenuSeparator className="bg-border" />
 
                 <DropdownMenuItem
                   onClick={() => router.push(dashboardHref)}
-                  className="cursor-pointer text-nav-muted focus:bg-white/5 focus:text-white"
+                  className="cursor-pointer text-muted-foreground focus:bg-accent focus:text-accent-foreground"
                 >
                   <LayoutDashboard className="mr-2 size-4" />
                   Dashboard
@@ -211,17 +211,17 @@ export default function Navbar() {
 
                 <DropdownMenuItem
                   onClick={() => router.push("/dashboard/profile")}
-                  className="cursor-pointer text-nav-muted focus:bg-white/5 focus:text-white"
+                  className="cursor-pointer text-muted-foreground focus:bg-accent focus:text-accent-foreground"
                 >
                   <Settings className="mr-2 size-4" />
                   Profile Settings
                 </DropdownMenuItem>
 
-                <DropdownMenuSeparator className="bg-white/10" />
+                <DropdownMenuSeparator className="bg-border" />
 
                 <DropdownMenuItem
                   onClick={handleLogout}
-                  className="cursor-pointer text-nav-muted focus:bg-white/5 focus:text-white"
+                  className="cursor-pointer text-muted-foreground focus:bg-accent focus:text-accent-foreground"
                 >
                   <LogOut className="mr-2 size-4" />
                   Logout
@@ -250,7 +250,7 @@ export default function Navbar() {
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
           aria-expanded={mobileOpen}
           onClick={() => setMobileOpen((open) => !open)}
-          className="flex size-10 items-center justify-center rounded-lg text-white md:hidden"
+          className="flex size-10 items-center justify-center rounded-lg text-nav-foreground md:hidden"
         >
           <svg
             viewBox="0 0 24 24"
@@ -278,7 +278,7 @@ export default function Navbar() {
               type="button"
               onClick={toggleTheme}
               aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-              className="flex items-center gap-2 rounded-full border border-white/15 px-4 py-2 text-sm text-nav-muted transition-colors hover:bg-white/10 hover:text-white"
+              className="flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm text-nav-muted transition-colors hover:bg-accent hover:text-foreground"
             >
               {theme === "dark" ? (
                 <>
@@ -306,7 +306,7 @@ export default function Navbar() {
                   className={`py-3 text-base transition-colors ${
                     active
                       ? "text-brand"
-                      : "text-nav-muted hover:text-white"
+                      : "text-nav-muted hover:text-nav-foreground"
                   }`}
                 >
                   {link.label}
@@ -321,7 +321,7 @@ export default function Navbar() {
                 className={`py-3 text-base transition-colors ${
                   pathname.startsWith(dashboardHref)
                     ? "text-brand"
-                    : "text-nav-muted hover:text-white"
+                    : "text-nav-muted hover:text-nav-foreground"
                 }`}
               >
                 Dashboard
@@ -329,7 +329,7 @@ export default function Navbar() {
             )}
           </nav>
 
-          <div className="mt-3 border-t border-white/10 pt-4">
+          <div className="mt-3 border-t border-border pt-4">
             {isPending ? null : user ? (
               <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-3 pb-2">
@@ -345,11 +345,11 @@ export default function Navbar() {
                   </Avatar>
 
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-semibold text-white">
+                    <p className="truncate text-sm font-semibold text-nav-foreground">
                       {user.name}
                     </p>
 
-                    <p className="truncate text-xs text-white/50">
+                    <p className="truncate text-xs text-nav-muted">
                       {user.email}
                     </p>
                   </div>
@@ -358,7 +358,7 @@ export default function Navbar() {
                 <Link
                   href={dashboardHref}
                   onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-2 py-2 text-base text-nav-muted hover:text-white"
+                  className="flex items-center gap-2 py-2 text-base text-nav-muted hover:text-nav-foreground"
                 >
                   <LayoutDashboard className="size-4" />
                   Dashboard
@@ -367,7 +367,7 @@ export default function Navbar() {
                 <Link
                   href="/dashboard/profile"
                   onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-2 py-2 text-base text-nav-muted hover:text-white"
+                  className="flex items-center gap-2 py-2 text-base text-nav-muted hover:text-nav-foreground"
                 >
                   <Settings className="size-4" />
                   Profile Settings
@@ -376,7 +376,7 @@ export default function Navbar() {
                 <button
                   type="button"
                   onClick={handleLogout}
-                  className="flex items-center gap-2 py-2 text-left text-base text-nav-muted hover:text-white"
+                  className="flex items-center gap-2 py-2 text-left text-base text-nav-muted hover:text-nav-foreground"
                 >
                   <LogOut className="size-4" />
                   Logout
@@ -386,7 +386,7 @@ export default function Navbar() {
               <div className="flex flex-col gap-3">
                 <Link
                   href="/signin"
-                  className="rounded-full border border-white/20 px-5 py-2.5 text-center text-[15px] font-semibold text-white transition-colors hover:bg-white/5"
+                  className="rounded-full border border-border px-5 py-2.5 text-center text-[15px] font-semibold text-nav-foreground transition-colors hover:bg-accent"
                 >
                   Sign In
                 </Link>

@@ -252,9 +252,9 @@ export default function CustomerOrdersPage() {
 
     if (!session?.user) {
         return (
-            <div className="rounded-2xl border border-white/10 bg-nav p-8 text-center">
-                <h2 className="text-xl font-bold text-white">Please Sign In</h2>
-                <p className="mt-2 text-sm text-white/60">
+            <div className="rounded-2xl border border-border bg-card p-8 text-center">
+                <h2 className="text-xl font-bold text-foreground">Please Sign In</h2>
+                <p className="mt-2 text-sm text-muted-foreground">
                     Sign in to view your orders.
                 </p>
             </div>
@@ -263,9 +263,9 @@ export default function CustomerOrdersPage() {
 
     if (session.user.role !== "customer") {
         return (
-            <div className="rounded-2xl border border-white/10 bg-nav p-8 text-center">
-                <h2 className="text-xl font-bold text-white">Access Denied</h2>
-                <p className="mt-2 text-sm text-white/60">
+            <div className="rounded-2xl border border-border bg-card p-8 text-center">
+                <h2 className="text-xl font-bold text-foreground">Access Denied</h2>
+                <p className="mt-2 text-sm text-muted-foreground">
                     This page is only available to customers.
                 </p>
             </div>
@@ -282,10 +282,10 @@ export default function CustomerOrdersPage() {
                     </div>
 
                     <div>
-                        <h1 className="text-2xl font-extrabold text-white sm:text-3xl">
+                        <h1 className="text-2xl font-extrabold text-foreground sm:text-3xl">
                             My Orders
                         </h1>
-                        <p className="mt-1 text-sm text-white/60">
+                        <p className="mt-1 text-sm text-muted-foreground">
                             Track and manage your pizza orders.
                         </p>
                     </div>
@@ -336,21 +336,21 @@ export default function CustomerOrdersPage() {
 
 
             {/* Order Summary */}
-            <div className="rounded-2xl border border-white/10 bg-nav p-5">
-                <p className="text-sm font-medium text-white/60">Total Orders</p>
-                <p className="mt-1 text-3xl font-extrabold text-white">
+            <div className="rounded-2xl border border-border bg-card p-5">
+                <p className="text-sm font-medium text-muted-foreground">Total Orders</p>
+                <p className="mt-1 text-3xl font-extrabold text-foreground">
                     {orders.length}
                 </p>
             </div>
 
             {/* Orders List */}
             {orders.length === 0 ? (
-                <div className="rounded-2xl border border-white/10 bg-nav px-6 py-16 text-center">
-                    <ShoppingBag className="mx-auto h-12 w-12 text-white/40" />
+                <div className="rounded-2xl border border-border bg-card px-6 py-16 text-center">
+                    <ShoppingBag className="mx-auto h-12 w-12 text-muted-foreground" />
 
-                    <h2 className="mt-4 text-xl font-bold text-white">No Orders Yet</h2>
+                    <h2 className="mt-4 text-xl font-bold text-foreground">No Orders Yet</h2>
 
-                    <p className="mt-2 text-sm text-white/60">
+                    <p className="mt-2 text-sm text-muted-foreground">
                         Your pizza orders will appear here after you place an order.
                     </p>
                 </div>
@@ -362,11 +362,11 @@ export default function CustomerOrdersPage() {
                         return (
                             <article
                                 key={order._id}
-                                className="overflow-hidden rounded-2xl border border-white/10 bg-nav transition hover:border-brand/40"
+                                className="overflow-hidden rounded-2xl border border-border bg-card transition hover:border-brand/40"
                             >
                                 <div className="flex flex-col gap-5 p-5 sm:flex-row">
                                     {/* Pizza Image */}
-                                    <div className="relative h-48 w-full shrink-0 overflow-hidden rounded-xl bg-white/5 sm:h-36 sm:w-40">
+                                    <div className="relative h-48 w-full shrink-0 overflow-hidden rounded-xl bg-muted sm:h-36 sm:w-40">
                                         {image ? (
                                             <Image
                                                 src={image}
@@ -377,7 +377,7 @@ export default function CustomerOrdersPage() {
                                                 className="object-cover"
                                             />
                                         ) : (
-                                            <div className="flex h-full items-center justify-center text-white/40">
+                                            <div className="flex h-full items-center justify-center text-muted-foreground">
                                                 <ShoppingBag size={32} />
                                             </div>
                                         )}
@@ -391,7 +391,7 @@ export default function CustomerOrdersPage() {
                                                     {order.item?.category || "Pizza Order"}
                                                 </p>
 
-                                                <h2 className="mt-1 text-xl font-bold text-white">
+                                                <h2 className="mt-1 text-xl font-bold text-foreground">
                                                     {order.item?.itemName || "Item unavailable"}
                                                 </h2>
 
@@ -405,7 +405,7 @@ export default function CustomerOrdersPage() {
                                             <StatusBadge status={order.status} />
                                         </div>
 
-                                        <div className="mt-4 grid gap-3 text-sm text-white/70 sm:grid-cols-2">
+                                        <div className="mt-4 grid gap-3 text-sm text-muted-foreground sm:grid-cols-2">
                                             <p className="flex min-w-0 items-center gap-2">
                                                 <Store size={16} className="shrink-0 text-brand" />
                                                 <span className="truncate">
@@ -442,7 +442,7 @@ export default function CustomerOrdersPage() {
                                                     setSelectedOrder(order);
                                                     setConfirmingOrderId(null);
                                                 }}
-                                                className="inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:border-brand hover:text-brand"
+                                                className="inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-brand hover:text-brand"
                                             >
                                                 <Eye size={16} />
                                                 View Details
@@ -451,7 +451,7 @@ export default function CustomerOrdersPage() {
                                             {order.status === "pending" &&
                                                 (confirmingOrderId === order._id ? (
                                                     <div className="flex flex-wrap items-center gap-2">
-                                                        <span className="text-sm text-white/70">
+                                                        <span className="text-sm text-muted-foreground">
                                                             Cancel this order?
                                                         </span>
 
@@ -470,7 +470,7 @@ export default function CustomerOrdersPage() {
                                                             type="button"
                                                             onClick={() => setConfirmingOrderId(null)}
                                                             disabled={cancellingId === order._id}
-                                                            className="rounded-full border border-white/20 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:border-brand hover:text-brand disabled:opacity-50"
+                                                            className="rounded-full border border-border px-4 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-brand hover:text-brand disabled:opacity-50"
                                                         >
                                                             Keep Order
                                                         </button>
@@ -504,7 +504,7 @@ export default function CustomerOrdersPage() {
                         role="dialog"
                         aria-modal="true"
                         aria-labelledby="order-details-title"
-                        className="my-auto max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-2xl border border-white/10 bg-nav p-6 shadow-2xl"
+                        className="my-auto max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-2xl border border-border bg-card p-6 shadow-2xl"
                         onClick={(event) => event.stopPropagation()}
                     >
                         {/* Modal Header */}
@@ -515,7 +515,7 @@ export default function CustomerOrdersPage() {
                                 </p>
                                 <h2
                                     id="order-details-title"
-                                    className="mt-1 text-xl font-bold text-white"
+                                    className="mt-1 text-xl font-bold text-foreground"
                                 >
                                     Order Details
                                 </h2>
@@ -525,7 +525,7 @@ export default function CustomerOrdersPage() {
                                 type="button"
                                 onClick={() => setSelectedOrder(null)}
                                 aria-label="Close order details"
-                                className="rounded-lg p-2 text-white/60 transition hover:bg-white/10 hover:text-white"
+                                className="rounded-lg p-2 text-muted-foreground transition hover:bg-accent hover:text-foreground"
                             >
                                 <X size={20} />
                             </button>
@@ -548,11 +548,11 @@ export default function CustomerOrdersPage() {
                                 )}
 
                                 <div className="min-w-0">
-                                    <h3 className="font-bold text-white">
+                                    <h3 className="font-bold text-foreground">
                                         {selectedOrder.item?.itemName || "Item unavailable"}
                                     </h3>
 
-                                    <p className="mt-1 text-sm text-white/60">
+                                    <p className="mt-1 text-sm text-muted-foreground">
                                         {selectedOrder.item?.category || "Pizza"}
                                     </p>
 
@@ -565,64 +565,64 @@ export default function CustomerOrdersPage() {
                             </div>
 
                             {/* Details */}
-                            <div className="space-y-4 rounded-xl bg-white/5 p-4 text-sm">
+                            <div className="space-y-4 rounded-xl bg-muted p-4 text-sm">
                                 <div className="flex items-center justify-between gap-3">
-                                    <span className="text-white/60">Order Status</span>
+                                    <span className="text-muted-foreground">Order Status</span>
                                     <StatusBadge status={selectedOrder.status} />
                                 </div>
 
                                 <div>
-                                    <p className="flex items-center gap-2 text-white/60">
+                                    <p className="flex items-center gap-2 text-muted-foreground">
                                         <Store size={15} />
                                         Vendor
                                     </p>
-                                    <p className="mt-1 font-semibold text-white">
+                                    <p className="mt-1 font-semibold text-foreground">
                                         {getVendorName(selectedOrder.vendor)}
                                     </p>
 
                                     {selectedOrder.vendor?.email && (
-                                        <p className="mt-1 text-white/60">
+                                        <p className="mt-1 text-muted-foreground">
                                             {selectedOrder.vendor.email}
                                         </p>
                                     )}
                                 </div>
 
                                 <div>
-                                    <p className="flex items-center gap-2 text-white/60">
+                                    <p className="flex items-center gap-2 text-muted-foreground">
                                         <CalendarDays size={15} />
                                         Delivery Date
                                     </p>
-                                    <p className="mt-1 font-semibold text-white">
+                                    <p className="mt-1 font-semibold text-foreground">
                                         {formatDate(selectedOrder.deliveryDate)}
                                     </p>
                                 </div>
 
                                 <div>
-                                    <p className="flex items-center gap-2 text-white/60">
+                                    <p className="flex items-center gap-2 text-muted-foreground">
                                         <MapPin size={15} />
                                         Delivery Address
                                     </p>
-                                    <p className="mt-1 font-semibold text-white">
+                                    <p className="mt-1 font-semibold text-foreground">
                                         {selectedOrder.deliveryAddress}
                                     </p>
                                 </div>
 
                                 <div>
-                                    <p className="flex items-center gap-2 text-white/60">
+                                    <p className="flex items-center gap-2 text-muted-foreground">
                                         <Clock size={15} />
                                         Request Date
                                     </p>
-                                    <p className="mt-1 font-semibold text-white">
+                                    <p className="mt-1 font-semibold text-foreground">
                                         {formatDate(selectedOrder.createdAt)}
                                     </p>
                                 </div>
 
                                 <div>
-                                    <p className="flex items-center gap-2 text-white/60">
+                                    <p className="flex items-center gap-2 text-muted-foreground">
                                         <MessageSquare size={15} />
                                         Additional Message
                                     </p>
-                                    <p className="mt-1 font-semibold text-white">
+                                    <p className="mt-1 font-semibold text-foreground">
                                         {selectedOrder.message || "No additional message"}
                                     </p>
                                 </div>
@@ -630,8 +630,8 @@ export default function CustomerOrdersPage() {
 
 
                             {/* Order Status Timeline */}
-                            <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-                                <h3 className="mb-5 flex items-center gap-2 font-bold text-white">
+                            <div className="rounded-xl border border-border bg-muted p-4">
+                                <h3 className="mb-5 flex items-center gap-2 font-bold text-foreground">
                                     <Clock size={18} className="text-brand" />
                                     Order Status Timeline
                                 </h3>
@@ -647,7 +647,7 @@ export default function CustomerOrdersPage() {
                                             >
                                                 {/* Timeline Line */}
                                                 {!isLast && (
-                                                    <div className="absolute left-[9px] top-6 h-full w-0.5 bg-white/10" />
+                                                    <div className="absolute left-[9px] top-6 h-full w-0.5 bg-border" />
                                                 )}
 
                                                 {/* Status Icon */}
@@ -667,7 +667,7 @@ export default function CustomerOrdersPage() {
 
                                                 {/* Status Information */}
                                                 <div className="min-w-0 flex-1">
-                                                    <p className="text-sm font-semibold capitalize text-white">
+                                                    <p className="text-sm font-semibold capitalize text-foreground">
                                                         {item.status}
                                                         {isLast && (
                                                             <span className="ml-2 text-xs font-medium text-brand">
@@ -676,11 +676,11 @@ export default function CustomerOrdersPage() {
                                                         )}
                                                     </p>
 
-                                                    <p className="mt-1 text-xs text-white/50">
+                                                    <p className="mt-1 text-xs text-muted-foreground">
                                                         {formatDateTime(item.updatedAt)}
                                                     </p>
 
-                                                    <p className="mt-1 text-xs text-white/60">
+                                                    <p className="mt-1 text-xs text-muted-foreground">
                                                         {item.status === "pending" &&
                                                             "Your order has been placed."}
 
@@ -732,7 +732,7 @@ export default function CustomerOrdersPage() {
                         <button
                             type="button"
                             onClick={() => setSelectedOrder(null)}
-                            className="mt-6 w-full rounded-full bg-brand px-5 py-3 text-[15px] font-semibold text-white transition-colors hover:bg-brand-strong"
+                            className="mt-6 w-full rounded-full bg-brand px-5 py-3 text-[15px] font-semibold text-foreground transition-colors hover:bg-brand-strong"
                         >
                             Close
                         </button>

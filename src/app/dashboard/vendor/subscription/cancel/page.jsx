@@ -5,10 +5,10 @@ import { XCircle, ArrowLeft, RefreshCw } from "lucide-react";
 export default function SubscriptionCancelPage() {
   return (
     <div className="mx-auto flex min-h-[60vh] max-w-2xl items-center justify-center">
-      <div className="w-full rounded-3xl border border-border bg-nav p-6 text-center sm:p-10">
+      <div className="w-full rounded-3xl border border-border bg-card p-6 text-center sm:p-10">
         <XCircle className="mx-auto size-16 text-amber-500" />
 
-        <h1 className="mt-5 text-2xl font-extrabold text-white sm:text-3xl">
+        <h1 className="mt-5 text-2xl font-extrabold text-foreground sm:text-3xl">
           Payment Cancelled
         </h1>
 
@@ -29,7 +29,7 @@ export default function SubscriptionCancelPage() {
 
           <Link
             href="/dashboard/vendor"
-            className="inline-flex items-center justify-center gap-2 rounded-xl border border-border px-5 py-3 text-sm font-semibold text-white transition hover:border-brand"
+            className="inline-flex items-center justify-center gap-2 rounded-xl border border-border px-5 py-3 text-sm font-semibold text-foreground transition hover:border-brand"
           >
             <ArrowLeft className="size-4" />
             Back to Dashboard
