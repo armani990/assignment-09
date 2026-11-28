@@ -1,8 +1,14 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSession } from "@/lib/auth-client";
+import {
+  Reveal,
+  StaggerContainer,
+  StaggerItem,
+} from "@/components/scroll-reveal";
 
 const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -49,7 +55,7 @@ export default function FeaturedMenu() {
     <section className="bg-nav px-4 py-16 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         {/* Section Heading */}
-        <div className="mb-10 text-center">
+        <Reveal className="mb-10 text-center">
           <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-orange-600">
             Fresh From Our Kitchen
           </p>
@@ -62,7 +68,7 @@ export default function FeaturedMenu() {
             Explore our delicious collection of freshly prepared pizzas. Find
             your favorite and enjoy every bite.
           </p>
-        </div>
+        </Reveal>
 
         {/* Loading State */}
         {loading && (
@@ -97,105 +103,104 @@ export default function FeaturedMenu() {
 
         {/* Pizza Cards */}
         {!loading && !error && menuItems.length > 0 && (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {menuItems.map((item) => (
-              <article
-                key={item._id}
-                className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl"
-              >
-                <div className="relative h-56 overflow-hidden bg-muted">
-                  {item.images?.[0] ? (
-                    <img
-                      src={item.images[0]}
-                      alt={item.itemName}
-                      className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                    />
-                  ) : (
-                    <div className="flex h-full items-center justify-center text-gray-400">
-                      No Image Available
-                    </div>
-                  )}
+              <StaggerItem key={item._id}>
+                <article className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+                  <div className="relative h-56 overflow-hidden bg-muted">
+                    {item.images?.[0] ? (
+                      <img
+                        src={item.images[0]}
+                        alt={item.itemName}
+                        className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="flex h-full items-center justify-center text-gray-400">
+                        No Image Available
+                      </div>
+                    )}
 
-                  <span className="absolute left-4 top-4 rounded-full bg-orange-600 px-3 py-1 text-xs font-semibold text-white">
-                    {item.category}
-                  </span>
-                </div>
-
-                <div className="p-5">
-                  <div className="mb-3 flex items-start justify-between gap-3">
-                    <h3 className="text-xl font-bold text-card-foreground">
-                      {item.itemName}
-                    </h3>
-
-                    <span className="whitespace-nowrap text-lg font-bold text-orange-600">
-                      ৳{Number(item.price).toLocaleString("en-BD")}
+                    <span className="absolute left-4 top-4 rounded-full bg-orange-600 px-3 py-1 text-xs font-semibold text-white">
+                      {item.category}
                     </span>
                   </div>
 
-                  <p className="mb-4 line-clamp-2 min-h-12 text-sm leading-6 text-nav-muted">
-                    {item.description}
-                  </p>
+                  <div className="p-5">
+                    <div className="mb-3 flex items-start justify-between gap-3">
+                      <h3 className="text-xl font-bold text-card-foreground">
+                        {item.itemName}
+                      </h3>
 
-                  {/* Vendor Information */}
-                  <div className="mb-3 flex flex-wrap items-center gap-2 text-xs">
-                    <span className="text-nav-muted">Prepared by</span>
-
-                    <span className="font-semibold text-card-foreground">
-                      {item.vendor?.name || "PizzaHub Vendor"}
-                    </span>
-
-                    {item.vendor?.isPremium && (
-                      <span className="rounded-full border border-amber-400/30 bg-amber-400/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-400">
-                        Premium Vendor
+                      <span className="whitespace-nowrap text-lg font-bold text-orange-600">
+                        ৳{Number(item.price).toLocaleString("en-BD")}
                       </span>
+                    </div>
+
+                    <p className="mb-4 line-clamp-2 min-h-12 text-sm leading-6 text-nav-muted">
+                      {item.description}
+                    </p>
+
+                    {/* Vendor Information */}
+                    <div className="mb-3 flex flex-wrap items-center gap-2 text-xs">
+                      <span className="text-nav-muted">Prepared by</span>
+
+                      <span className="font-semibold text-card-foreground">
+                        {item.vendor?.name || "PizzaHub Vendor"}
+                      </span>
+
+                      {item.vendor?.isPremium && (
+                        <span className="rounded-full border border-amber-400/30 bg-amber-400/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-400">
+                          Premium Vendor
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Location */}
+                    <p className="mb-5 flex items-center gap-2 text-sm text-nav-muted">
+                      <span>📍</span>
+                      {item.location}
+                    </p>
+
+                    {/* Guest: SignIn required */}
+                    {!isPending && !session && (
+                      <Link
+                        href="/signin"
+                        className="block w-full rounded-lg bg-orange-600 px-4 py-3 text-center font-semibold text-white transition hover:bg-orange-700"
+                      >
+                        Sign in to Order
+                      </Link>
+                    )}
+
+                    {/* Customer: Can order */}
+                    {!isPending && role === "customer" && (
+                      <Link
+                        href={`/menu-items/${item._id}`}
+                        className="block w-full rounded-lg bg-orange-600 px-4 py-3 text-center font-semibold text-white transition hover:bg-orange-700"
+                      >
+                        View Details
+                      </Link>
+                    )}
+
+                    {/* Vendor and Admin: Cannot order */}
+                    {!isPending && (role === "vendor" || role === "admin") && (
+                      <button
+                        type="button"
+                        disabled
+                        className="w-full cursor-not-allowed rounded-lg bg-white/10 px-4 py-3 font-semibold text-nav-muted"
+                      >
+                        Ordering for Customers Only
+                      </button>
+                    )}
+
+                    {/* Session is loading */}
+                    {isPending && (
+                      <div className="h-12 animate-pulse rounded-lg bg-white/10" />
                     )}
                   </div>
-
-                  {/* Location */}
-                  <p className="mb-5 flex items-center gap-2 text-sm text-nav-muted">
-                    <span>📍</span>
-                    {item.location}
-                  </p>
-
-                  {/* Guest: SignIn required */}
-                  {!isPending && !session && (
-                    <Link
-                      href="/signin"
-                      className="block w-full rounded-lg bg-orange-600 px-4 py-3 text-center font-semibold text-white transition hover:bg-orange-700"
-                    >
-                      Sign in to Order
-                    </Link>
-                  )}
-
-                  {/* Customer: Can order */}
-                  {!isPending && role === "customer" && (
-                    <Link
-                      href={`/menu-items/${item._id}`}
-                      className="block w-full rounded-lg bg-orange-600 px-4 py-3 text-center font-semibold text-white transition hover:bg-orange-700"
-                    >
-                      View Details
-                    </Link>
-                  )}
-
-                  {/* Vendor and Admin: Cannot order */}
-                  {!isPending && (role === "vendor" || role === "admin") && (
-                    <button
-                      type="button"
-                      disabled
-                      className="w-full cursor-not-allowed rounded-lg bg-white/10 px-4 py-3 font-semibold text-nav-muted"
-                    >
-                      Ordering for Customers Only
-                    </button>
-                  )}
-
-                  {/* Session is loading */}
-                  {isPending && (
-                    <div className="h-12 animate-pulse rounded-lg bg-white/10" />
-                  )}
-                </div>
-              </article>
+                </article>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         )}
       </div>
     </section>
