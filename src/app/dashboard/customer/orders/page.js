@@ -442,7 +442,7 @@ export default function CustomerOrdersPage() {
                                                     setSelectedOrder(order);
                                                     setConfirmingOrderId(null);
                                                 }}
-                                                className="inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-brand hover:text-brand"
+                                                className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-brand hover:text-brand"
                                             >
                                                 <Eye size={16} />
                                                 View Details

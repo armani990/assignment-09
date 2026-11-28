@@ -278,7 +278,7 @@ export default function VendorSubscriptionPage() {
                       type="button"
                       onClick={() => setShowCancelConfirm(false)}
                       disabled={cancelLoading}
-                      className="rounded-xl border border-border px-4 py-2 text-sm font-semibold text-white hover:bg-white/5 disabled:opacity-50"
+                      className="rounded-xl border border-border px-4 py-2 text-sm font-semibold text-foreground transition hover:bg-accent disabled:opacity-50"
                     >
                       Keep Subscription
                     </button>
