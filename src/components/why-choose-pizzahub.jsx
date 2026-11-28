@@ -1,7 +1,13 @@
+
 "use client";
 
 import Link from "next/link";
 import { Clock, Leaf, Flame, Tag } from "lucide-react";
+import {
+  Reveal,
+  StaggerContainer,
+  StaggerItem,
+} from "@/components/scroll-reveal";
 
 const FEATURES = [
   {
@@ -35,7 +41,7 @@ export default function WhyChoosePizzaHub() {
     <section className="bg-nav text-nav-foreground min-h-screen py-16 lg:py-24">
       <div className="mx-auto max-w-[1400px] px-5 sm:px-8 lg:px-12">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
-          <div className="lg:pr-12">
+          <Reveal className="lg:pr-12">
             <h1 className="font-heading text-5xl font-bold tracking-tight lg:text-6xl leading-tight">
               Why choose
               <br />
@@ -55,24 +61,29 @@ export default function WhyChoosePizzaHub() {
                 Order now
               </Link>
             </div>
-          </div>
+          </Reveal>
 
-          <div className="grid gap-6 sm:grid-cols-2">
-            {FEATURES.map((feature, idx) => (
-              <div
-                key={idx}
-                className="rounded-2xl border border-border bg-card p-6"
-              >
-                <div className={`mb-4 inline-flex items-center justify-center size-12 rounded-xl p-2 text-white ${feature.iconBg}`}>
-                  <feature.Icon className="size-5" />
+          <StaggerContainer className="grid gap-6 sm:grid-cols-2">
+            {FEATURES.map((feature) => (
+              <StaggerItem key={feature.title}>
+                <div className="h-full rounded-2xl border border-border bg-card p-6 transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+                  <div
+                    className={`mb-4 inline-flex size-12 items-center justify-center rounded-xl p-2 text-white ${feature.iconBg}`}
+                  >
+                    <feature.Icon className="size-5" />
+                  </div>
+
+                  <h3 className="text-lg font-bold text-card-foreground">
+                    {feature.title}
+                  </h3>
+
+                  <p className="mt-2 text-sm text-nav-muted leading-relaxed">
+                    {feature.desc}
+                  </p>
                 </div>
-                <h3 className="text-lg font-bold text-card-foreground">{feature.title}</h3>
-                <p className="mt-2 text-sm text-nav-muted leading-relaxed">
-                  {feature.desc}
-                </p>
-              </div>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         </div>
       </div>
     </section>
