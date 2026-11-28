@@ -35,7 +35,7 @@ export default function Banner() {
                 Explore Menu
               </a>
               <a
-                href="#"
+                href="#how-it-works"
                 className="rounded-full border border-nav-foreground/20 px-6 py-3 text-[15px] font-semibold text-nav-foreground transition-colors hover:bg-accent"
               >
                 See how it works
