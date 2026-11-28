@@ -99,7 +99,7 @@ export default function MenuPage() {
   return (
     <main className="min-h-screen bg-background">
       {/* Page Header */}
-      <section className="bg-nav px-4 py-16 text-center text-white sm:py-20">
+      <section className="bg-nav px-4 py-16 text-center text-nav-foreground sm:py-20">
         <p className="mb-3 text-sm font-semibold uppercase tracking-[0.25em] text-brand">
           Fresh & Delicious
         </p>

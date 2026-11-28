@@ -311,7 +311,7 @@ export default function VendorMenuItemsPage() {
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">My Menu Items</h1>
+          <h1 className="text-2xl font-bold text-foreground">My Menu Items</h1>
           <p className="mt-1 text-sm text-nav-muted">
             View and manage the menu items you have submitted.
           </p>
@@ -334,7 +334,7 @@ export default function VendorMenuItemsPage() {
       <div className="grid gap-4 sm:grid-cols-3">
         <div className="rounded-xl border border-border p-4">
           <p className="text-sm text-nav-muted">Total Items</p>
-          <p className="mt-1 text-2xl font-bold text-white">{items.length}</p>
+          <p className="mt-1 text-2xl font-bold text-foreground">{items.length}</p>
         </div>
 
         <div className="rounded-xl border border-border p-4">
@@ -373,7 +373,7 @@ export default function VendorMenuItemsPage() {
       ) : items.length === 0 ? (
         <div className="flex min-h-60 flex-col items-center justify-center rounded-xl border border-dashed border-border text-center">
           <UtensilsCrossed className="mb-3 size-10 text-muted-foreground" />
-          <h2 className="font-semibold text-white">No menu items yet</h2>
+          <h2 className="font-semibold text-foreground">No menu items yet</h2>
           <p className="mt-1 text-sm text-nav-muted">
             Your submitted menu items will appear here.
           </p>
@@ -568,7 +568,7 @@ export default function VendorMenuItemsPage() {
                   value={form.itemName}
                   onChange={handleInputChange}
                   required
-                  className="w-full rounded-lg border border-gray-300 bg-transparent px-3 py-2.5 outline-none focus:border-brand dark:border-white/15"
+                  className="w-full rounded-lg border   px-3 py-2.5 outline-none focus:border-brand border-border bg-background text-foreground"
                 />
               </div>
 

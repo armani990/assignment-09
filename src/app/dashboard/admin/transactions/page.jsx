@@ -189,7 +189,7 @@ export default function AdminTransactionsPage() {
         <div className="flex min-h-60 flex-col items-center justify-center rounded-xl border border-dashed border-border text-center">
           <CreditCard className="mb-3 size-10 text-nav-muted" />
 
-          <h2 className="font-semibold text-white">
+          <h2 className="font-semibold text-foreground">
             No transactions found
           </h2>
 

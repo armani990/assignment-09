@@ -203,7 +203,7 @@ export default function VendorSubscriptionPage() {
           type="button"
           onClick={loadSubscription}
           disabled={loading}
-          className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold text-foregroundtransition hover:border-brand hover:text-brand disabled:opacity-50"
+          className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold text-foreground transition hover:border-brand hover:text-brand disabled:opacity-50"
         >
           <RefreshCw className="size-4" />
           Refresh

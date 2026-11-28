@@ -265,7 +265,7 @@ export default function AdminMenuItemsPage() {
         <div className="flex min-h-60 flex-col items-center justify-center rounded-xl border border-dashed border-border text-center">
           <UtensilsCrossed className="mb-3 size-10 text-muted-foreground" />
 
-          <h2 className="font-semibold text-white">
+          <h2 className="font-semibold text-foreground">
             {searchTerm
               ? "No matching menu items found"
               : "No menu items found"}

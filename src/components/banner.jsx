@@ -42,7 +42,7 @@ export default function Banner() {
               </a>
             </div>
 
-            <div className="mt-8 flex items-center gap-8 text-sm text-nav-muted border-t border-white/10 pt-8">
+            <div className="mt-8 flex items-center gap-8 text-sm text-nav-muted border-t border-border pt-8">
               <div className="flex flex-col">
                 <p className="text-2xl font-heading font-bold text-nav-foreground">
                   4.9<span className="text-xs font-sans">★</span>
