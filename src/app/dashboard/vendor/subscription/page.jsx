@@ -256,7 +256,7 @@ export default function VendorSubscriptionPage() {
                   Subscription Expires
                 </p>
 
-                <p className="mt-1 font-semibold text-foregrounds">
+                <p className="mt-1 font-semibold text-foreground">
                   {formatDate(subscription.expiresAt)}
                 </p>
               </div>
